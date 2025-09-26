@@ -52,5 +52,11 @@ for (let i = 0; i < projs.length; i++){
   </div>`
 }
 
+
+html += `<div style="margin:10px">
+<p>All the source code for all the projects, including that of this page, are available <a href="https://github.com/LingDong-/unglitch">here on GitHub</a>.</p>
+</div>
+`
+
 html += `</body></html>`
 fs.writeFileSync("index.html",html)
