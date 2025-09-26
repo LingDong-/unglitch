@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <script src="https://unpkg.com/handsfree@4.0.2/dist/handsfree.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.js"></script>
+    <script src="noise.js"></script>
+    <script src="constants.js"></script>
+    <script src="fld.js"></script>
+    <script src="age.js"></script>
+    <script src="script.js"></script>
+    <div id="info" style="position:absolute;left:50%;top:45%;transform:translateX(-50%) translateY(-40px);display:none;text-align:center'">
+      <i><b>age2death</b> by <a href="https://lingdong.works">lingdong</a> <a href="https://glitch.com/edit/#!/age2death">&lt;/&gt;</a></i>
+      <div id="restart_button" class="btn" onclick="frameCount = 0;" style="position:absolute;left:50%;top:45%;transform:translateX(-50%) translateY(48px)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+        </svg>
+      </div>
+    </div>
+    <script>
+    function show_info(){
+      if (age >= 1){
+        document.getElementById("info").style.display="block";
+      }else{
+        document.getElementById("info").style.display="none";
+      }
+    }
+    setInterval(show_info,100);
+    </script>
+    
+
+  </body>
+</html>

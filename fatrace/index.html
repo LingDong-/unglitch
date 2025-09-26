@@ -1,0 +1,938 @@
+<html>
+  <style>
+body{
+  max-width:800px;
+  min-width:800px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:100px;
+  font-family:sans-serif;
+}
+h1{
+  text-align: center;
+}
+pre{
+  background:whitesmoke;
+}
+  </style>
+  <body>
+    <h1>Fatrace.js</h1>
+    <div style="text-align:center;font-size:16px;margin-top:-10px">
+    <i>Decreasing Milling Time and Increasing Mechanical Strength of Circuit Traces using Voronoi Diagrams</i>
+    <br><br>
+    Lingdong Huang, 2024, MIT Media Lab
+    </div>
+    <br>
+    <img src="/fatrace/glitch-assets/photo.png" style="width:800px"/>
+    <h2>Interactive Demo</h2>
+    <div>
+      Upload a binary image: <input type="file" id="upl-img"/>
+      or try a <button id="btn-eg">Random Example</button>
+      <button id="btn-go">PROCESS</button>
+    </div>
+    <div>
+      <canvas id="cnv0"></canvas>
+      <canvas id="cnv1"></canvas>
+      <canvas id="cnv2"></canvas>
+    </div>
+    <div>Polyline data output:</div>
+    <div>
+      <textarea style="width:783px;height:100px" id="out-ply"></textarea>
+    </div>
+
+    <h2>Background</h2>
+    <p>
+      The algorithm was initially implemented in fall of 2023 as part of my "png2rml" commandline PCB-milling
+      toolpath generator for the Roland MDX-50, for situations involving excessively large boards or excessively
+      low patience, e.g. the PCB for a custom mechanical keyboard.
+    </p>
+    <p>
+      Occassionly I would advertise the algorithm to students who ask for my help milling, and recently 
+      I was told that it has caught the attention of Prof. Neil Gershenfeld, who requested that I document the
+      algorithm. I gladly obliged and sepearated the relavant parts from "png2rml" and put it onto this page which you
+      are currently viewing, where each step is (hopefully) explained clearly.
+    </p>
+
+    <h2>How It Works</h2>
+
+    <p>
+      Both the general idea and the steps involved are very simple. Everything below is implemented in plain old JavaScript
+      with no dependencies. When you update the test image in the demo section near the top
+      of this page, the illustrations below will also update accordingly.
+    </p>
+
+    <h3>I. Flood Fill</h3>
+
+    <p>
+      We start with a binary image, where traces and pads (things to be kept intact) are white, and things to
+      be milled away are black. This is the standard format for <a href="https://mods.cba.mit.edu/">mods</a>, and can easily procured using ECAD softwares.
+    </p>
+
+    <p>
+      First step would be to sepearate each trace from one another. For this, I scan every pixel, and once I encounter
+      a white pixel, I pick a new color, and flood-fill starting from that pixel. In the end, I get an image where
+      each trace is colored a different color. Of course, the actual colors doesn't matter; in the code, I just have different ID's for each trace.
+    </p>
+    <div>
+      <canvas id="cnv3"></canvas>
+      <canvas id="cnv4"></canvas>
+    </div>
+    <p>
+      The code below uses a basic stack-based flood-fill, surely it could be improved for efficiency...
+    </p>
+    <pre id="pre-flood"></pre>
+
+    <h3>II. "Poisoned" Distance Transform</h3>
+
+    <p>
+      Consider how closely related distance transform is to Voronoi diagrams. When thinking of Voronoi diagrams, one would
+      usually imagine a bunch of dots inside a bunch of cells, squished together in some organic fashion resembling roe or passion fruit.
+      But the dots (called "sites") doesn't necessarily need to be dots, they can be more complicated shapes as well.
+      So instead of finding which dot each pixel is closest to, find which shape each pixel is closest to. Now this sounds
+      suspiciously like distance transform, which basically computes the distance from each pixel to the closest shape.
+    </p>
+    <p>
+      The only catch is that your run-of-the-mill distance transform algorithm only gives you, well, the distance, and not actually
+      which nearby shape caused this distance reading. The Jump Flood Algorithm (JFA) does give you that information. In fact,
+      I've previously <a href="https://jfa.glitch.me/">implemented it with WebGL shaders here</a>. However, it is mainly suitable for GPU, so for this simple
+      PCB-milling stuff I don't want to involve in the headache of encoding floating-point textures etc.
+    </p>
+    <p>
+      After carefully inspecting the inner workings of my favorite CPU distance transform algorithm in linear-time (<a href="https://github.com/parmanoir/Meijster-distance">Meijster's Distance</a>),
+      I realized that it could easily be modified such that the ID of the initial shape can be carried over in the computation.
+      In other words I "poison" the inital distance reading (0) with the shape ID. And when the distance is propogated that info
+      is propogated along, so in the end, I know where each reading came from.
+    </p>
+
+    <div>
+      <canvas id="cnv5"></canvas>
+      <canvas id="cnv6"></canvas>
+    </div>
+
+    Image above left: regular distance transform, right: distance transform with ID.
+
+    <pre id="pre-dt-voro"></pre>
+    
+    <h3>III. Tracing</h3>
+
+    <p>
+      The final step is to trace the raster image to obtain the toolpath. I've been tracing binary images for a long time using
+      my implementation of the same paper which OpenCV's "findCountours" function implements. But what about colorful images?
+      Here's where I get a bit lazy. I just sepearate each color into a different binary image. Then I trace every binary image
+      one by one and combine the results. So it takes longer the more traces you have... Luckily the "findCountours" algorithm itself is linear.
+      <a href="https://gist.github.com/LingDong-/b99cdbe814e600d8152c0eefeef01ab3">You can read my JS implementation here</a>.
+    </p>
+    <p>
+      I believe with an improved algorithm, one can trace multiple colors simultaneously in one pass with some modifications not unlike the
+      modifications I did in the previous section to distance trasnform...
+    </p>
+    <p>
+      Now that we have a bunch of contours,
+      the original version of this feature in "png2rml" stops here, and goes on directly to toolpath generation.
+      However, there can be one additional optimization. Every single edge is actually drawn twice, because they're shared by
+      adjacent Voronoi cells (except the ones on the border of course). So it would take about twice as long as is really necessary to mill
+      (though it is already so fast that twice as slow isn't that slow anyways).
+    </p>
+    <p>
+      For this special web-demo edition, I added this final optimization. It is very simple: I check the orientation of every single edge,
+      and drop it if it is on the wrong half of the clock face. This works because for two adjacent cells, 
+      the shared edge will have opposite orientation. Of course, I keep a "run" array so that the contours are not shattered into tiny
+      pieces and instead stick together for as long as posible.
+    </p>
+
+    <div>
+      <canvas id="cnv7"></canvas>
+    </div>
+
+
+    <h2> Notes &amp; Credits </h2>
+
+    <ul>
+      <li> The photographs near the top of the page: <a href="https://fab.cba.mit.edu/classes/863.24/people/ZihaoWei/">Zihao Wei</a> from Harvard GSD designed the original circuits, which I then
+        processed with the titular algorithm and helped mill on <a href="https://www.quincykuang.com/">Quincy Kuang's</a> personal MDX-50.</li>
+      <li> The example input circuits in demo section are taken from Prof. Neil Gershenfeld's examples for the How to Make Almost Anything class.</li>
+      <li>It gets a bit harder to solder because of better heat dissipation. But nothing a giant blob of flux cannot fix!</li>
+      <li> <button onclick="document.body.textContent = `${document.documentElement.outerHTML}`;document.body.style=`font-family:monospace;white-space:pre-wrap`">View full source code.</button> </li>
+    </ul>
+
+  </body>
+  <script>
+    let cnv0 = document.getElementById('cnv0');
+    let ctx0 = cnv0.getContext('2d');
+    cnv0.style = "width:256px; border:1px solid black"
+
+    let cnv1 = document.getElementById('cnv1');
+    let ctx1 = cnv1.getContext('2d');
+    cnv1.style = "width:256px; border:1px solid black"
+
+    let cnv2 = document.getElementById('cnv2');
+    let ctx2 = cnv2.getContext('2d');
+    cnv2.style = "width:256px; border:1px solid black"
+
+    let cnv3 = document.getElementById('cnv3');
+    let ctx3 = cnv3.getContext('2d');
+    cnv3.style = "width:320px; border:1px solid black"
+
+    let cnv4 = document.getElementById('cnv4');
+    let ctx4 = cnv4.getContext('2d');
+    cnv4.style = "width:320px; border:1px solid black"
+
+
+    let cnv5 = document.getElementById('cnv5');
+    let ctx5 = cnv5.getContext('2d');
+    cnv5.style = "width:320px; border:1px solid black"
+
+    let cnv6 = document.getElementById('cnv6');
+    let ctx6 = cnv6.getContext('2d');
+    cnv6.style = "width:320px; border:1px solid black"
+
+    let cnv7 = document.getElementById('cnv7');
+    let ctx7 = cnv7.getContext('2d');
+    cnv7.style = "width:512px; border:1px solid black"
+
+  </script>
+  <script>
+    function upl_img_from_url(url,cb){
+      let img = new Image();
+      img.src = url;
+      img.crossOrigin = "Anonymous";
+      img.onload = function(){
+        cnv0.width = img.width;
+        cnv0.height = img.height;
+        ctx0.drawImage(img,0,0);
+        setTimeout(cb,1);
+      }
+    }
+    function cnv1bit(cnv){
+      let ctx = cnv.getContext('2d');
+      let imdata = ctx.getImageData(0,0,cnv.width,cnv.height).data;
+      let im = new Array(cnv.width*cnv.height).fill(0);
+      for (let i = 0; i < cnv.height; i++){
+        for (let j = 0; j < cnv.width; j++){
+          let c = imdata[(i*cnv.width+j)*4+0] > 128 ? 255 : 0;
+          im[i*cnv.width+j] = c;
+        }
+      }
+      return im;
+    }
+    function randcolor(idx){
+      let jsr = idx;
+      for (let i = 0; i < 10; i++){
+        jsr^=(jsr<<17);
+        jsr^=(jsr>>13);
+        jsr^=(jsr<<5);
+      }
+      return (jsr>>>0) % 0xffffff;
+    }
+    function vis_colormap(cnv,im0,imv,W,H){
+      let ctx = cnv.getContext('2d');
+      cnv.width = W;
+      cnv.height = H;
+      let imdata = ctx.getImageData(0,0,cnv.width,cnv.height);
+      for (let i = 0; i < H; i++){
+        for (let j = 0; j < W; j++){
+
+          let c = randcolor(imv[i*W+j]);
+          let d = im0[i*W+j];
+
+          imdata.data[(i*W+j)*4]   = (c &0xff)*(d?1:0.8);
+          imdata.data[(i*W+j)*4+1] = ((c>>8)&0xff)*(d?1:0.8);
+          imdata.data[(i*W+j)*4+2] = ((c>>16)&0xff)*(d?1:0.8);
+          imdata.data[(i*W+j)*4+3] = 255;
+
+        }
+      }
+      ctx.putImageData(imdata,0,0);
+
+    }
+    function vis_dt(cnv,im,W,H,mode){
+      let ctx = cnv.getContext('2d');
+      cnv.width = W;
+      cnv.height = H;
+      let imdata = ctx.getImageData(0,0,cnv.width,cnv.height);
+      for (let i = 0; i < H; i++){
+        for (let j = 0; j < W; j++){
+
+          let r=255,g=255,b=255;
+          let d = 1;
+          if (mode){
+            let c = randcolor(im[i*W+j][1]);
+            r = (c &0xff);
+            g = ((c>>8)&0xff);
+            b = ((c>>16)&0xff);
+            d = im[i*W+j][0];
+          }else{
+            d = im[i*W+j][0];
+          }
+          d = Math.min(1,Math.max(0,(255-d*2)/255));
+          r *= d;
+          g *= d;
+          b *= d;
+          imdata.data[(i*W+j)*4]   = r;
+          imdata.data[(i*W+j)*4+1] = g;
+          imdata.data[(i*W+j)*4+2] = b;
+          imdata.data[(i*W+j)*4+3] = 255;
+
+        }
+      }
+      ctx.putImageData(imdata,0,0);
+    }
+
+    let clickgo = document.getElementById("btn-go").onclick = function(){
+
+      cnv3.width = cnv0.width;
+      cnv3.height = cnv0.height;
+      ctx3.drawImage(cnv0,0,0);
+
+      let im = cnv1bit(cnv0);
+      let [k,im0,im1] = colorize(im,cnv0.width,cnv0.height);
+      vis_colormap(cnv4,im0,im1,cnv0.width,cnv0.height);
+
+      let imvv = dist_transform_voro(im0,im1,cnv0.width,cnv0.height);
+
+      vis_dt(cnv5,imvv,cnv0.width,cnv0.height,0);
+      vis_dt(cnv6,imvv,cnv0.width,cnv0.height,1);
+
+      let imv = imvv.map(x=>x[1]);
+
+      vis_colormap(cnv1,im,imv,cnv0.width,cnv0.height);
+
+      setTimeout(function(){
+
+        let polys0 = [];
+        for (let i = 1; i < k; i++){
+          let bim = imv.map(x=>(x==i)?1:0);
+          FindContours.findContours(bim,cnv0.width,cnv0.height).map(x=>FindContours.approxPolyDP(x.points,1)).forEach(x=>polys0.push(x));
+        }
+
+
+        let polys1 = [];
+        for (let i = 0; i < polys0.length; i++){
+          let run = 0;
+          for (let j = 0; j < polys0[i].length-1; j++){
+            let [x0,y0] = polys0[i][j];
+            let [x1,y1] = polys0[i][(j+1)%polys0[i].length];
+            let ang = Math.atan2(y1-y0,x1-x0);
+            if (ang < 0.1){
+              if (run){
+                polys1.at(-1).push([x1,y1]);
+              }else{
+                run = 1;
+                polys1.push([[x0,y0],[x1,y1]]);
+              }
+            }else{
+              run = 0;
+            }
+          }
+          ctx2.stroke();
+        }
+        
+        cnv2.width = cnv0.width;
+        cnv2.height = cnv0.height;
+        ctx2.lineWidth="10";
+        ctx2.lineCap = "round";
+        ctx2.lineJoin = "round";
+
+        for (let i = 0; i < polys1.length; i++){
+          ctx2.beginPath();
+          for (let j = 0; j < polys1[i].length; j++){
+            let [x,y] = polys1[i][j];
+            ctx2[j?'lineTo':'moveTo'](x,y);
+          }
+          ctx2.stroke();
+        }
+
+        cnv7.width = cnv0.width;
+        cnv7.height = cnv0.height;
+        ctx7.lineWidth="5";
+        ctx7.lineCap = "round";
+        ctx7.lineJoin = "round";
+
+        for (let i = 0; i < polys1.length; i++){
+          ctx7.beginPath();
+          for (let j = 0; j < polys1[i].length; j++){
+            let [x,y] = polys1[i][j];
+            ctx7[j?'lineTo':'moveTo'](x,y);
+          }
+          ctx7.stroke();
+        }
+
+
+        document.getElementById('out-ply').value = JSON.stringify(polys1);
+      },1)
+
+    }
+    
+    document.getElementById("upl-img").onchange = function(e){
+      let reader = new FileReader();
+      reader.onload = function(event){
+        upl_img_from_url(event.target.result, clickgo);
+
+      }
+      reader.readAsDataURL(e.target.files[0]);   
+    }
+
+    let choices = [
+      "/fatrace/glitch-assets/ATP.8E5.traces.png",
+      "/fatrace/glitch-assets/hello.D11C.serial.5V.1.1.top.png",
+      "/fatrace/glitch-assets/hello.ESP32-WROOM.traces.png",
+    ]
+    let cidx = 0;
+    document.getElementById("btn-eg").onclick = function(){
+      cidx = (cidx+1)%choices.length;
+      upl_img_from_url(choices[cidx],clickgo);
+    }
+
+    upl_img_from_url(choices[cidx],clickgo);
+    
+  </script>
+
+
+<script id="scr-flood">
+function floodblob(im0,W,H,x0,y0,val){
+  let Q = [];
+  Q.push([x0,y0]);
+  im0[y0*W+x0] = val;
+  while (Q.length){
+    let [x,y] = Q.pop();
+    if (x > 0 && im0[y*W+(x-1)]==255){
+      im0[y*W+(x-1)] = val;
+      Q.push([x-1,y]);
+    }
+    if (x < W-1 && im0[y*W+(x+1)]==255){
+      im0[y*W+(x+1)] = val;
+      Q.push([x+1,y]);
+    }
+    if (y > 0 && im0[(y-1)*W+x]==255){
+      im0[(y-1)*W+x] = val;
+      Q.push([x,y-1]);
+    }
+    if (y < H-1 && im0[(y+1)*W+x]==255){
+      im0[(y+1)*W+x] = val;
+      Q.push([x,y+1]);
+    }
+  }
+}
+function colorize(im,W,H){
+  let im1 = im.slice();
+  let k = 1;
+  for (let i = 0; i < H; i++){
+    for (let j = 0; j < W; j++){
+      if (im1[i*W+j] == 255){
+        floodblob(im1,W,H,j,i,k++);
+      }
+    }
+  }
+  return [k,im,im1];
+}
+</script>
+
+<script id="scr-dt">
+
+function dist_transform(b,m,n) {
+  function EDT_f(x, i, g_i) {
+    return (x - i) * (x - i) + g_i * g_i;
+  }
+  function EDT_Sep(i, u, g_i, g_u) {
+    return Math.floor((u * u - i * i + g_u * g_u - g_i * g_i) / (2 * (u - i)));
+  }
+  let infinity = m + n;
+  let g = new Array(m * n).fill(0);
+  for (let x = 0; x < m; x++) {
+    if (b[x + 0 * m]){
+      g[x + 0 * m] = 0;
+    }else{
+      g[x + 0 * m] = infinity;
+    }
+    for (let y = 1; y < n; y++) {
+      if (b[x + y * m]){
+        g[x + y * m] = 0;
+      }else{
+        g[x + y * m] = 1 + g[x + (y - 1) * m];
+      }
+    }
+    for (let y = n - 2; y >= 0; y--) {
+      if (g[x + (y + 1) * m] < g[x + y * m]){
+        g[x + y * m] = 1 + g[x + (y + 1) * m];
+      }
+    }
+  }
+
+  let dt = new Array(m * n).fill(0);
+  let s = new Array(m).fill(0);
+  let t = new Array(m).fill(0);
+  let q = 0;
+  let w;
+  for (let y = 0; y < n; y++) {
+    q = 0;
+    s[0] = 0;
+    t[0] = 0;
+    for (let u = 1; u < m; u++) {
+      while (q >= 0 && EDT_f(t[q], s[q], g[s[q] + y * m]) > EDT_f(t[q], u, g[u + y * m])){
+        q--;
+      }
+      if (q < 0) {
+        q = 0;
+        s[0] = u;
+      } else {
+        w = 1 + EDT_Sep(s[q], u, g[s[q] + y * m], g[u + y * m]);
+        if (w < m) {
+          q++;
+          s[q] = u;
+          t[q] = w;
+        }
+      }
+    }
+    for (let u = m - 1; u >= 0; u--) {
+      let d = EDT_f(u, s[q], g[s[q] + y * m]);
+
+      d = Math.floor(Math.sqrt(d));
+      dt[u + y * m] = d;
+      if (u == t[q]) q--;
+    }
+  }
+  return dt;
+}
+</script>
+
+
+
+  <script id="scr-dt-voro">
+
+function dist_transform_voro(b,c,m,n) {
+  function EDT_f(x, i, g_i) {
+    return (x - i) * (x - i) + g_i * g_i;
+  }
+  function EDT_Sep(i, u, g_i, g_u) {
+    return Math.floor((u * u - i * i + g_u * g_u - g_i * g_i) / (2 * (u - i)));
+  }
+  let infinity = m + n;
+  let g = new Array(m * n).fill(0).map(_=>[0,0]);
+  for (let x = 0; x < m; x++) {
+    if (b[x + 0 * m]){
+      g[x + 0 * m] = [0, c[x]];
+    }else{
+      g[x + 0 * m] = [infinity,0];
+    }
+    for (let y = 1; y < n; y++) {
+      if (b[x + y * m]){
+        g[x + y * m] = [0, c[x + y * m]];
+      }else{
+        g[x + y * m] = [1 + g[x + (y - 1) * m][0], g[x + (y - 1) * m][1]];
+      }
+    }
+    for (let y = n - 2; y >= 0; y--) {
+      if (g[x + (y + 1) * m][0] < g[x + y * m][0]){
+        g[x + y * m] = [1 + g[x + (y + 1) * m][0], g[x + (y + 1) * m][1]];
+      }
+    }
+  }
+
+  let dt = new Array(m * n).fill(0).map(_=>[0,0]);
+  let s = new Array(m).fill(0);
+  let t = new Array(m).fill(0);
+  let q = 0;
+  let w;
+  for (let y = 0; y < n; y++) {
+    q = 0;
+    s[0] = 0;
+    t[0] = 0;
+    for (let u = 1; u < m; u++) {
+      while (q >= 0 && EDT_f(t[q], s[q], g[s[q] + y * m][0]) > EDT_f(t[q], u, g[u + y * m][0])){
+        q--;
+      }
+      if (q < 0) {
+        q = 0;
+        s[0] = u;
+      } else {
+        w = 1 + EDT_Sep(s[q], u, g[s[q] + y * m][0], g[u + y * m][0]);
+        if (w < m) {
+          q++;
+          s[q] = u;
+          t[q] = w;
+        }
+      }
+    }
+    for (let u = m - 1; u >= 0; u--) {
+      let d = EDT_f(u, s[q], g[s[q] + y * m][0]);
+      d = Math.floor(Math.sqrt(d));
+      dt[u + y * m] = [d,g[s[q] + y * m][1]];
+      if (u == t[q]) q--;
+    }
+  }
+  return dt;
+}
+
+  </script>
+<script>
+
+/** Finding contours in binary images and approximating polylines.
+ *  Implements the same algorithms as OpenCV's findContours and approxPolyDP.
+ *  <p>
+ *  Made possible with support from The Frank-Ratchye STUDIO For Creative Inquiry
+ *  At Carnegie Mellon University. http://studioforcreativeinquiry.org/
+ *  @author Lingdong Huang
+ */
+ var FindContours = new function(){let that = this;
+  
+  let N_PIXEL_NEIGHBOR = 8;
+
+  // give pixel neighborhood counter-clockwise ID's for
+  // easier access with findContour algorithm
+  function neighborIDToIndex(i, j, id){
+    if (id == 0){return [i,j+1];}
+    if (id == 1){return [i-1,j+1];}
+    if (id == 2){return [i-1,j];}
+    if (id == 3){return [i-1,j-1];}
+    if (id == 4){return [i,j-1];}
+    if (id == 5){return [i+1,j-1];}
+    if (id == 6){return [i+1,j];}
+    if (id == 7){return [i+1,j+1];}
+    return null;
+  }
+  function neighborIndexToID(i0, j0, i, j){
+    let di = i - i0;
+    let dj = j - j0;
+    if (di == 0 && dj == 1){return 0;}
+    if (di ==-1 && dj == 1){return 1;}
+    if (di ==-1 && dj == 0){return 2;}
+    if (di ==-1 && dj ==-1){return 3;}
+    if (di == 0 && dj ==-1){return 4;}
+    if (di == 1 && dj ==-1){return 5;}
+    if (di == 1 && dj == 0){return 6;}
+    if (di == 1 && dj == 1){return 7;}
+    return -1;
+  }
+
+  // first counter clockwise non-zero element in neighborhood
+  function ccwNon0(F, w, h, i0, j0, i, j, offset){
+    let id = neighborIndexToID(i0,j0,i,j);
+    for (let k = 0; k < N_PIXEL_NEIGHBOR; k++){
+      let kk = (k+id+offset + N_PIXEL_NEIGHBOR*2) % N_PIXEL_NEIGHBOR;
+      let ij = neighborIDToIndex(i0,j0,kk);
+      if (F[ij[0]*w+ij[1]]!=0){
+        return ij;
+      }
+    }
+    return null;
+  }
+
+  // first clockwise non-zero element in neighborhood
+  function cwNon0(F, w, h, i0, j0, i, j, offset){
+    let id = neighborIndexToID(i0,j0,i,j);
+    for (let k = 0; k < N_PIXEL_NEIGHBOR; k++){
+      let kk = (-k+id-offset + N_PIXEL_NEIGHBOR*2) % N_PIXEL_NEIGHBOR;
+      let ij = neighborIDToIndex(i0,j0,kk);
+      if (F[ij[0]*w+ij[1]]!=0){
+        return ij;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Find contours in a binary image
+   * <p>
+   * Implements Suzuki, S. and Abe, K.
+   * Topological Structural Analysis of Digitized Binary Images by Border Following.
+   * <p>
+   * See source code for step-by-step correspondence to the paper's algorithm
+   * description.
+   * @param  F    The bitmap, stored in 1-dimensional row-major form. 
+   *              0=background, 1=foreground, will be modified by the function
+   *              to hold semantic information
+   * @param  w    Width of the bitmap
+   * @param  h    Height of the bitmap
+   * @return      An array of contours found in the image.
+   * @see         Contour
+   */
+   that.findContours = function(F, w, h) {
+    // Topological Structural Analysis of Digitized Binary Images by Border Following.
+    // Suzuki, S. and Abe, K., CVGIP 30 1, pp 32-46 (1985)
+    let nbd = 1;
+    let lnbd = 1;
+
+    let contours = [];
+    
+    // Without loss of generality, we assume that 0-pixels fill the frame 
+    // of a binary picture
+    for (let i = 1; i < h-1; i++){
+      F[i*w] = 0; F[i*w+w-1]=0;
+    }
+    for (let i = 0; i < w; i++){
+      F[i] = 0; F[w*h-1-i]=0;
+    }
+
+    //Scan the picture with a TV raster and perform the following steps 
+    //for each pixel such that fij # 0. Every time we begin to scan a 
+    //new row of the picture, reset LNBD to 1.
+    for (let i = 1; i < h-1; i++) {
+      lnbd = 1;
+
+      for (let j = 1; j < w-1; j++) {
+        
+        let i2 = 0, j2 = 0;
+        if (F[i*w+j] == 0) {
+          continue;
+        }
+        //(a) If fij = 1 and fi, j-1 = 0, then decide that the pixel 
+        //(i, j) is the border following starting point of an outer 
+        //border, increment NBD, and (i2, j2) <- (i, j - 1).
+        if (F[i*w+j] == 1 && F[i*w+(j-1)] == 0) {
+          nbd ++;
+          i2 = i;
+          j2 = j-1;
+          
+          
+        //(b) Else if fij >= 1 and fi,j+1 = 0, then decide that the 
+        //pixel (i, j) is the border following starting point of a 
+        //hole border, increment NBD, (i2, j2) <- (i, j + 1), and 
+        //LNBD + fij in case fij > 1.  
+        } else if (F[i*w+j]>=1 && F[i*w+j+1] == 0) {
+          nbd ++;
+          i2 = i;
+          j2 = j+1;
+          if (F[i*w+j]>1) {
+            lnbd = F[i*w+j];
+          }
+          
+          
+        } else {
+          //(c) Otherwise, go to (4).
+          //(4) If fij != 1, then LNBD <- |fij| and resume the raster
+          //scan from pixel (i,j+1). The algorithm terminates when the
+          //scan reaches the lower right corner of the picture
+          if (F[i*w+j]!=1){lnbd = Math.abs(F[i*w+j]);}
+          continue;
+          
+        }
+        //(2) Depending on the types of the newly found border 
+        //and the border with the sequential number LNBD 
+        //(i.e., the last border met on the current row), 
+        //decide the parent of the current border as shown in Table 1.
+        // TABLE 1
+        // Decision Rule for the Parent Border of the Newly Found Border B
+        // ----------------------------------------------------------------
+        // Type of border B'
+        // \    with the sequential
+        //     \     number LNBD
+        // Type of B \                Outer border         Hole border
+        // ---------------------------------------------------------------     
+        // Outer border               The parent border    The border B'
+        //                            of the border B'
+        //
+        // Hole border                The border B'      The parent border
+        //                                               of the border B'
+        // ----------------------------------------------------------------
+        
+        let B = {};
+        B.points = []
+        B.points.push([j,i]);
+        B.isHole = (j2 == j+1);
+        B.id = nbd;
+        contours.push(B);
+
+        let B0 = {}
+        for (let c = 0; c < contours.length; c++){
+          if (contours[c].id == lnbd){
+            B0 = contours[c];
+            break;
+          }
+        }
+        if (B0.isHole){
+          if (B.isHole){
+            B.parent = B0.parent;
+          }else{
+            B.parent = lnbd;
+          }
+        }else{
+          if (B.isHole){
+            B.parent = lnbd;
+          }else{
+            B.parent = B0.parent;
+          }
+        }
+        
+        //(3) From the starting point (i, j), follow the detected border: 
+        //this is done by the following substeps (3.1) through (3.5).
+        
+        //(3.1) Starting from (i2, j2), look around clockwise the pixels 
+        //in the neigh- borhood of (i, j) and tind a nonzero pixel. 
+        //Let (i1, j1) be the first found nonzero pixel. If no nonzero 
+        //pixel is found, assign -NBD to fij and go to (4).
+        let i1 = -1, j1 = -1;
+        let i1j1 = cwNon0(F,w,h,i,j,i2,j2,0);
+        if (i1j1 == null){
+          F[i*w+j] = -nbd;
+          //go to (4)
+          if (F[i*w+j]!=1){lnbd = Math.abs(F[i*w+j]);}
+          continue;
+        }
+        i1 = i1j1[0]; j1 = i1j1[1];
+        
+        // (3.2) (i2, j2) <- (i1, j1) ad (i3,j3) <- (i, j).
+        i2 = i1;
+        j2 = j1;
+        let i3 = i;
+        let j3 = j;
+        
+        while (true){
+
+          //(3.3) Starting from the next elementof the pixel (i2, j2) 
+          //in the counterclock- wise order, examine counterclockwise 
+          //the pixels in the neighborhood of the current pixel (i3, j3) 
+          //to find a nonzero pixel and let the first one be (i4, j4).
+          
+          let i4j4 = ccwNon0(F,w,h,i3,j3,i2,j2,1);
+   
+          var i4 = i4j4[0];
+          var j4 = i4j4[1];
+
+          contours[contours.length-1].points.push([j4,i4]);
+          
+          //(a) If the pixel (i3, j3 + 1) is a O-pixel examined in the
+          //substep (3.3) then fi3, j3 <-  -NBD.
+          if (F[i3*w+j3+1] == 0){
+            F[i3*w+j3] = -nbd;
+            
+          //(b) If the pixel (i3, j3 + 1) is not a O-pixel examined 
+          //in the substep (3.3) and fi3,j3 = 1, then fi3,j3 <- NBD.
+          }else if (F[i3*w+j3] == 1){
+            F[i3*w+j3] = nbd;
+          }else{
+            //(c) Otherwise, do not change fi3, j3.
+          }
+          
+          //(3.5) If (i4, j4) = (i, j) and (i3, j3) = (i1, j1) 
+          //(coming back to the starting point), then go to (4);
+          if (i4 == i && j4 == j && i3 == i1 && j3 == j1){
+            if (F[i*w+j]!=1){lnbd = Math.abs(F[i*w+j]);}
+            break;
+            
+          //otherwise, (i2, j2) + (i3, j3),(i3, j3) + (i4, j4), 
+          //and go back to (3.3).
+          }else{
+            i2 = i3;
+            j2 = j3;
+            i3 = i4;
+            j3 = j4;
+          }
+        }
+      }
+    }
+    return contours;
+  }
+
+
+  function pointDistanceToSegment(p, p0, p1) {
+    // https://stackoverflow.com/a/6853926
+    let x = p[0];   let y = p[1];
+    let x1 = p0[0]; let y1 = p0[1];
+    let x2 = p1[0]; let y2 = p1[1];
+    let A = x - x1; let B = y - y1; let C = x2 - x1; let D = y2 - y1;
+    let dot = A*C+B*D;
+    let len_sq = C*C+D*D;
+    let param = -1;
+    if (len_sq != 0) {
+      param = dot / len_sq;
+    }
+    let xx; let yy;
+    if (param < 0) {
+      xx = x1; yy = y1;
+    }else if (param > 1) {
+      xx = x2; yy = y2;
+    }else {
+      xx = x1 + param*C;
+      yy = y1 + param*D;
+    }
+    let dx = x - xx;
+    let dy = y - yy;
+    return Math.sqrt(dx*dx+dy*dy);
+  }
+
+  /**
+   * Simplify contour by removing definately extraneous vertices, 
+   * without modifying shape of the contour.
+   * @param  polyline  The vertices
+   * @return           A simplified copy
+   * @see              approxPolyDP
+   */
+  that.approxPolySimple = function(polyline){
+    let epsilon = 0.1;
+    if (polyline.length <= 2){
+      return polyline;
+    }
+    let ret = []
+    ret.push(polyline[0].slice());
+      
+    for (let i = 1; i < polyline.length-1; i++){
+      let   d = pointDistanceToSegment(polyline[i], 
+                                       polyline[i-1], 
+                                       polyline[i+1]);
+      if (d > epsilon){
+        ret.push(polyline[i].slice());
+      }   
+    }
+    ret.push(polyline[polyline.length-1].slice());
+    return ret;
+  }
+
+  /**
+   * Simplify contour using Douglas Peucker algorithm.
+   * <p>   
+   * Implements David Douglas and Thomas Peucker, 
+   * "Algorithms for the reduction of the number of points required to 
+   * represent a digitized line or its caricature", 
+   * The Canadian Cartographer 10(2), 112–122 (1973)
+   * @param  polyline  The vertices
+   * @param  epsilon   Maximum allowed error
+   * @return           A simplified copy
+   * @see              approxPolySimple
+   */
+  that.approxPolyDP = function(polyline, epsilon){
+    // https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm
+    // David Douglas & Thomas Peucker, 
+    // "Algorithms for the reduction of the number of points required to 
+    // represent a digitized line or its caricature", 
+    // The Canadian Cartographer 10(2), 112–122 (1973)
+    
+    if (polyline.length <= 2){
+      return polyline;
+    }
+    let dmax   = 0;
+    let argmax = -1;
+    for (let i = 1; i < polyline.length-1; i++){
+      let d = pointDistanceToSegment(polyline[i], 
+                                     polyline[0], 
+                                     polyline[polyline.length-1]);
+      if (d > dmax){
+        dmax = d;
+        argmax = i;
+      }  
+    }
+    // console.log(dmax)
+    let ret = [];
+    if (dmax > epsilon){
+      let L = that.approxPolyDP(polyline.slice(0,argmax+1),epsilon);
+      let R = that.approxPolyDP(polyline.slice(argmax,polyline.length),epsilon);
+      ret = ret.concat(L.slice(0,L.length-1)).concat(R);
+    }else{
+      ret.push(polyline[0].slice());
+      ret.push(polyline[polyline.length-1].slice());
+    }
+    return ret;
+  }
+}
+
+</script>
+
+
+
+
+  <script>
+    // document.getElementById("pre-dt").innerHTML = document.getElementById("scr-dt").innerHTML;
+    document.getElementById("pre-dt-voro").innerHTML = document.getElementById("scr-dt-voro").innerHTML;
+    document.getElementById("pre-flood").innerHTML = document.getElementById("scr-flood").innerHTML;
+  </script>
+
+</html>

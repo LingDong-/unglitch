@@ -1,0 +1,108 @@
+<style>
+  body{
+    margin:0px;
+    background:rgb(28,30,32);
+    color:white;
+    font-family:sans-serif;
+    
+  }
+  td{
+    border:1px solid white;
+    padding:5px;
+  }
+  a{
+    color:white;
+  }
+</style>
+<body>
+  <table style="max-width:910px;margin:auto">
+    <tr><td colspan="2" style="text-align:center;font-size:32px">Trapzoidal Map + Minkowski Sum</td></tr>
+    <tr><td colspan="2" style="text-align:center">A Motion Planning Demo</td></tr>
+    <tr >
+      <td rowspan="3"><canvas id="cnv"></canvas></td>
+      
+      <td style="width:180px">
+        <div style="font-size:20px;text-align:center;margin-bottom:10px">Tools</div>
+        Mouse mode: <select id="sel_mmode">
+          <option value="interact">interact</option>
+          <option value="new_shape">new obstacle</option>
+        </select> <br><br>
+        
+        <div id="tip_interact" style="height:70px;font-size:14px">
+          Tip: Drag to move vertices and shapes.
+          Hover to highlight trapezoids.
+        </div>
+        <div id="tip_draw" style="height:70px;display:none;font-size:14px">
+          Tip: Click to add vertex. Click the first vertex to finish.
+        </div>
+
+        <button id="btn_xobs">
+          Clear obstacles
+        </button>
+      </td>
+
+
+    </tr>
+    <tr>
+    
+      <td style="width:180px">
+        <div style="font-size:20px;text-align:center;margin-bottom:10px">Robot</div>
+        <input id="chk_robot" type="checkbox"/> Enable <br>
+        ↓ Draw robot below:<br>
+        <canvas id="cnv2"></canvas><br>
+        <button id="btn_xrobot">
+          Reset
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:180px">
+        <div style="font-size:20px;text-align:center;margin-bottom:10px">Settings</div>
+        <input id="chk_halfedge" type="checkbox" /> Draw halfedges <br>
+        
+        Search method: <br><select id="sel_search">
+          <option value="bfs">BFS</option>
+          <option value="dfs">DFS</option>
+        </select> <br>
+        
+        Jitter amount: <br>
+        
+        <input id="sld_jitter" type="range" value="5"/>
+        
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <canvas id="cnv4"></canvas>
+      </td>
+      <td>
+      <div style="font-size:20px;text-align:center;margin-bottom:10px">Animation</div>
+        Speed: <br>
+        
+        <input id="sld_animspd" type="range"/>
+        
+        <button id="btn_animate">
+          Recompute
+        </button><br><br>
+        <div>
+          <div style="font-size:14px">
+          Animated on the left is the line sweep algorithm I used to compute the trapezoidal map.
+          On the right is the binary search tree for ordered segments under sweep line, with color-coding corresponding to that of the segments. <br><br>
+          Please click "recompute" after any change to the input or settings.
+          </div>
+
+        </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td colspan="2" style="text-align:center;font-size:12px"> Lingdong Huang 2022, for 6.850 Geometric Computing @ MIT. <a href="https://glitch.com/edit/#!/trapezoid-map?path=trapezoidmap.js">Read source code</a></td>
+    </tr>
+
+  </table>
+  
+</body>
+<script src="libs/findContours.js"></script>
+<script src="libs/earcut.js"></script>
+<script src="trapezoidmap.js"></script>
+<script src="script.js"></script>

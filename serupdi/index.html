@@ -1,0 +1,79 @@
+<body>
+  <h2>
+    serupdi.js
+  </h2>
+  <p>
+    lightweight <a href="https://onlinedocs.microchip.com/pr/GUID-DDB0017E-84E3-4E77-AAE9-7AC4290E5E8B-en-US-4/index.html?GUID-9B349315-2842-4189-B88C-49F4E1055D7F">U</a><a href="https://github.com/SpenceKonde/AVR-Guidance/blob/master/UPDI/jtag2updi.md">P</a><a href="https://github.com/microchip-pic-avr-tools/pymcuprog">D</a><a href="https://github.com/SpenceKonde/DxCore/blob/master/megaavr/tools/prog.py">I</a> programming in the browser, using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">web serial API</a>.
+  </p>
+  <p>
+    <a href="/serupdi.js">source code (JS, ~300 lines)</a>
+  </p>
+  <p>
+    plug in your attiny and try out below.
+  </p>
+  
+
+
+    paste intel hex:
+  <br>
+  
+  <textarea rows="10" cols="64" id="inp-ihex" spellcheck="false">
+:020000020000FC
+:0C0000000FEF0093010400930504FFCFF4
+:00000001FF
+  </textarea>
+  <br>
+  
+  <button id="btn-connect">
+    connect
+  </button>
+  &nbsp;
+  <input type="checkbox" id="inp-verify"/><label>verify</label>&nbsp;
+  
+  <input type="checkbox" id="inp-verbose"/><label>verbose</label>&nbsp;
+  
+  <button id="btn-upload">
+    upload
+  </button>
+  
+  &nbsp;
+
+  progress:
+  
+  <progress value="0" id="bar-prog"></progress>
+  
+  <br>
+  <textarea rows="20" cols="64" id="out-log" spellcheck="false"></textarea>
+  
+
+
+</body>
+<script src="serupdi.js"></script>
+<script>
+
+  window.serupdi_progress = document.getElementById('bar-prog');
+  window.serupdi_console = {
+    log: function(x){
+      console.log(x);
+      let ta = document.getElementById("out-log")
+      ta.value += x + '\n';
+      ta.scrollTop = ta.scrollHeight;
+    }
+  }
+  document.getElementById('btn-connect').onclick = serupdi_init
+  document.getElementById('inp-verify').onchange = function(){
+    SERUPDI_OPTS.do_verify ^= 1;
+  }
+  document.getElementById('inp-verbose').onchange = function(){
+    SERUPDI_OPTS.log_lvl ^= 3;
+    SERUPDI_OPTS.log_lvl |= 1;
+  }
+  document.getElementById('btn-upload').onclick = function(){
+    document.getElementById("out-log").value = "";
+    serupdi_upload(document.getElementById('inp-ihex').value);
+  }
+  
+  
+
+  
+</script>

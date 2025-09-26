@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>squarish-numbers</title>
+
+    <script src="sqrishnum.js" defer></script>
+  </head>  
+  <body style="margin:24px">
+    
+    <h1>
+      Squarish Numbers
+    </h1>
+    <p>
+      Search for numbers that're close to perfect squares. Useful for arranging data in a 2D gird for presentation.<br>
+      For example, if you have 68 pieces of data, it might be nicer to arrange them in a squarish grid of 7x10=70 or 8x9=72 rather than say a skinny grid of 4x17=68.<br>
+    </p>
+    
+    <div>
+      
+    Min = <input id="min" value="777777"/>
+    
+    Max = <input id="max" value="778000"/>
+    
+    Channels = <input id="chan" value="1"/>
+    
+    <button onclick="doit()">
+      Search
+    </button>
+    <br>
+    <br>
+    </div>
+    
+    <div id="out">
+      
+    </div>
+    
+    <script>
+      function doit(){
+        var min = Math.max(1,~~Number(document.getElementById("min").value));
+        var max = Math.max(min,Number(document.getElementById("max").value));
+        var chan = Math.max(1,~~Number(document.getElementById("chan").value));
+        document.getElementById("out").innerHTML = `<div>parameters [min=${min}, max=${max}, chan=${chan}]</div>`;
+        
+        function iter(n){
+          if (n > max){
+            return;
+          }
+          var d = n/chan
+          
+          if (d==~~d){
+            // console.log(n,chan,d,~~d)
+            var fact = []
+            var part = squarish(d,fact);
+            var dfact = {}
+            for (var i = 0; i < fact.length; i++){
+              if (!dfact[fact[i]]){
+                dfact[fact[i]] = 0;
+              }
+              dfact[fact[i]]++;
+            }
+            part.sort((a,b)=>(b-a))
+            // console.log(n,d,part)
+            if (part[0] == 1 || part[1] == 1){
+              return iter(n+1);
+            }else{
+              var fstr = [];
+              for (var k in dfact){
+                fstr.push(k+(dfact[k]==1?"":("<sup>"+dfact[k]+"</sup>")))
+              }
+              fstr = fstr.join(" × ")
+              var div = document.createElement("div");
+              var svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">`
+              var h = part[1]*16/part[0]
+              var pad = (16-h)/2
+              svg += `<rect x="0" y="${pad}" width="16" height="${h}" stroke-width="0.5" stroke="black"/>`
+              svg += `</svg>`
+              div.innerHTML = `${svg} <span style="font-size:19px;">${n} = ${part[0]} × ${part[1]}${chan==1?'':' × '+chan} <span style="color:gray;font-size:12px">( = ${fstr})</span></span>`
+              
+              document.getElementById("out").appendChild(div);
+              setTimeout(function(){iter(n+1)},10);
+            }
+          }else{
+            return iter(n+1);
+          }
+        }
+        
+        iter(min);
+        
+      }
+    </script>
+  </body>
+</html>

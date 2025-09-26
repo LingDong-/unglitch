@@ -1,0 +1,24 @@
+<body style="font-family:sans-serif">
+  <h2>
+    sdf-csg-uni
+  </h2>
+  <p>
+  constructive solid geometry (csg) using signed distance functions (sdf), 
+  but instead of hard-coding the distance function in shader,
+  uses uniform float array to hold scene description,
+  which gets "interpreted" in the shader.
+  therefore shapes can be added/removed/edited interactively in realtime without recompiling shader.
+  also supports downloading a 3D mesh of the scene
+  (voxels computed in shader + optional marching cubes).
+  distance calculations and ray marching code based on <a href="https://iquilezles.org/articles/distfunctions/">Inigo Quilez</a>'s work.
+
+  </p>
+
+</body>
+<script src="twgl.min.js"></script>
+<script src="marching-cubes.js"></script>
+<script src="npy-rw.js"></script>
+<script src="index.js"></script>
+<script>
+  (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);stats.dom.style.right="0px";stats.dom.style.left="";requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+</script>

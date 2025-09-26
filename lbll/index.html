@@ -1,0 +1,323 @@
+
+<html>
+<head>
+<style>
+body{
+  margin:20px;
+  font-family:sans-serif;
+}
+textarea{
+  font-family:monospace;
+  display:block;
+  line-break: auto;
+}
+#ref table{
+  font-size:12px;
+  color:black;
+  width:100%;
+}
+#ref td{
+  min-width:100px;
+  padding-right:10px;
+  border-top:1px solid whitesmoke;
+}
+#ref tr:first-child{
+  font-variant: small-caps;
+  font-size:14px;
+}
+#ref code{
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+<div style="font-size:24px">LBLL</div>
+<table style="margin:auto;width:100%;max-width:1200px;height:600px;max-height:100%">
+<tr style="height:20px;font-size:14px;font-variant: small-caps;"><td>source</td> <td>bytecode</td> <td>output</td></tr>
+<tr>
+  <td id="td0" rowspan="2" style="position:relative;border:1px solid black;;max-width:33%;min-width:254px;height:100%;"></td>
+  <td id="td1" rowspan="2" style="border:1px solid black;;max-width:33%;min-width:254px;height:100%;"></td>
+  <td id="td2"             style="border:1px solid black;;max-width:33%;min-width:254px;height:130px;text-align:center;background:white;"></td>
+</tr><tr><td id="td3" style="border:1px solid black;"></td></tr></table>
+<br><br>
+<div id="ref" style="margin:auto;width:100%;max-width:1200px;height:600px;max-height:100%;"><div style="font-size:14px;font-variant: small-caps;">cheatsheet</div><p><table>
+  <tr> <td> syntax </td> <td> meaning </td> <td></td> </tr>
+  <tr> <td> <code>x</code>   </td> <td> identifier. maximum 8 characters, including namespace </td> <td></td> </tr>
+  <tr> <td> <code>@x</code>  </td> <td> label </td> <td></td> </tr>
+  <tr> <td> <code>@@x</code> </td> <td> goto label </td> <td></td> </tr>
+  <tr> <td> <code>:x</code>  </td> <td> begin namespace. all subsequent identifiers starting with <code>.</code> will be prefixed with <code>x</code>, until the beginning of next namespace </td> <td></td> </tr>
+  <tr> <td> <code>.y</code>  </td> <td> expands to <code>x.y</code>, given current namespace <code>x</code>. works for both labels and variables. (e.g. <code>@.y</code> expands to <code>@x.y</code>) </td> <td></td> </tr>
+  <tr> <td> <code>@.</code>  </td> <td> unnamed label </td> <td></td> </tr>
+  <tr> <td> <code>@@.</code> </td> <td> goto next unnamed label (scanning downward from current position, wrapping to the top upon reaching bottom) </td> <td></td> </tr>
+  <tr> <td> <code>^ x</code> </td> <td> push <code>x</code> onto stack </td> <td></td> </tr>
+  <tr> <td> <code>-> x</code></td> <td> pop one from stack, assign it to new variable <code>x</code> </td> <td></td> </tr>
+  <tr> <td> <code>=> x</code></td> <td> pop one from stack, assign it to existing variable <code>x</code> </td> <td></td> </tr>
+  <tr> <td> <code>~</code>   </td> <td> value: the last item on stack, which is popped upon reading </td> <td></td> </tr>
+  <tr> <td> <code>#</code>   </td> <td> value: the length of stack </td> <td></td> </tr>
+  <tr> <td> <code>"hi"</code></td> <td> push values 0x68 ('h'), 0x69 ('i'), 2 (length) onto stack. this is the representation for strings used by std lib functions </td> <td></td> </tr>
+  <tr> <td> <code>>@@</code> </td> <td> pop a string from stack, goto the label whose name matches the string </td> <td></td> </tr>
+  <tr> <td> <code>@:x</code> </td> <td> shorthand for namespace + label, expands to <code>@x :x</code> </td> <td></td> </tr>
+  <tr> <td> <code>%</code>   </td> <td> save the position of the last executed goto ("return address") </td> <td></td> </tr>
+  <tr> <td> <code>%%</code>  </td> <td> goto right after the position saved by the previous <code>%</code>, rewinding the frame (paired with <code>%</code> to simulate function calls). If already at the top level, exit the program </td> <td></td> </tr>
+  <tr> <td> <code>%%.</code> </td> <td> goto right after the position of the last executed goto ("un-goto") </td> <td></td> </tr>
+  <tr> <td> <code>?</code>   </td> <td> pop one from stack, if it is not zero, evaluate the next token, otherwise, skip one token and evaluate the next. push the result (if any) onto the stack. (e.g. <code>^ 1 ? 2 3</code> pushes <code>2</code>, while <code>^ 1 ? @@. *</code> does not by itself) </td> <td></td> </tr>
+  <tr> <td> <code>*</code>   </td> <td> noop </td> <td></td> </tr>
+  <tr> <td> <code>;ok;</code>   </td> <td> comments are enclosed by pairs of <code>;</code> </td> <td></td> </tr>
+</table></p>
+
+
+<p><table>
+  <tr> <td> operator </td> <td> meaning </td> <td></td> </tr>
+  <tr> <td> <code>>></code>  </td> <td> pop the last string on stack and print it </td> <td></td> </tr>
+  <tr> <td> <code>>>|</code></td> <td> pop the last string on stack and print it with a newline </td> <td></td> </tr>
+  <tr> <td> <code>peek i</code></td> <td> copy the <code>i</code>th item on the stack and push it to the top, negative indices count from the top, positive indices count from the bottom. all "indices" mentioned below follow this convention </td> <td></td> </tr>
+  <tr> <td> <code>droq i</code></td> <td> drop all higher items on the stack starting from index <code>i</code> </td> <td></td> </tr>
+  <tr> <td> <code>edit i x</code> </td> <td> change the <code>i</code>th item on the stack to <code>x</code> </td> <td></td> </tr>
+  <tr> <td> <code>roll i j</code> </td> <td> roll all higher items on the stack starting from index <code>i</code>, by <code>j</code> steps. positive <code>j</code> rolls toward the top, negative <code>j</code> rolls toward the bottom. (e.g. <code>^1^2^3^4 roll -3 1</code> gives <code>1 4 2 3</code>) </td> <td></td> </tr>
+  <tr> <td> <code>rev i</code> </td> <td> reverse the order of all higher items on the stack starting from index <code>i</code> </td> <td></td> </tr>
+  <tr> <td> <code>ntos x</code> </td> <td> convert number x to a string and push it onto the stack </td> <td></td> </tr>
+  <tr> <td> <code>ston</code>   </td> <td> read the last string from the stack, convert it to a number, and push it onto the stack </td> <td></td> </tr>
+  <tr> <td> <code>sub x y</code> </td> <td> subtraction (x-y). pushes result onto stack. other math functions of arity 2: <code>add</code>, <code>mul</code>, <code>div</code>, <code>fmod</code>, <code>lt</code>, <code>gt</code>, <code>leq</code>, <code>geq</code>, <code>eq</code>, <code>neq</code>, <code>atn2</code>, <code>pow</code> </td> <td></td> </tr>
+  <tr> <td> <code>imod x y</code> </td> <td> push both integer division (<code>x//y</code>) and integer modulo (<code>x%y</code>) onto stack </td> <td></td> </tr>
+  <tr> <td> <code>abs x</code> </td> <td> absolute value. pushes result onto stack. other math functions of arity 1: <code>flor</code>, <code>ceil</code>, <code>rond</code>, <code>eqz</code> (==0), <code>sin</code>, <code>cos</code>, <code>exp</code>, <code>ln</code>, <code>asin</code>, <code>acos</code> </td> <td></td> </tr>
+  <tr> <td> <code>vand x y</code> </td> <td> logical AND, eager evaluation (no short-circuit). OR counterpart: <code>vor</code>. pushes result onto stack. </td> <td></td> </tr>
+  <tr> <td> <code>uand x y</code> </td> <td> unsigned bitwise AND. converts to uint16_t and back. also: <code>uor</code>, <code>unot</code>, <code>uxor</code>, <code>ushl</code>, <code>ushr</code>. pushes result onto stack. </td> <td></td> </tr>
+  <tr> <td> <code>rand</code>  </td> <td> pushes a uniformly random float from 0 to 1 onto stack </td> <td></td> </tr>
+  <tr> <td> <code>srnd x</code> </td> <td> set random seed to <code>x</code> </td> <td></td> </tr>
+  <tr> <td> <code>^^ x n</code> </td> <td> push <code>x</code> to stack <code>n</code> times (shorthand for <code>^ x ^ x ^ x ^ x ...</code>) </td> <td></td> </tr>
+</table></p>
+
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</body>
+<script src="lbll.js"></script>
+<script>console.log("compiled at: Wed Mar 08 2023 03:03:35 GMT-0500 (Eastern Standard Time)");</script>
+<script>
+var EXAMPLES={"10print.lbl":";@L10 rand rond ~ mul ~ 45 add ~ 47 ^ 1 >> @@L10;\n\n\n;graphical version:;\n^ 0 -> i @L10\nrand rond ~ mul ~ 45 add ~ 47 ^ 1\nimod i 32 mul ~ 4 rev -2 text ~ ~\nadd i 1 => i lt i 256 ? @@L10 *","ack.lbl":"^ 4 ^ 1 @@ack\n\nntos ~ >>|\n\n%%\n\n@:ack % -> n -> m\n\n  @.r\n\n  lt m 2 ? * @@.\n    add n m add ~ 1\n    %%\n  @.\n\n  eq m 2 ? * @@.\n    mul n 2 add ~ 3\n    %%\n  @.\n\n  ;\n  eq m 3 ? * @@.\n    pow 2 n sub ~ 1 mul ~ 8 add ~ 5\n    %%\n  @.\n  ;\n\n  eq n 0 ? * @@.\n    sub m 1 => m\n    ^ 1 => n\n    @@.r\n  @.\n\n  \n  ^ m sub n 1 @@ack\n  sub m 1\n  rev -2\n  @@ack\n\n\n%%\n","beer.lbl":"^ 99 -> n\n\n@loop\n\nntos n >> \" bottles of beer on the wall\" >>|\n\nntos n >> \" bottles of beer\" >>|\n\n\"take one down, pass it around\" >>|\n\nsub n 1 => n\n\nntos n >> \" bottles of beer on the wall\" >>|\n\neqz n ? * @@loop\n","cubes.lbl":"; ---------------------------------- ;\n; minimal 3D mesh wireframe renderer ;\n; ---------------------------------- ;\n\n; focal length ;\n^ 30 -> focl\n\n; vertices ;\n^ -1 ^ -1 ^ -1 ^  -1 ^ -1 ^ 1 ^  -1 ^ 1 ^ -1 ^  -1 ^ 1 ^ 1 \n^  1 ^ -1 ^ -1 ^   1 ^ -1 ^ 1 ^   1 ^ 1 ^ -1 ^   1 ^ 1 ^ 1\n; edges ;\n^ 0 ^ 1 ^   2 ^ 3 ^   4 ^ 5 ^   6 ^ 7\n^ 0 ^ 4 ^   1 ^ 5 ^   2 ^ 6 ^   3 ^ 7\n^ 0 ^ 2 ^   1 ^ 3 ^   4 ^ 6 ^   5 ^ 7\n\n^ -0.5 @@mrx\n\n^ 0 -> i\n\n@L\n  ^ 0.2 @@mry\n  ^ 48 ^ 64 @@mxm4\n  roll -48 16 droq -32\n  edit 59 4\n  imod i 4\n  mul ~ 32 add ~ 16\n  rev -2\n  mul ~ 32 add ~ 14\n  ^ 48 ^ 0 ^ 24 ^ 12 @@wire\nadd i 1 => i lt i 8 ? @@L *\n%%\n\n; pinhole camera ;\n@:proj % -> z -> y -> x\n  mul x focl div ~ z\n  mul y focl div ~ z\n%%\n\n; draw wireframe ;\n@:wire % -> ne -> es -> vs -> mat -> oy -> ox\n  ^ 0 -> a\n  ^ 0 -> b\n  ^ 0 -> i\n  ^^ 0 4 -> x0 -> y0 -> x1 -> y1\n  @.L\n    mul i 2 add ~ es         peek ~ => a\n    mul i 2 add ~ es add ~ 1 peek ~ => b\n    mul a 3 add ~ vs         peek ~\n    mul a 3 add ~ vs add ~ 1 peek ~\n    mul a 3 add ~ vs add ~ 2 peek ~\n    ^ mat @@mxv\n    @@proj => y0 => x0\n\n    mul b 3 add ~ vs         peek ~\n    mul b 3 add ~ vs add ~ 1 peek ~\n    mul b 3 add ~ vs add ~ 2 peek ~\n    ^ mat @@mxv\n    @@proj => y1 => x1\n\n    add x0 ox add y0 oy\n    add x1 ox add y1 oy\n\n    @@line\n\n    show\n  add i 1 => i lt i ne ? @@.L *\n%%\n\n; bresenham's ;\n@:line %\n  rond ~ -> y1\n  rond ~ -> x1 \n  rond ~ -> y0 \n  rond ~ -> x0\n\n  sub x1 x0 abs ~         -> dx\n  lt  x0 x1 ? 1 -1        -> sx\n  sub y1 y0 abs ~ neg ~   -> dy\n  lt  y0 y1 ? 1 -1        -> sy\n  add dx dy               -> err\n  ^ 0 -> e2\n\n  @.l\n  px x0 y0\n  eq x0 x1 eq y0 y1 vand ~ ~ ? @@.el *\n  mul 2 err => e2\n  geq e2 dy ? * @@.\n    eq x0 x1 ? @@.el *\n    add err dy => err\n    add x0 sx => x0\n  @.\n  leq e2 dx ? * @@.\n    eq y0 y1 ? @@.el *\n    add err dx => err\n    add y0 sy => y0\n  @.\n\n  @@.l\n  @.el\n\n%%\n\n; matrix mult 4x4 ;\n@:mxm4 % -> B -> A\n  ^ 0 -> r \n  ^ 0 -> c\n  @.lr\n    ^ 0 => c\n    @.lc\n      mul r 4 add A ~         peek ~   ^ B    add ~ c peek ~ mul ~ ~\n      mul r 4 add A ~ add ~ 1 peek ~ add B  4 add ~ c peek ~ mul ~ ~\n      mul r 4 add A ~ add ~ 2 peek ~ add B  8 add ~ c peek ~ mul ~ ~\n      mul r 4 add A ~ add ~ 3 peek ~ add B 12 add ~ c peek ~ mul ~ ~\n      add ~ ~ add ~ ~ add ~ ~\n    add c 1 => c lt c 4 ? @@.lc *\n  add r 1 => r lt r 4 ? @@.lr *\n%%\n\n; matrix mult vector ;\n@:mxv %  -> A -> z -> y -> x\n  ^ 0 -> r\n  @.l\n    mul r 4 add A ~         peek ~ mul ~ x\n    mul r 4 add A ~ add ~ 1 peek ~ mul ~ y\n    mul r 4 add A ~ add ~ 2 peek ~ mul ~ z\n    mul r 4 add A ~ add ~ 3 peek ~\n    add ~ ~ add ~ ~ add ~ ~\n  add r 1 => r lt r 4 ? @@.l *\n  -> w\n  div ~ w roll -3 1\n  div ~ w roll -3 1\n  div ~ w roll -3 1\n%%\n\n; x-axis rotation matrix ;\n@:mrx % -> a\n ^ 1         ^ 0   ^ 0 ^ 0\n ^ 0       cos a sin a ^ 0\n ^ 0 sin a neg ~ cos a ^ 0\n ^ 0         ^ 0   ^ 0 ^ 1\n%%\n\n; y-axis rotation matrix ;\n@:mry % -> a\n cos a ^ 0 sin a neg ~ ^ 0\n   ^ 0 ^ 1         ^ 0 ^ 0\n sin a ^ 0       cos a ^ 0\n   ^ 0 ^ 0         ^ 0 ^ 1\n%%","dither.lbl":"; floyd-steinberg dithering ;\n\n^^ 0 66\n\n^ 0 -> x\n^ 0 -> y\n^ 0 -> v\n^ 0 -> u\n^ 0 -> qe\n^ 0 -> qn\n^ 0 -> y0\n^ 0 -> y1\n^ 0 -> y2\n\n@lx\n  ^ 0 => y\n  ^ 0 => qn\n  ^^ 0 66\n  @ly\n\n    ^ x ^ y @@ripo add y 1 peek ~ add ~ ~ add qn ~ => v\n\n    geq v 0.5 ? 1 0 => u\n\n    sub v u => qe\n\n    add y 66 => y0\n    add y 67 => y1\n    add y 68 => y2\n\n    mul qe 7 div ~ 16 => qn\n    mul qe 3 div ~ 16 peek y0 add ~ ~ edit y0 ~\n    mul qe 5 div ~ 16 peek y1 add ~ ~ edit y1 ~\n    mul qe 1 div ~ 16 peek y2 add ~ ~ edit y2 ~\n\n    eqz u ? @@. *\n      px x y\n    @.\n\n  add y 1 => y lt y 64 ? @@ly *\n\n  roll 0 66\n  droq -66\n\n  show\n\nadd x 1 => x lt x 128 ? @@lx *\n\n%%\n\n\n@:ripo % -> y -> x\n\n  sub x 64 div ~ 10 -> xx\n  sub y 32 div ~ 10 -> yy\n  mul xx xx mul yy yy add ~ ~ sqrt ~ \n  mul ~ 3 sin ~ mul ~ 0.35 add ~ 0.5\n\n%%\n","fact.lbl":"^ 7 -> x\n\"factorial of \" >> ntos x >> \" is \" >>\n^ x @@fact ntos ~ >>|\n\n%%\n\n\n@:fact % -> x\n  eq x 1 ? @@. *\n    sub x 1  @@fact\n    mul ~ x\n    %%\n  @.\n    ^ 1\n    %%\n\n","hello.lbl":"\"hello world!\" >>|","line.lbl":"; bresenham's line algorithm ;\n\n^ 10 -> i\n\n@l\n\nrand mul ~ 128\nrand mul ~ 64 \nrand mul ~ 128\nrand mul ~ 64 \n\n@@line\n\nsub i 1 => i\n\n^ i ? @@l *\n\n%%\n\n@:line % rev -4 \n  rond ~ -> x0 \n  rond ~ -> y0 \n  rond ~ -> x1 \n  rond ~ -> y1\n\n  sub x1 x0 abs ~         -> dx\n  lt  x0 x1 ? 1 -1        -> sx\n  sub y1 y0 abs ~ neg ~   -> dy\n  lt  y0 y1 ? 1 -1        -> sy\n  add dx dy               -> err\n  ^ 0 -> e2\n\n  @.l\n  px x0 y0\n  eq x0 x1 eq y0 y1 vand ~ ~ ? @@.el *\n  mul 2 err => e2\n  geq e2 dy ? * @@.\n    eq x0 x1 ? @@.el *\n    add err dy => err\n    add x0 sx => x0\n  @.\n  leq e2 dx ? * @@.\n    eq y0 y1 ? @@.el *\n    add err dx => err\n    add y0 sy => y0\n  @.\n\n  @@.l\n  @.el\n\n%%\n\n","mbrot.lbl":"; mandelbrot set ;\n\n^ 64 ^ 32 -> H -> W\n\n^ -2 -> L\n^  2 -> R\n^ -1 -> T\n^  1 -> B\n\n^ 0 ^ 0 ^ 0 -> i -> j -> k\n\nsub R L div ~ W -> dx\nsub B T div ~ H -> dy\n\n^ 0 ^ 0 ^ 0 ^ 0 ^ 0 ^ 0 -> xx -> yy -> a -> b -> x -> y\n\n@.l\n\n  mul i dy add ~ T => y\n  ^ 0 => j\n\n  @.ll\n    \n    mul j dx add ~ L => x\n    ^ x => xx\n    ^ y => yy\n    ^ 0 => k\n\n    @.lll\n\n      mul xx xx => a\n      mul yy yy => b\n\n      add a b gt ~ 4 ? @@. *\n\n      mul xx yy mul ~ 2 add ~ y => yy\n      sub  a  b         add ~ x => xx\n      \n    add k 1 => k gt k 10 ? * @@.lll\n\n    @.\n\n    gt k 10 ? * @@.\n      px j i\n    @.\n\n\n  add j 1 => j geq j W ? * @@.ll\n\n  show\n\nadd i 1 => i geq i H ? * @@.l\n\n","qsort.lbl":"^ 1 ^ 9 ^ 3 ^ 4 ^ 5 ^ 2 ^ 7 ^ 0 ^ 8\n\n^ 0 sub # 2 @@qsrt \n\nrev 0\n@l\n  ntos ~ >> \n  eqz # ? @@. * \", \" >> @@l\n@. >>|\n\n%%\n\n@:qsrt % -> r0 -> l0\n  ^^ 0 3 -> l -> r -> pv\n@.Q\n  ^ l0 => l\n  ^ r0 => r\n  sub r l leq ~ 1 ? * @@. %% @.\n  peek l => pv\n  @.L leq l r ? * @@.LL\n    @.L0 peek l lt ~ pv ? * @@.L1\n      add l 1 => l\n    @@.L0 \n    @.L1 peek r gt ~ pv ? * @@.L2\n      sub r 1 => r\n    @@.L1\n    @.L2 leq l r ? * @@.L\n      swap l r\n      add l 1 => l\n      sub r 1 => r\n  @@.L @.LL\n  ^ l0 ^ r @@qsrt\n  ^ l => l0 @@.Q\n%%\n\n","quine.lbl":"\"^ 34 dup 0 31 ^ 34 ^ 33 >>| >>|\"\n^ 34 dup 0 31 ^ 34 ^ 33 >>| >>|\n","ru110.lbl":"^^ 0 4 -> i -> j -> p -> q\n\n; elementary cellular automaton ;\n; ------------------------------;\n; random rule:                  ;\n; rand mul ~ 256 flor ~ -> ru \"rule #\" >> ntos ru >>| ;\n;                               ;\n; or pick rule:                 ;\n^ 150 -> ru\n; ------------------------------;\n; random seed:                  ;\nrand mul ~ 65535 flor ~ rand mul ~ 65535 flor ~\nrand mul ~ 65535 flor ~ rand mul ~ 65535 flor ~\nrand mul ~ 65535 flor ~ rand mul ~ 65535 flor ~\nrand mul ~ 65535 flor ~ rand mul ~ 65535 flor ~\n; or fixed seed:                ;\n; ^ 0 ^ 0 ^ 0 ^ 0 ^ 1 ^ 0 ^ 0 ^ 0 ;\n; ------------------------------;\n\n^ 0 => i\n\n@li\n\n  ^^ 0 8\n  ^ 1 => j\n  @lj\n\n    eqz i ? @@. *\n      ^ j @@nbr => p\n      ushr ru p uand ~ 1 => q\n    @@d @.\n      ^ j @@gcel => q\n    @d\n\n    ^ j ^ q @@scel\n\n    eqz q ? * @@.\n      unpx j i\n    @@b @.\n      px j i\n    @b\n\n  add j 1 => j lt j 127 ? @@lj *\n\n  roll 0 8\n  droq 8\n\n  show\nadd i 1 => i lt i 64 ? @@li *\n\n\n%%\n\n@:gcel % -> n\n  imod n 16 -> j -> i\n  peek i ushr ~ j uand ~ 1\n%%\n\n@:scel % -> x -> n\n  imod n 16 -> j add ~ 8 -> i\n  ushl 1 j unot ~        -> msk\n  \n  peek i uand ~ msk\n  ushl x j uor ~ ~\n\n  edit i ~\n%%\n\n@:nbr % -> n\n  sub n 1 @@gcel ushl ~ 2\n    ^ n   @@gcel ushl ~ 1\n  add n 1 @@gcel\n  uor ~ ~ uor ~ ~\n%%","sierp.lbl":"rand -> x\nrand -> y\n^ 0 -> n\n^ 0 -> k\n\n@l\n  rand => n\n  lt n 0.333 ? * @@.\n    div x 2 => x\n    div y 2 => y\n  @@z @. lt n 0.667 ? * @@.\n    add 0.5 x div ~ 2 => x\n    add   1 y div ~ 2 => y\n  @@z @.\n    add   1 x div ~ 2 => x\n              div y 2 => y\n  @z\n  mul y 64 sub 64 ~ mul x 74 add ~ 27 \n  px ~ ~\n\n  show\n\nadd k 1 => k lt k 2000 ? @@l *\n","sphere.lbl":"; 3d sphere with floyd-steinberg dithering ;\n\n^^ 0 66\n\n^ 0 -> x\n^ 0 -> y\n^ 0 -> v\n^ 0 -> u\n^ 0 -> qe\n^ 0 -> qn\n^ 0 -> y0\n^ 0 -> y1\n^ 0 -> y2\n\n@lx\n  ^ 0 => y\n  ^ 0 => qn\n  ^^ 0 66\n  @ly\n\n    ^ x ^ y @@sphr add y 1 peek ~ add ~ ~ add qn ~ => v\n\n    geq v 0.5 ? 1 0 => u\n\n    sub v u => qe\n\n    add y 66 => y0\n    add y 67 => y1\n    add y 68 => y2\n\n    mul qe 7 div ~ 16 => qn\n    mul qe 3 div ~ 16 peek y0 add ~ ~ edit y0 ~\n    mul qe 5 div ~ 16 peek y1 add ~ ~ edit y1 ~\n    mul qe 1 div ~ 16 peek y2 add ~ ~ edit y2 ~\n\n    eqz u ? @@. *\n      px x y\n    @.\n\n  add y 1 => y lt y 64 ? @@ly *\n\n  roll 0 66\n  droq -66\n\n  show\n\nadd x 1 => x lt x 64 ? @@lx *\n\n%%\n\n\n@:sphr % -> y -> x\n  ^ 30 -> R\n  sub x 32 => x\n  sub y 32 => y\n  mul x x mul y y add ~ ~ mul R R sub ~ ~ -> a\n  geq a 0 ? * @@.e\n    ^ x ^ y sqrt a @@nrmlz\n    ^ 0.45 ^ 0.45 ^ -0.76 @@dot\n    pow ~ 2 add ~ 0.1 -> b\n    gt b 1 ? 1 b\n    lt ~ 0 ? 0 b\n%%\n@.e\n^ 0\n%%\n\n\n@:nrmlz % -> z -> y -> x\n  mul x x mul y y mul z z add ~ ~ add ~ ~ sqrt ~ -> l\n  div x l\n  div y l\n  div z l\n%%\n\n@:dot % -> z1 -> y1 -> x1 -> z0 -> y0 -> x0\n  mul x0 x1 mul y0 y1 mul z0 z1 add ~ ~ add ~ ~\n%%","tree.lbl":"^ 64 ^64 ^ 16 ^ -1.57 @@tree\n\n%%\n\n@:line %\n  rond ~ -> y1 \n  rond ~ -> x1 \n  rond ~ -> y0 \n  rond ~ -> x0\n\n  sub x1 x0 abs ~         -> dx\n  lt  x0 x1 ? 1 -1        -> sx\n  sub y1 y0 abs ~ neg ~   -> dy\n  lt  y0 y1 ? 1 -1        -> sy\n  add dx dy               -> err\n  ^ 0 -> e2\n\n  @.l\n  px x0 y0\n  eq x0 x1 eq y0 y1 vand ~ ~ ? @@.el *\n  mul 2 err => e2\n  geq e2 dy ? * @@.\n    eq x0 x1 ? @@.el *\n    add err dy => err\n    add x0 sx => x0\n  @.\n  leq e2 dx ? * @@.\n    eq y0 y1 ? @@.el *\n    add err dx => err\n    add y0 sy => y0\n  @.\n\n  @@.l\n  @.el\n\n%%\n\n\n@:tree % -> a -> l -> y -> x\n\n  cos a mul ~ l add ~ x -> nx\n  sin a mul ~ l add ~ y -> ny\n\n  ^ nx ^ ny ^ x ^ y @@line\n\n  mul l 0.8 => l\n\n  lt l 5 ? @@.e *\n\n  ^ nx ^ ny ^ l  sub a 0.4\n  @@tree\n\n  ^ nx ^ ny ^ l  add a 0.4\n  @@tree\n\n  @.e\n\n%%\n","utm.lbl":"; universal turing machine ;\n\n^ 16 -> nt\n^^ 0 nt\n^ 0  -> Q\n^ 3  -> Qz\ndiv nt 2 -> I\n^ 0  -> S\n\n; transitions (busy beaver 3) ;\n\n^ 0 ^ 0 ^ 1 ^ 1 ^  1\n^ 0 ^ 1 ^ 2 ^ 1 ^ -1\n^ 1 ^ 0 ^ 0 ^ 1 ^ -1\n^ 1 ^ 1 ^ 1 ^ 1 ^  1\n^ 2 ^ 0 ^ 1 ^ 1 ^ -1\n^ 2 ^ 1 ^ 3 ^ 1 ^  0\n\n@@tmdr\n\n@l\n  @@tmstp\n  @@tmdr\neq Q Qz ? * @@l\n\n%%\n\n@:tmstp % \n  ^^ 0 5 -> qa -> rs -> qb -> ws -> mv\n  ^ nt -> off\n\n  @.l\n    add off 0 peek ~ => qa\n    add off 1 peek ~ => rs\n    add off 2 peek ~ => qb\n    add off 3 peek ~ => ws\n    add off 4 peek ~ => mv\n\n    peek I => S\n    eq Q qa eq rs S vand ~ ~ ? * @@.\n      edit I ws\n      ^ qb => Q\n      add I mv => I\n      @@.el\n    @.\n    \n    add off 5 => off\n  @@.l\n  @.el\n%%\n\n@:tmdr %\n  ^ 0 -> i\n  ntos Q >>\n  \"<\" >>\n  @.l\n    eq I i ? 91 32 ^ 1 >>\n    peek i ntos ~ >>\n    eq I i ? 93 32 ^ 1 >>\n    add i 1 => i\n  geq i nt ? * @@.l\n  \">\" >>|\n%%\n\n\n\n"};
+var CFUNS=["sub","add","mul","div","fmod","imod","pow","atn2","abs","flor","ceil","vand","vor","lt","gt","leq","geq","eq","neq","eqz","neg","rond","exp","sqrt","asin","acos","sin","cos",">>",">>|","ntos","ston","droq","peek","roll","rev","swap","rand","srnd","^^","edit","dup","uand","uor","ushl","ushr","uxor","unot"];
+function main(){
+
+  let eg0 = "line.lbl"
+  let tobar = document.createElement("div");
+  document.getElementById('td0').appendChild(tobar);
+  tobar.style=`
+  height:30px;
+  border-bottom:1px solid black;
+  display:table-cell; 
+  vertical-align: middle;
+  `
+
+  let sel_f = document.createElement("select");
+  for (let k in EXAMPLES){
+    let opt = document.createElement("option");
+    opt.innerHTML = k;
+    sel_f.appendChild(opt);
+  }
+  sel_f.onchange = function(){
+    src.value = EXAMPLES[sel_f.value];
+    highlight();
+  }
+  sel_f.style=`
+  margin-right:5px;
+  `;
+  sel_f.value = eg0;
+  tobar.appendChild(sel_f);
+
+  let btn_r = document.createElement("button");
+  btn_r.innerHTML = "run";
+  tobar.appendChild(btn_r);
+  btn_r.style=`
+  margin-right:5px;
+  `
+  btn_r.onclick = function(){
+    ctx.clearRect(0,0,cnv.width,cnv.height);
+    out.value="";
+    log.value="";
+    run(src.value);
+  }
+  
+  let src = document.createElement("textarea");
+  src.id = 'src';
+  document.getElementById('td0').appendChild(src);
+  
+  
+  src.style=`
+  width:calc(100% - 8px);
+  height:calc(100% - 40px);
+  resize:none;
+  border:none;
+  font-size:13px;
+  margin:4px;
+  padding:0px;
+  line-height:13px;
+  color:rgba(0,0,0,0.05);
+  caret-color: black;
+  outline: none;
+  `
+  src.setAttribute("spellcheck","false");
+
+
+  let out = document.createElement("textarea");
+  out.id = "output";
+  document.getElementById('td3').appendChild(out);
+  out.style=`
+  width:100%;
+  height:100%;
+  resize:none;
+  border:none;
+  white-space: pre-wrap;
+  outline: none;
+  `
+  out.setAttribute("spellcheck","false");
+
+  let log = document.createElement("textarea");
+  log.id = "log";
+  log.style=`
+  width:100%;
+  height:100%;
+  resize:none;
+  border:none;
+  font-size:11px;
+  outline: none;
+  `
+  log.setAttribute("spellcheck","false");
+
+  document.getElementById('td1').appendChild(log);
+
+  let cnv = document.createElement("canvas");
+  cnv.id = "display";
+  cnv.width = 128;
+  cnv.height = 64;
+  let ctx = cnv.getContext('2d');
+  document.getElementById('td2').appendChild(cnv);
+
+  cnv.style=`
+  border:0.5px solid black;
+  transform:scale(200%);
+  transform-origin: center center;
+  -webkit-transform:scale(2,2);
+  pointer-events:none;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  `;
+
+  LBLL().then(function(lbll){
+    window.init = lbll.cwrap('init', 'number', [])
+    window.run = lbll.cwrap('run', 'number', ['string'])
+    init();
+    btn_r.click();
+  })
+
+
+  let dst = document.createElement("pre");
+  document.body.appendChild(dst);
+  document.getElementById("td0").appendChild(dst);
+  dst.style=`
+  pointer-events:none;
+  position:absolute;
+  left:1px;
+  top:34px;
+  margin:4px;
+  padding:0px;
+  font-size:13px;
+  overflow:hidden;
+  white-space:pre-wrap;
+  width:calc(100% - 10px);
+  height:calc(100% - 42px);
+  line-height:13px;
+  `
+
+  if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)){ 
+    // stupid safari
+  }else{
+    console.log("thank you for using a good browser.")
+    src.style.whiteSpace="nowrap";
+    dst.style.whiteSpace="pre";
+    log.style.whiteSpace="nowrap";
+    out.style.whiteSpace="nowrap";
+  }
+
+
+  src.value = EXAMPLES[eg0];
+  
+
+  let colors = {
+    "color:crimson;":["@","%"],
+    "color:tomato;":["@@","%%"],
+    "color:royalblue":["^","->","=>","~","#","?","*"],
+    "color:teal":CFUNS,
+  }
+  let keywords = [];
+  for (let k in colors){
+    colors[k].map(x=>keywords.push([x,k]));
+  }
+  keywords.sort((a,b)=>(b[0].length-a[0].length));
+  keywords = Object.fromEntries(keywords);
+  console.log(keywords);
+
+  function highlight(){
+
+
+    let src = document.getElementById('src');
+    var cc = src.value;
+    // console.log(cc);
+    var nc = ""
+    for (var j = 0; j < cc.length; j++){
+      var matched = false
+      for (var k in keywords){
+        matched = true;
+        var buf = "";
+        for (var l = 0; l < k.length; l++){
+          buf += cc[j+l];
+          if (cc[j+l] != k[l]){
+            matched = false;
+            break;
+          }
+        }
+        if (matched){ 
+          nc += `<span style="${keywords[k]}">`+buf+"</span>";
+          j += k.length-1;
+          break;
+        }
+      }
+      
+      if (cc[j] == ';'){
+        let buf = cc[j++];
+        while (j < cc.length && cc[j] != ';'){
+          buf += cc[j++];
+        }
+        if (cc[j]) buf += cc[j];
+        nc += `<span style="color:gray">${buf}</span>`
+        matched = 1;
+      }
+      if (cc[j] == '"'){
+        let buf = cc[j++];
+        while (j < cc.length && (cc[j] != '"' || cc[j-1] == '\\')){
+          buf += cc[j++];
+        }
+        if (cc[j]) buf += cc[j];
+        nc += `<span style="color:darkgoldenrod">${buf}</span>`
+        matched = 1;
+      }
+      if (!matched){
+        nc += cc[j];
+      }
+    }
+    dst.innerHTML = nc+"\n"; 
+  }
+  src.onscroll = function(){
+    dst.scrollLeft = src.scrollLeft;   
+    dst.scrollTop = src.scrollTop;  
+  }
+
+  src.oninput = function(){
+    highlight();
+  }
+  highlight();
+
+  // setInterval(highlight,200);
+}
+main();
+</script>
+</html>

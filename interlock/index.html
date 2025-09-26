@@ -1,0 +1,94 @@
+
+<script src="findcontours.js"></script>
+<script src="earcut.js"></script>
+<body>
+  upload (watertight) OBJ mesh:
+  <input type="file" oninput="read_upload(this.files)"/>
+  rotate:
+  <select>
+    <option>x</option>
+    <option>y</option>
+    <option selected>z</option>
+  </select>
+  <input type="number" value="90" style="width:50px"/>
+  <select>
+    <option selected>x</option>
+    <option>y</option>
+    <option>z</option>
+  </select>
+  <input type="number" value="45" style="width:50px"/>
+  <br>
+  rasterizer resolution (px):
+  <input type="number" value="1050" style="width:50px"/>
+  
+  step size A (px):
+  <input type="number" value="50" style="width:50px"/>
+  step size B (px):
+  <input type="number" value="50" style="width:50px"/>
+  <br>
+  dilate (px):
+  <input type="number" value="8" style="width:50px"/>
+  board thickness (px):
+  <input type="number" value="15" style="width:50px"/>
+  <br>
+  scale (px → svg unit)
+  <input type="number" value="0.22" style="width:80px"/>
+  <button>
+    compute scale from thickness (mm) ...
+  </button>
+  svg unit
+  <select>
+    <option>mm</option>
+    <option>72 dpi</option>
+  </select>
+  <br>
+  <button onclick="main()">RUN</button>
+</body>
+<script src="interlock.js"></script>
+
+<script>
+  function read_file(path){
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", path,false);
+    xhr.send();
+    return xhr.responseText;
+  }
+  
+  function read_upload(files){
+    let reader = new FileReader();
+    reader.onload = function(){
+      console.log(reader.result);
+      trigs = read_obj(reader.result);
+    }
+    reader.readAsText(files[0]);
+  }
+
+  let txt = read_file("/interlock/glitch-assets/bunny_70K_nohole.obj");
+  
+
+  function main(){
+    let mesh = read_obj(txt);
+    rot_mesh(mesh,Math.PI/2,'z');
+    rot_mesh(mesh,Math.PI/4,'x');
+    mesh_normalize(mesh);
+    disturb_mesh(mesh);
+    let trigs = mesh_to_trigs(mesh);
+    
+    let T0 = rot_trigs(trigs,Math.PI/2,'x');
+    let T1 = rot_trigs(trigs,0,'x');
+
+    let L0 = slice(T0,STEPA);
+    let L1 = slice(T1,STEPB);
+
+    slot_all(L0,L1);
+
+    let V0 = vis_3d(L0);
+    let V1 = rot_trigs(vis_3d(L1),Math.PI/2,'x');
+
+    let brd = layout_all(L0,L1);
+    let bb = get_bbox(brd.flat());
+
+    document.write(draw_svg(brd,bb.w,bb.h));
+  }
+
+</script>

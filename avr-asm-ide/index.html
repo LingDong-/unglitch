@@ -1,0 +1,159 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css"/>
+<link rel="stylesheet" href="theme.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/mode/simple.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/comment/comment.min.js"></script>
+<script src="avrlass.js"></script>
+<script src="avrdass.js"></script>
+<script src="serupdi.js"></script>
+<script src="disk.js"></script>
+<style>
+.CodeMirror { 
+  height: 100%; 
+  line-height:12px;
+  font-size:13px;
+  }
+  body{
+    position:relative;
+/*     margin:0px; */
+  }
+  textarea{
+    font-family:monospace;
+    resize: none;
+  }
+</style>
+<body style="background:white;font-family:sans-serif;font-size:14px">
+<div style="margin-bottom:5px;width:100%;border-bottom:1px solid black;">
+  <b style="font-size:18px;">AVR-ASM-IDE</b>
+  <i style="font-size:12px">AVR assembler + UPDI programmer in the browser</i>
+</div>
+<div style="position:absolute;right:1px;top:-3px;">
+  <button id="btn-theme" style="font-size:9px">
+    z<sup>z<sup>z</sup></sup>
+  </button>
+</div>
+<div style="width:50%;height:30px;overflow:scroll;white-space: nowrap">
+  file:
+  <select id="sel-file">
+  </select>
+  <button id="btn-new">
+    +
+  </button>
+  <button id="btn-del">
+    x
+  </button>
+  <button id="btn-st">
+    s
+  </button>
+  <button id="btn-clrst">
+    <strike>&nbsp;s&nbsp;</strike>
+  </button>
+  <button onclick="window.open('https://ww1.microchip.com/downloads/en/DeviceDoc/AVR-Instruction-Set-Manual-DS40002198A.pdf', '_blank');">
+    ?
+  </button>
+</div>
+<div id="cl" style="position:absolute;left:0px;top:60px;width:50%;height:calc(100% - 60px)">
+</div>
+
+<div style="position:absolute;left:calc(50% + 5px);width:calc(50% - 10px);top:26px;height:calc(100% - 20px);overflow:scroll">
+<div style="position:absolute;left:0px;top:0px;width:100%;min-height:600px;height:100%">
+  
+  
+  
+  <div style="position:absolute;left:0%;top:0px;width:100%;height:40px;overflow:scroll;white-space:nowrap">
+  assembler:
+  <select id="sel-asm">
+    <option>avrlass</option>
+  </select>
+  <button id="btn-asm">
+    assemble
+    </button>
+    <br>
+    <span id="lbl-asm" style="font-size:10px"></span>
+  </div>
+  
+  <textarea id="out-asm" style="position:absolute;left:0%;top:40px;width:100%;height:100px"></textarea>
+  <div style="position:absolute;left:0%;top:145px;">
+    intel hex:
+    <button id="btn-dasm">
+      disassemble
+    </button>
+  </div>
+  <textarea id="out-hex" style="position:absolute;left:0%;top:170px;width:100%;height:calc(50% - 180px)"></textarea>
+
+  
+  <div style="position:absolute;left:0%;top:50%;width:100%;overflow:scroll;white-space:nowrap">
+    UPDI&nbsp;
+    <button id="btn-connect">
+      connect
+    </button>
+    &nbsp;
+    <input type="checkbox" id="inp-verify"/><label>verify</label>&nbsp;
+
+    <input type="checkbox" id="inp-verbose"/><label>verbose</label>&nbsp;
+
+    <button id="btn-upload">
+      upload
+    </button>
+
+    &nbsp;
+
+    progress:
+
+    <progress value="0" id="bar-prog"></progress>
+
+
+
+  </div>
+  
+  <div style="position:absolute;left:0%;bottom:8px;width:100%;overflow:scroll;white-space:nowrap">
+    serial monitor:
+
+    
+    baud=
+    <input id="inp-baud" size="8" value="9600"/>
+  
+    <button id="btn-mon">
+      connect
+    </button>
+    
+    <button id="btn-monclr">
+      clear
+    </button>
+    
+    <input type="checkbox" id="inp-monhex" hidden checked/><label hidden>hex</label>
+    <input type="checkbox" id="inp-scrl"   checked/><label>autoscroll</label>
+    
+    <input type="checkbox" id="inp-capkey"/><label>capture key</label>
+    
+
+    <span id="lbl-capkey" style="border:1px solid black"></span>
+
+    <br>
+    
+    <input id="inp-sndb" size="6" value="0x00"/>
+    
+    <button id="btn-sndb">
+      send byte(s)
+    </button>
+    
+    <input id="inp-snds" value="" style="width:calc(100% - 310px);min-width:30px;"/>
+    
+    <input type="checkbox" id="inp-sndcr"/><label>\r</label>
+
+    <input type="checkbox" id="inp-sndnl" checked/><label>\n</label>
+    
+    <button id="btn-snds">
+      send utf-8
+    </button>
+    
+  </div>
+  
+  <div id="out-upd" style="position:absolute;left:0%;top:calc(50% + 30px);width:calc(100% - 3px);height:calc(50% - 88px);border:1px solid dimgray;background:white;font-family:monospace;overflow:scroll"></div>
+
+</div>
+</div>
+  
+</body>
+<script src="index.js"></script>

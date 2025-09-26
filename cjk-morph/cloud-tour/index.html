@@ -1,0 +1,276 @@
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+<canvas id="main"></canvas>
+<input type="range" min="0" max="100" value="60" id="speed">
+<input type="range" min="0" max="100" value="50" id="zoom">
+<script src="../Okb.js"></script>
+<script src="../min-morph.js"></script>
+<script>
+function loadJSON(e,n){var t=new XMLHttpRequest;t.overrideMimeType("application/json"),t.open("GET",e,!0),t.onreadystatechange=function(){4==t.readyState&&"200"==t.status&&n(JSON.parse(t.responseText))},t.send(null)}
+
+var W = window.innerWidth;
+var H = window.innerHeight;
+var Hh = window.innerHeight*0.6;
+var Hm = 30
+var Ht = 40
+var Hb = (window.innerHeight-Ht-Hm*4)/2;
+var Wt = 65;
+
+var box = {left:(W-Hb)/2,right:(W-Hb)/2+Hb,top:Hb+Hm*2,bottom:H-Ht-Hm*2}
+  
+document.body.style.margin="0px";
+
+var canvas = document.getElementById("main");
+canvas.width = W;
+canvas.height = H;
+
+var speed = document.getElementById("speed");
+var zoom = document.getElementById("zoom");
+speed.style.position = zoom.style.position = "absolute";
+speed.style.left = zoom.style.left = W/2-Hb/2+Wt+"px";
+speed.style.width = zoom.style.width = Hb-Wt+"px"
+speed.style.top = H-Ht-Hm*1
+zoom.style.top = H-Ht-Hm*1+Ht/2
+
+
+var C = canvas.getContext("2d")
+
+function drawsegments(g){
+  for (var i = 0; i < g.length; i++){
+    C.beginPath();
+    C.moveTo(g[i][0],g[i][1]);
+    C.lineTo(g[i][2],g[i][3]);
+    C.stroke();
+  }
+}
+
+loadJSON("/cjk-morph/glitch-assets/ct-data-2500.json",function(data){
+  console.log(data.keys.length);
+  var bd = Okb.geometry.bound(data.ptcloud);
+  var roi0 = {left:bd[0][0],top:bd[0][1],right:bd[1][0],bottom:bd[1][1]};
+  var T = Math.floor(Math.random()*data.keys.length);
+  var n = 5;
+  var morpher;
+  var i0;
+  var i1;
+  var _s = (roi0.right-roi0.left)/W;
+  var roi = {left:roi0.left,bottom:roi0.bottom,right:roi0.left+W*_s,top:roi0.bottom-Hh*_s}
+  var roipad = 0;
+  var roispd = 0.1;
+  var pts = [];
+
+  function calcroi(c){
+
+    var r = {left:c.x,top:c.y,right:c.x,bottom:c.y};
+
+    // var ar = (r.right-r.left)/(r.bottom-r.top);
+    roipad = Okb.math.map(zoom.value,0,100,0.5,30);
+    r.left -= roipad;
+    r.right += roipad;
+    r.top -= roipad;
+    r.bottom += roipad;
+    var w = r.right-r.left;
+    var h = r.bottom-r.top
+
+    var nw = h * W/Hh
+    r.left -= (nw-w)/2
+    r.right += (nw-w)/2
+
+    // console.log((r.bottom-r.top)/(r.right-r.left)-Hh/W)
+
+    roi.left = Okb.math.lerp(roi.left,r.left,roispd);
+    roi.top = Okb.math.lerp(roi.top,r.top,roispd);
+    roi.right = Okb.math.lerp(roi.right,r.right,roispd);
+    roi.bottom = Okb.math.lerp(roi.bottom,r.bottom,roispd);
+
+  }
+
+  function drawcloud(){
+    C.save();
+    var xscl = W/(roi.right-roi.left);
+    var yscl = Hh/(roi.bottom-roi.top);
+    // console.log((roi.bottom-roi.top)/(roi.right-roi.left)-Hh/W)
+    pts = [];
+    
+    for (var i = 0; i < data.tour.length; i++){
+      var _x = data.ptcloud[data.tour[i]][0]
+      var _y = data.ptcloud[data.tour[i]][1]
+
+      var x = [_x-roi.left]*xscl
+      var y = [_y-roi.top]*yscl+(H-Hh)
+
+      pts.push([x,y])
+    }
+    C.lineWidth = 2;
+    C.strokeStyle="rgba(0,0,0,0.6)"
+    C.beginPath();
+    for (var i = 0; i < pts.length; i++){
+      var [x,y] = pts[i]
+      if (i == 0){
+        C.moveTo(x,y);
+      }else{
+        C.lineTo(x,y);
+      }
+    }
+    C.closePath();
+    C.stroke();
+
+    C.strokeStyle="black";
+    C.beginPath();
+    var p0 = pts[data.tour.indexOf(i0)]
+    var p1 = pts[data.tour.indexOf(i1)]
+    C.moveTo(p0.x,p0.y);
+    C.lineTo(p1.x,p1.y);
+    C.stroke();
+
+    var fs = Okb.math.map(zoom.value,0,100,35,10)*Okb.math.map(H,400,900,0.5,1);
+
+    C.font=`${fs}px sans-serif`;
+
+    var ptx = [];
+
+    for (var i = 0; i < data.keys.length; i++){
+      var [x,y] = pts[i]
+      var p = 30;
+      if (x >= -p && x <= W+p && y >= -p && y <= H+p){
+        var ii = data.tour[i]
+
+        C.beginPath();C.arc(x, y, 3 , 0, 2 * Math.PI);C.fill();
+        C.fillStyle= (ii==i0||ii==i1)?"black":"rgba(0,0,0,0.6)"
+
+        var tx = x;
+        var ty = y;
+        // for (var j = 0; j < ptx.length; j++){
+        //   var iter = 0;
+        //   while (Okb.vector.distance(ptx[j],[tx,ty])<fs*0.8){
+        //     if (tx > ptx[j].x){
+        //       tx += fs/5
+        //     }else{
+        //       tx -= fs/5
+        //     }
+        //     iter ++;
+        //     if (iter > 10){
+        //       break;
+        //     }
+        //   }
+        // }
+
+        C.fillText(data.keys[ii],tx,ty);
+        ptx.push([tx,ty]);
+      }
+    }
+    C.restore();
+  }
+
+  function drawbubble(g,c){
+    var p0 = Hm;
+    var p1 = Hb*0.15;
+
+    var w = Hb-p1*2;
+
+    var ch = 10;
+
+    function bb(x, y, w, h, r) {
+      if (w < 2 * r){ r = Math.max(0,w / 2)};
+      if (h < 2 * r){ r = Math.max(0,h / 2)};
+      C.beginPath();
+      C.moveTo(x+r, y);
+      C.arcTo(x+w, y,   x+w, y+h, r);
+      C.arcTo(x+w, y+h, x,   y+h, r);
+      C.lineTo(Math.max(Math.min(c.x+10,x+w-r),x+r+20),y+h);
+      C.lineTo(Math.min(Math.max(c.x,box.left),box.right),Math.min(Math.max(c.y,box.top),box.bottom));
+      C.lineTo(Math.max(Math.min(c.x-10,x+w-r-20),x+r),y+h);
+      C.arcTo(x,   y+h, x,   y,   r);
+      C.arcTo(x,   y,   x+w, y,   r);
+      C.closePath();
+    }
+    C.save();
+    C.fillStyle="white"
+    C.lineWidth=3;
+    bb((W-w)/2-p1,p0,w+p1*2,w+p1*2,20);
+    C.fill();C.stroke();
+    C.restore();
+
+    C.save();
+
+    C.translate((W-w)/2,p0+p1);
+    C.scale(w/100,w/100);
+    C.lineWidth=3;
+    C.lineCap="round";
+    drawsegments(g);
+    C.restore();
+  }
+
+  function mainloop(){
+    window.requestAnimationFrame(mainloop);
+
+    C.clearRect(0,0,canvas.width,canvas.height);
+
+    if (T < 0){
+      T = n *data.tour.length;
+    }
+    var tr0 = (Math.floor(T/n))%data.tour.length
+    var tr1 = (Math.floor(T/n)+1)%data.tour.length
+
+    var _i0 = data.tour[tr0];
+    var _i1 = data.tour[tr1];
+
+    if (_i0 != i0 || _i1 != i1){
+      [i0,i1] = [_i0,_i1]
+      morpher = morph(data.segments[i0],data.segments[i1]);
+    }
+
+    var t_ = (T % n)/n;
+    var t = Okb.curves.sigmoid(t_);
+
+    var c_ = Okb.vector.lerp(data.ptcloud[i0], data.ptcloud[i1],t_);
+
+    calcroi(c_);
+
+
+
+    drawcloud();
+
+
+    var c = Okb.vector.lerp(pts[tr0], pts[tr1],t);
+    
+
+    
+    // C.beginPath();C.arc(c.x, c.y, 5 , 0, 2 * Math.PI);C.fill();
+
+    C.save();
+
+    C.beginPath();
+    C.moveTo(-10, -10);C.lineTo(W+10, -10);C.lineTo(W+10, H+10);
+    C.lineTo(-10, H+10);C.lineTo(-10, -10);
+    C.closePath();
+
+    var r = box;
+
+    C.moveTo(r.left, r.top);C.lineTo(r.left,r.bottom);
+    C.lineTo(r.right, r.bottom);C.lineTo(r.right, r.top);
+    C.lineTo(r.left, r.top);C.closePath();
+
+    C.fillStyle = "rgba(255,255,255,0.8)";
+    C.strokeStyle = "black";
+    C.lineWidth = 3;
+    C.fill();
+    C.stroke();
+
+    C.restore();
+
+    C.save();
+    C.font = "16px sans-serif";
+    C.fillText("SPEED",W/2-Hb/2,H-Ht-Hm+14);
+    C.fillText("ZOOM",W/2-Hb/2,H-Ht-Hm+Ht/2+14);
+    C.restore();
+
+    drawbubble(morpher(t),c);
+
+    T+=3*speed.value/100-1.5;
+  }
+
+  mainloop();
+    
+
+})
+</script>

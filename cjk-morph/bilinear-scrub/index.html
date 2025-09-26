@@ -1,0 +1,179 @@
+<div style="font-family:sans-serif;">Loading data (~25MB) ...</div>
+<script src="../Okb.js"></script>
+<script src="../min-morph.js"></script>
+<script>
+
+function loadJSON(e,n){var t=new XMLHttpRequest;t.overrideMimeType("application/json"),t.open("GET",e,!0),t.onreadystatechange=function(){4==t.readyState&&"200"==t.status&&n(JSON.parse(t.responseText))},t.send(null)}
+
+function recover(keys,offs){
+  for (var i = 0; i < offs.length; i++){
+    offs[i][i] = [0,0];
+    for (var j = (i+1); j < offs.length; j++){
+      offs[i][j] = [-offs[j][i][0],-offs[j][i][1]]
+    }
+  }
+}
+
+function div2line(div,x1,y1,x2,y2){
+  div.style.left = x1;
+  div.style.top = y1;
+  div.style.width = Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2))+"px";
+  var ang = Math.atan2(y2-y1,x2-x1)*180/Math.PI
+  div.style.transform = "rotate("+ang+"deg)"
+}
+
+function findbycoord(l,x){
+  var ep = 0.001
+  for (var i = 0; i < l.length; i++){
+    if (Math.abs(l[i][0]-x[0])<ep && Math.abs(l[i][1]-x[1])<ep){
+      return i;
+      break;
+    }
+  }
+  return -1;
+}
+
+loadJSON("/cjk-morph/glitch-assets/bs-data.json",function(data){
+  document.body.innerHTML = "";
+  
+  recover(data.keys,data.offset)
+  var size = Okb.geometry.bound(data.embedding)[1]
+  var xgrid = 30
+  var ygrid = 30
+  var vsize = 200
+  var vx = 20;
+  var vy = 20;
+
+  var main = document.createElement("div");
+  main.style.cursor = "crosshair"
+  main.style.width = xgrid*size[0]+"px"
+  main.style.height = ygrid*size[1]+"px"
+  main.style.position = "absolute";
+
+  var view = document.createElement("div");
+  view.style.left = (vx)+"px"
+  view.style.top = vy+"px"
+  view.style.position = "fixed";
+  view.style.border = "1px solid black"
+  view.style.width = view.style.height = vsize+"px";
+  view.style.background = "rgba(255,255,255,0.6)";
+  view.style.pointerEvents = 'none'
+  view.style.padding="10px"
+
+  document.body.appendChild(main);
+  document.body.appendChild(view);
+
+  var nedges = []
+  var nodes = []
+
+  var morpher0 = undefined;
+  var morpher1 = undefined;
+  var MN = [-1,-1,-1,-1];
+
+  for (var i = 0; i < 4; i++){
+    var div = document.createElement("div")
+    div.style.position = "absolute";
+    div.style.height = "1px";
+    div.style.borderTop = "1px solid rgba(0,0,0,0.2)";
+    div.style.transformOrigin="0% 0%";
+    main.appendChild(div);
+    nedges.push(div);
+  }
+
+  for (var i = 0; i < data.keys.length; i++){
+    var div = document.createElement("div");
+    div.style.position = "absolute";
+    div.innerHTML = data.keys[i];
+    // console.log(data.embedding[i])
+    div.style.left = (data.embedding[i][0]*xgrid-xgrid/2)+"px"
+    div.style.top = (data.embedding[i][1]*ygrid-ygrid/2)+"px"
+    div.style.pointerEvents = "none"
+    // div.style.borderToper = "1px solid black"
+    div.style.width = xgrid+"px";
+    div.style.height = ygrid+"px";
+    div.style.overflow = "hidden"
+    div.style.textAlign = "center";
+    div.style.fontSize = ygrid*0.8+"px";
+    div.style.lineHeight = ygrid+"px";
+    div.style.fontFamily = "sans-serif"
+    nodes.push(div);
+    main.appendChild(div);
+  }
+  
+  var mouseX;
+  var mouseY;
+
+
+  document.body.onscroll = main.onmousemove = function(event){
+    var rect = main.getBoundingClientRect();
+    if (event.clientX){
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+    }
+    var x = mouseX - rect.left;
+    var y = mouseY - rect.top;
+
+    var xf = x/xgrid;
+    var yf = y/ygrid;
+    var tx = xf-Math.floor(xf)
+    var ty = yf-Math.floor(yf)
+
+    var tx = Math.min(Math.max(tx*2-0.5,0),1);
+    var ty = Math.min(Math.max(ty*2-0.5,0),1);
+
+    var mn = [
+      findbycoord(data.embedding,[Math.floor(xf),Math.floor(yf)]),
+      findbycoord(data.embedding,[Math.ceil(xf),Math.floor(yf)]),
+      findbycoord(data.embedding,[Math.floor(xf),Math.ceil(yf)]),
+      findbycoord(data.embedding,[Math.ceil(xf),Math.ceil(yf)]),
+    ]
+    // console.log(mn)
+    if (mn.filter((a)=>(a==-1)).length){
+      return
+    }
+    for (var i = 0; i < mn.length; i++){
+      var x0 = data.embedding[mn[i]][0]*xgrid
+      var y0 = data.embedding[mn[i]][1]*ygrid
+      div2line(nedges[i],x0,y0,x,y)
+    }
+  
+    if (MN[0] == mn[0] && MN[1] == mn[1] && MN[2] == mn[2] && MN[3] == mn[3]){
+
+    }else if (MN[0] == mn[2] && MN[1] == mn[3] && MN[2] == mn[0] && MN[3] == mn[1]){
+      [morpher0,morpher1] = [morpher1,morpher0]
+    }else{
+      var g0 = data.segments[mn[0]]
+      var g1 = data.segments[mn[1]]
+      var g2 = data.segments[mn[2]]
+      var g3 = data.segments[mn[3]]
+      var o0 = data.offset[mn[0]][mn[1]];
+      var o1 = data.offset[mn[2]][mn[3]];
+      var g1_ = g1.map((a)=>([a[0]+o0[0],a[1]+o0[1],a[2]+o0[0],a[3]+o0[1]]))
+      var g3_ = g3.map((a)=>([a[0]+o1[0],a[1]+o1[1],a[2]+o1[0],a[3]+o1[1]]))
+
+      var m0 = match(g0,g1_);
+      morpher0 = morph(g0,g1,m0)
+
+      var m1 = match(g2,g3_);
+      morpher1 = morph(g2,g3,m1)
+
+    }
+    MN = [mn[0],mn[1],mn[2],mn[3]]
+    var G0 = morpher0(tx);
+    var G1 = morpher1(tx);
+    var morpher = morph(G0,G1);
+    var G = morpher(ty);
+
+    view.innerHTML = drawsvg(G);
+
+    for (var i = 0; i < data.keys.length; i++){
+      nodes[i].style.opacity = Math.floor(Math.min(Math.max(Okb.math.map(Okb.vector.distance(data.embedding[i],[xf,yf]),0,3,1,0),0.3),1)*100)/100;
+    }
+
+  }
+
+
+})
+
+
+</script>

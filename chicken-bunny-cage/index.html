@@ -1,0 +1,52 @@
+<body style="margin:40px;font-family:sans-serif">
+  <h2>
+    chicken-bunny-cage
+  </h2>
+  <div>
+    A linear system problem/solution generator.
+  </div>
+  <br>
+  
+  <div>
+    
+    
+  <details style="margin-left:40px">
+    <summary>Details</summary>
+    <p>
+      <a href="https://zh.m.wikipedia.org/zh/%E9%B8%A1%E5%85%94%E5%90%8C%E7%AC%BC">"Chickens and rabbits in the same cage"</a> is a classical math problem proposed by 5th century Chinese mathematicians. 
+      The original question goes like this:
+      <blockquote>
+        今有雉兔同籠上有三十五頭下九十四足問雉兔各幾何
+      </blockquote>
+    
+      (There are pheasants and rabbits in the same cage, with 35 heads above, and 94 feet below. How many pheasants and rabbits are there respectively?)
+    </p><p>
+      At the time of this writing (Dec 2022), it seems that <a href="https://chat.openai.com/chat">ChatGPT</a> has trouble solving this type of problems.
+      It often sets up the correct equations, but wanders into mistakes as it tries to solve the system.
+      It also needs to be constantly reminded of the number of body parts each animal has.
+      But it seems that with much patience, one can step-by-step, "hand-hold" it into finally giving the correct answer, for simple cases, that is.
+    </p><p>
+      This page generates more complex variations of the "chicken-bunny-cage" problem, involving more body parts and more animals, 
+      to challenge ChatGPT and see if it really "understands" the math, or is it merely mumbling math-sounding utterances?
+    </p><p>
+      The generated "reference" step-by-step solution uses <a href="https://en.wikipedia.org/wiki/Gaussian_elimination">Gauss-Jordan elimination</a> underneath,
+      and might be a bit too "robotic" for human taste.
+    </p>
+  </details>
+  
+  
+  
+<!--   <details style="margin-left:40px">
+    <summary>Reminders</summary>
+    <p id="reminders">
+      
+    </p>
+  </details> -->
+    
+  </div>
+  
+  <br>
+</body>
+<!-- <script src="https://cdn.jsdelivr.net/npm/loshu/loshu.min.js"></script> -->
+<script src="loshu.js"></script>
+<script src="index.js"></script>

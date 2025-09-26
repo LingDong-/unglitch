@@ -1,0 +1,85 @@
+<body style="background:whitesmoke;">
+  <canvas id="canv"></canvas>
+  <h2>solid-centroid</h2>
+  <p>
+    Polygon centroids are often not inside the polygon. 
+    Which is not very convenient, e.g. when you want to find a place to slap some text labels on the polygon,
+    or otherwise draw something at where subjectively feels like the "center".
+  </p><p>
+    This interactive demo presents a couple solutions that're simple, fast, and sensible.
+  </p>
+  <h3>
+    Draw with your mouse on the canvas above to test the algorithms with a custom polygon.
+  </h3>
+  
+    <p>
+      <b><span style="color:dimgray">⬤ gray dot</span> is the canonical <a href="https://en.wikipedia.org/wiki/Centroid#Of_a_polygon">centroid</a>.</b> 
+    
+    </p>
+
+    <p>When the centroid is outside the polygon:
+    </p>
+    <p>
+    
+    <b><span style="color:red">⬤ red dot</span> is obtained by casting a ray from the centroid to the closest edge, 
+      and finding the midpoint of the first two intersections between the ray and the polygon.</b>
+    Though it's straightforward, and that the new centroid is quite near the true centroid, 
+    sometimes it (arguably) doesn't pick the best spot: 
+    it might end up at a "tip" of the polygon that happens to be close to the centroid, which doesn't
+    feel a lot like the "center" (<a href="#" onclick="showBadRed()">click here for an example</a>).
+    </p>
+  
+    <p>
+    <b><span style="color:green">⬤ green dot</span> is obtained by casting a ray from 
+    the centroid that cuts the polygon into two parts equal in area, and taking the midpoint of the
+    first two intersections.
+    </b>
+    (For simplicity and efficiency the area "cut" also considers the first two intersections only).
+    </p>
+  
+    <p>
+    Sometimes you don't care too much about finding some sort of "center": 
+    you just want some big empty space to put text/graphics.
+    Therefore, a third heuristic is introduced:
+    </p>
+  
+    <p>
+    <b><span style="color:darkorange">⬤ orange dot</span> is obtained by 
+      looking at all the midpoints of pairs of intersections between the polygon and rays casted from the centroid,
+      and finding the one who is the center of the largest "inscribable" circle among them.
+      
+    </b>
+    It's not necessary to use rays from the centroid to search for the inscribable circle; 
+    Indeed, you might find better candidates without this restriction (perhaps with a monte carlo algorithm).
+    But the rays/midpoints of intersections give a quick heurstic of where reasonably good ones might be found.
+    </p>
+    
+    <p>
+    Finally, even when the centroid is inside the polygon, it might not be at an ideal position,
+    i.e. being too close to an edge, therefore:
+    </p>
+  
+    <p>
+    <b><span style="color:blue">⬤ blue dot</span> is obtained by casting one ray from the centroid to the closest edge,
+      and another ray in the opposite direction, and finding the midpoint of the two intersections from each ray.
+    </b>
+      (The blue dot only appears when the centroid is already inside polygon; Likewise, the other three colored dots only appear when it's not.)
+    </p>
+  
+    <h3>
+      Decidophobia?
+    </h3>
+    <p>
+      Then maybe take the average of all three (i.e. average the direction of the rays, and make a new intersection-midpoint)?
+      Or maybe take the median of the three? Or maybe the average of the average and the median of the three?
+      Or weighted average of the weighted average and the meidan?
+    </p>
+  
+    <p>
+      <b><a href="https://glitch.com/edit/#!/solid-centroid?path=index.js">Full source code is available here</a></b>
+    </p>
+    
+    Lingdong Huang 2020, supported by the STUDIO for Creative Inquiry.
+    
+</body>
+<script src="index.js"></script>

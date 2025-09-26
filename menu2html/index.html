@@ -1,0 +1,187 @@
+<body style="background:darkgray;margin:50px">
+  <div id="menu-cont" style="position:fixed;left:0px;top:0px;width:100%;height:20px;background:black;z-index:10000;">
+      
+  </div>
+  <div style="font-family:monospace">
+    
+
+    <p>
+      <b>menu2html</b> is a quick-and-dirty 3KB JS library for generating desktop-like menubar.
+    </p>
+    <p>
+      ^ try playing with the menu above to see it work.
+    </p>
+    <p>
+      it contains a single function that takes in a JS object and outputs a string containing the HTML.
+    </p>
+    <p>
+      it can be used to generate on-the-fly on the browser side, or as a part of program that writes html to file.
+    </p>
+    <p>
+      you can find the <b><a href="/menu2html.js">full source code here</a></b>.
+    </p>
+    <p>
+      example:
+    </p>
+    <pre>
+      let menu = {'Group':{'Item 1':function(){}, 'Item 2':function(){}}};
+      let html = menu2html(menu);
+      document.getElementById('parent-div').innerHTML = html;
+    </pre>
+    <p>
+      the menu above is generated from the following object. try edit and <a href="javascript:compile()">click here to compile</a>
+    </p>
+    <textarea id="ta" rows="24" cols="80">
+    
+    </textarea>
+    <p>
+      please refrain from pasting arbitrary code above. whatever you enter will be eval()'ed.
+    </p>
+    <p>
+      try `filter:invert(100%)` for "light mode" and other filters for brightness/tint etc. <a href="javascript:lightMode()">click here to try</a>
+    </p>
+    <p>
+      To make radios and checkboxes, prefix the label with `( )` (radio off) or `(*)` (radio on) or `[ ]` (checkbox off) or `[x]` (checkbox on). 
+      Groups of radio items are delimited by separators. Only one in a group of radios can be selected. Checkboxes work independantly of each other.
+      Try them out in the `Options` menu above.
+    </p>
+    <p>
+      Note that when generating a menu on the client side,
+      the callbacks passed to menu2html() cannot refer to local contexts (meaning global functions and variables only).
+      This is because the output is a string, and cannot include closure. 
+      However, you can find the element by ID and manually attach callbacks if closure is necessary.
+      For example:
+    </p>
+<pre>
+  let myGlobalVar = 1;
+  function foo(){
+    let myLocalVar = 2;
+    document.body.innerHTML = menu2html({'Group':{
+      'Item 1': function(){alert(myGlobalVar)},     // this is OK
+      'Item 2': function(){alert(myLocalVar)},      // won't work
+      'Item 3': function(){}                        // add the callback manually below
+    }});
+    
+    document.getElementById('Group/Item 3').addEventListener('click',function(){
+      alert(myLocalVar);  // this will work
+    });
+  }
+</pre>
+    <p>
+      Notice that the element ID of each menu item is its path joined with '/'. e.g. "My Menu/My Submenu/Subsubmenu/Item Name"
+    </p>
+    
+    <p>
+      menu2html otherwise allows very little customization, as it is intended for dropping into web experiments as quick-and-dirty bare-minimum ui. 
+      please use a proper gui framework if fancier result is desired.
+    </p>
+    <p>
+      Lingdong Huang 2021. MIT License
+    </p>
+  </div>
+
+</body>
+<script src="menu2html.js"></script>
+<script id="menu-src">window.menu = {
+  '❤':{
+    'About':()=>{},
+    '---1':null,
+    'Sleep':()=>{},
+    'Restart':()=>{},
+    'Shutdown':()=>{},
+    '---2':null,
+    'Log out':()=>{},
+  },
+  'File':{
+    'New':()=>{},
+    'Open...':()=>{},
+    'Open Recent':{
+      'foo.txt':()=>{},
+      'bar.txt':()=>{},
+      '---':null,
+      'Clear Menu':()=>{},
+    },
+    '---':null,
+    'Close':()=>{},
+    'Save':()=>{},
+  },
+  'Edit':{
+    'Undo':()=>{},
+    'Redo':()=>{},
+    '---':null,
+    'Cut':()=>{},
+    'Copy':()=>{},
+    'Paste':()=>{},
+    'Paste and Match Style':()=>{},
+    'Insert':{
+      'Line Break':()=>{},
+      'Paragraph Break':()=>{},
+      'Page Break':()=>{},
+    }
+  },
+  'View':{
+    'Zoom In':()=>{},
+    'Zoom Out':()=>{},
+    'Actual Size':()=>{},
+  },
+  'Window':{
+    'Minimize':()=>{},
+    'Zoom':()=>{},
+  },
+  'Test':{
+    'Item 1':()=>{},
+    'Submenu':{
+      'Item 2':()=>{},
+      'Subsubmenu':{
+        'Subsubsubmenu':{
+          'Item 3':()=>{},
+          'Item 4':()=>{},
+          'Subsubsubsubmenu':{
+            'Item 5':()=>{},
+            'Item 6':()=>{},
+          }
+        },
+        'Item 7':()=>{},
+        'Item 8':()=>{},
+      },
+      'Subsubmenu 2':{
+        'Item 9':()=>{},
+        'Item 10':()=>{},
+      }
+    },
+    'Item 11':()=>{},
+    '---':null,
+    'Item 12':()=>{},
+  },
+  'Options':{
+    '( ) Option 1':()=>{},
+    '(*) Option 2':()=>{},
+    '( ) Option 3':()=>{},
+    '( ) Option 4':()=>{},
+    '---':null,
+    '[ ] Checkbox 1':()=>{},
+    '[x] Checkbox 2':()=>{},
+    '[x] Checkbox 3':()=>{},
+    
+  },
+  'Help':{
+    'Report an Issue...':()=>{},
+    'Help':()=>{},
+  }
+};
+</script>
+<script>
+
+  document.getElementById('ta').value=document.getElementById('menu-src').innerHTML;
+  
+  function compile(){
+    eval(document.getElementById('ta').value);
+    let html = menu2html(window.menu);
+    document.getElementById('menu-cont').innerHTML = html;
+  }
+  compile();
+  
+  function lightMode(){
+    document.getElementById('menu-cont').style.filter='invert(100%) contrast(70%)';
+  }
+</script>

@@ -1,0 +1,73 @@
+<style>body{margin:0px;}</style>
+<script src="https://twgljs.org/dist/4.x/twgl.min.js"></script>
+<script src="voronoi_wasm.js"></script>
+<script src="voronoi_glrdr.js"></script>
+<script id="perlin-noise">     
+var perlin=new function(){var r,n=function(r){return.5*(1-Math.cos(r*Math.PI))};this.noise=function(o,a,t)
+{if(a=a||0,t=t||0,null==r){r=new Array(4096);for(var f=0;f<4096;f++)r[f]=Math.random()}o<0&&(o=-o),a<0&&(a=-a),
+t<0&&(t=-t);for(var h,i,e,l,u,M=Math.floor(o),v=Math.floor(a),c=Math.floor(t),s=o-M,w=a-v,P=t-c,d=0,m=.5,y=0;y<4;y++)
+{var A=M+(v<<4)+(c<<8);h=n(s),i=n(w),e=r[4095&A],e+=h*(r[A+1&4095]-e),l=r[A+16&4095],e+=i*((l+=h*(r[A+16+1&4095]-l))-e),
+l=r[4095&(A+=256)],l+=h*(r[A+1&4095]-l),u=r[A+16&4095],l+=i*((u+=h*(r[A+16+1&4095]-u))-l),d+=(e+=n(P)*(l-e))*m,m*=.5,
+M<<=1,v<<=1,c<<=1,(s*=2)>=1&&(M++,s--),(w*=2)>=1&&(v++,w--),(P*=2)>=1&&(c++,P--)}return d}};
+</script>
+<body></body>
+<script>
+	var N = 500;
+	var W = window.innerWidth;
+	var H = window.innerHeight;
+
+	var vor;
+
+	var sites = [];
+	function newSite(x,y){
+		sites.push({
+			x:x,
+			y:y,
+			color:[x/W,y/H,0.6],
+		});
+	}
+	for (var i = 0; i < N; i++){
+		newSite(W*Math.random(),H*Math.random());
+	}
+
+	VORONOI_WASM.onRuntimeInitialized = function(){
+
+		vor = new VORONOI_WASM.Voronoi();
+		vor.setLimits(0,W,0,H,0.01);
+
+		var rdr = new VoronoiGlRenderer(vor,W,H);
+		document.body.appendChild(rdr.getDom());
+		
+		rdr.getDom().onclick = function(e){
+			newSite(e.clientX,e.clientY);
+		}
+
+		var t= 0;
+		window.animate = function(){
+			requestAnimationFrame(animate);
+
+			vor.clear();
+			for (var i = 0; i < sites.length; i++){
+				sites[i].x += 10*(perlin.noise(i,t*0.01,1)-0.5);
+				sites[i].y += 10*(perlin.noise(i,t*0.01,2)-0.5);
+			    if (sites[i].x < 0){sites[i].x = W;}
+			    if (sites[i].x > W){sites[i].x = 0;}
+			    if (sites[i].y < 0){sites[i].y = H;}
+			    if (sites[i].y > H){sites[i].y= 0;}
+				vor.addSite(sites[i].x,sites[i].y);
+			}
+			vor.compute();
+			// vor.computeEdges();
+			vor.computeCells();
+
+			rdr.render(sites.length,sites.map(x=>x.color));
+			t++;
+		}
+		animate();
+	}
+	// gl.canvas.style.filter="blur(10px)"
+
+		;;;(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
+
+</script>

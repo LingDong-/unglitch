@@ -1,0 +1,44 @@
+<h1>svg2polylines</h1>
+
+<div style="float:left;width:50%">
+  Turn svg to plain old polylines for copy pasting into your drawing code
+  <h2>paste svg below</h2>
+  <p>it can be a full svg, or url to svg, or datauri, or svg path, or svg path 'd' attribute</p>
+  <input type="text" style="width:100%" id="inppth" value="/svg2polylines/glitch-assets/logo-day.svg"/>
+  
+<!--   <details><summary><h2 style="display:inline-block">expand settings</h2></summary> -->
+    <h2># samples</h2>
+    <p>number of sample points (per polyline)</p>
+    <input type="text" style="width:100%" id="inpnum" value="128"/>
+    <h2>sample phase</h2>
+    <p>(0.0~1.0) rotate the samples. you'll get 1 additional point for non-0 non-1 values</p>
+    <input type="text" style="width:100%" id="inpphs" value="0.0"/>
+    <h2>bounding box</h2>
+    <p>proportionally resize graphics to fit in this box: xmin,ymin,xmax,ymax</p>
+    <input type="text" style="width:100%" id="inpbox" value="-200,-200,200,200"/>
+    <h2>translation</h2>
+    <p>additional translation for fine tuning position: x,y</p>
+    <input type="text" style="width:100%" id="inpmov" value="0,0"/>
+    <h2>curvature-aware downsample epsilon</h2>
+    <p>maximum distance any point can deviate from its true position. leave empty or '0' for no downsample. make sure #samples is high before using this box</p>
+    <input type="text" style="width:100%" id="inpsmp" value="0"/>
+    <p><b>new sample count(s):&nbsp;</b><span id="nsc"></span></p>
+    <h2>round decimal points</h2>
+    <p>leave empty for no rounding</p>
+    <input type="text" style="width:100%" id="inprnd" value="2"/>
+  
+<!--   </details> -->
+  <h2>polyline data 
+    <select id="fmt">
+      <option value="sq">[&nbsp;]</option>
+      <option value="curl">{&nbsp;}</option>
+    </select>
+    <a href="#">[copy to clipboard]</a>
+  </h2>
+  <p id="out"></p>
+</div>
+<div style="float:right;width:50%">
+  <canvas id="canv" width="800" height="800" style="border:1px solid black"></canvas>
+</div>
+
+<script src="script.js"></script>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body{
+        background:black;
+        color:white;
+        font-family:sans-serif;
+        text-align:center; 
+      }
+      td{
+        border: 1px solid white;
+      }
+      table{
+        margin:auto;
+        
+      }
+      a:link {color: white;}
+      a:visited {color: white;}
+      a:hover {color: gainsboro;}
+      a:active {color: white;}
+    </style>
+  </head>
+  <body>
+    
+    <table id="tabl">
+      <tr><td colspan="2"><h1>jumpflood.js</h1><br><i>Voronoi & Dist Transform in WebGL</i><br>&nbsp;</td></tr>
+      <tr><td>Input</td><td>JFA Encode</td></tr>
+      <tr><td id="td00"></td><td id="td01"></td></tr>
+      <tr><td>Voronoi</td><td>Distance Transform</td></tr>
+      <tr><td id="td10"></td><td id="td11"></td></tr>
+      <tr><td colspan="2">Show Steps&nbsp;<input type="checkbox" id="b-showsteps"/></td></tr>
+      <tr><td id="td2" colspan="2"></td></tr>
+      <tr><td id="td30"><a href="https://jfa.glitch.me/jumpflood.js">Download</a></td><td id="td31"><a href="https://mark-this-down.glitch.me/?https://jfa.glitch.me/README.md">Documentation</a></td></tr>
+    </table>
+    
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
+  </body>
+  <script src="https://twgljs.org/dist/4.x/twgl.min.js"></script>
+  <script src="jumpflood.js"></script>
+  
+  
+<script id="perlin-noise">     
+var perlin=new function(){var r,n=function(r){return.5*(1-Math.cos(r*Math.PI))};this.noise=function(o,a,t)
+{if(a=a||0,t=t||0,null==r){r=new Array(4096);for(var f=0;f<4096;f++)r[f]=Math.random()}o<0&&(o=-o),a<0&&(a=-a),
+t<0&&(t=-t);for(var h,i,e,l,u,M=Math.floor(o),v=Math.floor(a),c=Math.floor(t),s=o-M,w=a-v,P=t-c,d=0,m=.5,y=0;y<4;y++)
+{var A=M+(v<<4)+(c<<8);h=n(s),i=n(w),e=r[4095&A],e+=h*(r[A+1&4095]-e),l=r[A+16&4095],e+=i*((l+=h*(r[A+16+1&4095]-l))-e),
+l=r[4095&(A+=256)],l+=h*(r[A+1&4095]-l),u=r[A+16&4095],l+=i*((u+=h*(r[A+16+1&4095]-u))-l),d+=(e+=n(P)*(l-e))*m,m*=.5,
+M<<=1,v<<=1,c<<=1,(s*=2)>=1&&(M++,s--),(w*=2)>=1&&(v++,w--),(P*=2)>=1&&(c++,P--)}return d}};
+</script>
+
+<script>
+  
+var WIDTH = 256;
+var HEIGHT = WIDTH;
+  
+document.getElementById("tabl").style.maxWidth=(WIDTH*2+10)+"px"
+  
+var SHOW_STEPS = false;
+     
+const ctx_in = document.createElement("canvas").getContext("2d");
+document.getElementById("td00").appendChild(ctx_in.canvas)
+ctx_in.canvas.width = WIDTH;
+ctx_in.canvas.height =HEIGHT;
+     
+const ctx_out = document.createElement("canvas").getContext("2d");
+document.getElementById("td01").appendChild(ctx_out.canvas)
+ctx_out.canvas.width = WIDTH;
+ctx_out.canvas.height =HEIGHT;
+     
+const ctx_voro = document.createElement("canvas").getContext("2d");
+document.getElementById("td10").appendChild(ctx_voro.canvas)
+ctx_voro.canvas.width = WIDTH;
+ctx_voro.canvas.height =HEIGHT;
+
+const ctx_dist = document.createElement("canvas").getContext("2d");
+document.getElementById("td11").appendChild(ctx_dist.canvas)
+ctx_dist.canvas.width = WIDTH;
+ctx_dist.canvas.height =HEIGHT;
+ctx_dist.canvas.style.filter="brightness(150%)"
+
+  
+var snapshots = [];
+document.getElementById("b-showsteps").onchange = function(){
+  if (!snapshots.length){
+    for (var i = 0; i < 8; i++){
+      const canv = document.createElement("canvas")
+      canv.width = WIDTH;
+      canv.height =HEIGHT;
+      document.getElementById("td2").appendChild(canv);
+      snapshots.push(canv);
+    }
+  }else{
+    for (var i = 0; i < snapshots.length; i++){
+      snapshots[i].remove();
+    }
+    snapshots = [];
+  }
+}
+  
+var objs = [];
+  
+function addObj(){
+  objs.push({
+    type: ["rect","circle","triangle"][Math.floor(Math.random()*3)],
+    color: `rgb(${Math.floor(15+Math.random()*240)},${15+Math.floor(Math.random()*240)},${Math.floor(15+Math.random()*240)})`,
+    x:Math.floor(Math.random()*ctx_in.canvas.width),
+    y:Math.floor(Math.random()*ctx_in.canvas.height),
+    w:Math.floor(Math.random()*20+10),
+    r:Math.random()*Math.PI*2,
+  })
+}
+
+for (var i = 0; i < 32; i++){
+  addObj();
+}
+  
+var mouseX = 0;
+var mouseY = 0;
+  
+ctx_in.canvas.onmousemove = function(e){
+  var box = ctx_in.canvas.getBoundingClientRect();
+  mouseX = (e.clientX-box.left);
+  mouseY = (e.clientY-box.top);
+}
+ctx_in.canvas.onclick = function(e){
+  addObj();
+}
+
+var t = 0;
+function drawObjs(){
+
+  ctx_in.clearRect(0,0,ctx_in.canvas.width,ctx_in.canvas.height);
+
+  for (var i = 0; i < objs.length; i++){
+    ctx_in.save();
+    ctx_in.fillStyle = objs[i].color;
+
+    ctx_in.translate(objs[i].x,objs[i].y);
+    ctx_in.rotate(objs[i].r);
+
+    if (objs[i].type == "rect"){
+      ctx_in.fillRect(-objs[i].w/2, -objs[i].w/2, objs[i].w, objs[i].w);
+    }else if (objs[i].type == "circle"){
+      ctx_in.beginPath();
+      ctx_in.arc(0,0, objs[i].w/2, 0,Math.PI*2);
+      ctx_in.fill();
+    }else if (objs[i].type== "triangle"){
+      ctx_in.beginPath();
+      ctx_in.moveTo(0, -objs[i].w/2);
+      ctx_in.lineTo( objs[i].w*0.57, objs[i].w/2);
+      ctx_in.lineTo(-objs[i].w*0.57, objs[i].w/2);
+      ctx_in.fill();
+    }
+    ctx_in.restore();
+    
+    if (i == objs.length-1){
+      objs[i].x = mouseX;
+      objs[i].y = mouseY;
+    }else{
+      objs[i].x +=(perlin.noise(i,0,t*0.01)-0.5)*2;
+      objs[i].y +=(perlin.noise(i,1,t*0.01)-0.5)*2;
+    }
+    objs[i].r +=(perlin.noise(i,2,t*0.01)-0.5)*0.1;
+    
+    if (objs[i].x < -objs[i].w){objs[i].x = WIDTH+objs[i].w;}
+    if (objs[i].x > WIDTH+objs[i].w){objs[i].x = -objs[i].w;}
+    if (objs[i].y < -objs[i].w){objs[i].y = HEIGHT+objs[i].w;}
+    if (objs[i].y > HEIGHT+objs[i].w){objs[i].y= -objs[i].w;}
+  }
+  t++;
+  
+}
+
+var jfa = new JumpFlood(ctx_in.canvas);
+     
+var aug_pass = jfa.definePass(`
+  precision lowp float;
+  uniform sampler2D texture;
+  uniform vec2 resolution;
+  void main(){
+    vec4 col = texture2D(texture, gl_FragCoord.xy/resolution);
+    gl_FragColor = vec4(col.x,col.y,col.z*col.z*col.z,1.0);
+  }
+`)
+
+function animate(){
+  requestAnimationFrame(animate);
+  drawObjs();
+  
+  jfa.process({snapshots});
+  // jfa.readout(ctx_out.canvas);
+  jfa.save(0);
+  jfa.voronoi();
+  
+  ctx_voro.save();
+  ctx_voro.clearRect(0,0,WIDTH,HEIGHT);
+  ctx_voro.globalAlpha = 0.7;
+  jfa.readout(ctx_voro.canvas);
+  ctx_voro.globalAlpha = 1.0;
+  ctx_voro.drawImage(ctx_in.canvas,0,0);
+  ctx_voro.restore();
+  
+  jfa.load(0);
+  jfa.distanceTransform();
+  jfa.readout(ctx_dist.canvas);
+  jfa.load(0);
+  jfa.pass(aug_pass,{});
+  jfa.readout(ctx_out.canvas);
+  
+}
+animate();
+  // gl.canvas.style.filter="blur(30px)"
+  
+  ;;;(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
+  </script>
+</html>

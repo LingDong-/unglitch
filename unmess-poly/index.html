@@ -1,0 +1,29 @@
+<body>
+  <h1>unmess-poly</h1>
+  <p>
+    polygon self-intersection removal algorithm. turns complex self-intersecting polygons into non-complex non-self-intersecting polygons, optionally with holes
+
+  </p>
+  <p>
+    Try below:
+  </p>
+  <div id="main">
+    
+  </div>
+  <h2>Usage</h2>
+  <pre>
+  &lt;script src="https://unmess-poly.glitch.me/unmess.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    let polygon = [[100,100], [300,100], [200,300], [250,120], [250,155]];
+    let polygons = unmess.unmess(polygon,{
+      hole_policy:unmess.HOLE_NONZERO, // or HOLE_NONE, HOLE_EVENODD, HOLE_AGGRESSIVE
+      epsilon:0.0001,
+    });
+    console.log('outline:', polygons[0]);
+    console.log('holes:', polygons.slice(1));
+  &lt;/script&gt;
+  </pre>
+</body>
+<script src="unmess.js"></script>
+<script src="polygons.js"></script>
+<script src="index.js"></script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ziggurat.js</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- import ziggurat lib -->
+    <script src="ziggurat.js"></script>
+    <script src="testbed.js"></script>
+    
+    <!-- for comparison -->
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script> -->
+    
+    <!-- main script -->
+    <script src="script.js" defer></script>
+    
+  </head>  
+  <body>
+    <h1>A JS Implementation of <a href="https://core.ac.uk/download/pdf/6287927.pdf">Ziggurat Algorithm</a></h1>
+    
+    <p>
+      ... for generating gaussian and exponential randomness
+    </p>
+    
+    
+    
+    <div id="canvases">
+      
+    </div>
+    
+    <pre style="background:lightgrey"><script>document.write(`&lt;script src="${window.location.href.split('/').slice(0,-1).join('/')}/ziggurat.js">&lt;/script&gt;`);</script></pre>
+    
+    <pre><script>document.write("var ziggurat = new "+ziggurat.constructor.toString())</script></pre>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+  </body>
+</html>

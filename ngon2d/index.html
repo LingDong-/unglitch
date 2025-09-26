@@ -1,0 +1,125 @@
+<style>body{margin:0px}</style>
+<body>
+  
+</body>
+<script src="ngon2d.js"></script>
+<script id="perlin-noise">     
+var perlin=new function(){var r,n=function(r){return.5*(1-Math.cos(r*Math.PI))};this.noise=function(o,a,t)
+{if(a=a||0,t=t||0,null==r){r=new Array(4096);for(var f=0;f<4096;f++)r[f]=Math.random()}o<0&&(o=-o),a<0&&(a=-a),
+t<0&&(t=-t);for(var h,i,e,l,u,M=Math.floor(o),v=Math.floor(a),c=Math.floor(t),s=o-M,w=a-v,P=t-c,d=0,m=.5,y=0;y<4;y++)
+{var A=M+(v<<4)+(c<<8);h=n(s),i=n(w),e=r[4095&A],e+=h*(r[A+1&4095]-e),l=r[A+16&4095],e+=i*((l+=h*(r[A+16+1&4095]-l))-e),
+l=r[4095&(A+=256)],l+=h*(r[A+1&4095]-l),u=r[A+16&4095],l+=i*((u+=h*(r[A+16+1&4095]-u))-l),d+=(e+=n(P)*(l-e))*m,m*=.5,
+M<<=1,v<<=1,c<<=1,(s*=2)>=1&&(M++,s--),(w*=2)>=1&&(v++,w--),(P*=2)>=1&&(c++,P--)}return d}};
+</script>
+<script>
+  
+function randomShape(){
+	var o = [];
+	var n = 30;
+	var sx = 0.5+Math.random()
+	var seed = Math.random()*100
+	for (var i = 0; i < n; i++){
+		var t = i*1.0/n;
+		var a = t*Math.PI*2;
+
+		var u = Math.cos(a)
+		var v = Math.sin(a)
+		var r = perlin.noise(u*0.8+seed,v*0.8+seed*Math.PI)*100
+
+		// var r = r*r;
+		var x = r*u*sx;
+		var y = r*v;
+		o.push([x,y])
+	}
+	return o;
+}
+  
+  
+var W = 600;
+var H = 600;
+  
+ng2d.conf.wall = {l:0,t:0,r:W,b:H};
+  
+var ctx = document.createElement("canvas").getContext('2d');
+ctx.canvas.width = W;
+ctx.canvas.height = H;
+ctx.canvas.style.border = "1px solid black"
+document.body.appendChild(ctx.canvas);
+
+var bds = [];
+  
+for (var i = 0; i < 20; i++){
+  var A = ng2d.new_bd(Math.random()*500+50,Math.random()*500+50,randomShape());
+  bds.push(A);
+}
+  
+// var A = ng2d.new_bd(100,500,[[-20,-20],[0,-20],[20,-20],[20,20],[0,20],[-20,20]]);
+// var B = ng2d.new_bd(100,400,[[-70,-20],[0,-20],[70,-20],[70,20],[0,20],[-70,20]]);
+
+// ng2d.bd_app_force(B,[30,380],[0,40]);
+
+// bds.push(B)
+  
+
+var mouseX;
+var mouseY;
+var jnt = null;
+ctx.canvas.onmousedown = function(e){
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  for (var i = 0; i < bds.length; i++){
+    if (ng2d.pt_in_bd(mouseX,mouseY,bds[i])){
+      var id = ng2d.bd_add_anc(bds[i],mouseX,mouseY);
+      jnt = [i,id];
+    }
+  }
+}
+ctx.canvas.onmousemove = function(e){
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+}
+ctx.canvas.onmouseup = function(e){
+  jnt = null;
+}
+  
+function step(){  
+  requestAnimationFrame(step)
+  // setTimeout(step,100);
+  // for (var i = 0; i < bds.length; i++){
+  //   bds[i].ang += 0.01;
+  // }
+  if (jnt){
+    var pt = bds[jnt[0]].wncs[jnt[1]];
+    var d = [mouseX-pt[0],mouseY-pt[1]]
+    var f = [d[0]*0.01,d[1]*0.01]
+    // console.log(f)
+    ng2d.bd_app_force(bds[jnt[0]],pt,f);
+  }
+  
+  for (var k = 0; k < 1; k++){
+    ng2d.bds_step(bds);
+  }
+  
+  ctx.clearRect(0,0,W,H)
+  
+  
+  ctx.save();
+  ctx.strokeStyle="blue"
+  ctx.lineWidth=3
+  if (jnt){
+    var pt = bds[jnt[0]].wncs[jnt[1]];
+    ctx.beginPath();
+    ctx.moveTo(...pt);
+    ctx.lineTo(mouseX,mouseY);
+    ctx.stroke();
+  }
+  ctx.restore();
+  
+  ng2d.bds_plot(ctx,bds);
+}
+step();
+  
+  ;;;(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
+
+</script>

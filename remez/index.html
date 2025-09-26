@@ -1,0 +1,52 @@
+<script src="remez.js"></script>
+<body>
+  <h2>
+    Remez Algorithm
+  </h2>
+  ... for approximating functions with Chebyshev polynomials.
+  <br>
+  This is an emscripten wrap of <code>boost::math::tools::remez_minimax</code>,
+  which has been removed in newer versions of boost, 
+  yet preserved here in a shabby web GUI for your convenience.
+  <hr>
+  <h3>input</h3>
+  function=
+  <textarea id="inp_func">x=&gt;Math.sin(x)</textarea>
+  <span style="font-size:12px">
+    (note: JS function syntax, Math.xxxx functions supported,
+    will be eval()'ed -- careful what you paste)
+  </span>
+  
+  <br>
+  order=<input id="inp_ordr" type="number" min="1" value="3"/>
+  xmin=<input id="inp_xmin" value="0"/>
+  xmax=<input id="inp_xmax" value="2"/>
+  <br>
+  <button id="btn_solve" style="font-size:18px">
+    solve
+  </button>&lt;--click me
+  <hr>
+  <h3>output</h3>
+  coefficients=
+  <div id="out_coef" style="margin-left:16px;font-size:18px">
+    &nbsp;
+  </div>
+  polynomial=
+  <div id="out_func" style="margin-left:16px;font-size:18px">
+    &nbsp;
+  </div>
+  plot=
+  <div id="out_plot">
+    
+  </div>
+  <hr>
+  <h3>reference</h3>
+  <ul>
+    <li>https://en.wikipedia.org/wiki/Remez_algorithm</li>
+    <li>https://www.boost.org/doc/libs/1_46_1/libs/math/doc/sf_and_dist/html/math_toolkit/backgrounders/remez.html</li>
+  </ul>
+  <div style="font-size:12px">
+    - lingdong 2023
+  </div>
+</body>
+<script src="index.js"></script>
