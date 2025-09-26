@@ -1,0 +1,18 @@
+glyph        : f
+axis  $a0    : -10                                      
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 32 100 32 0                              
+ln    $v2    : 62 100 62 0                              
+ln    $v3    : 92 100 62 0                 
+ln    $h0    : 0 27 100 27                        
+ln    $h1    : 0 28 100 5                      
+ln    $h2    : 0 70 100 70                              
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v0                                  
+xpt   $q2    : $h1 $v3                                  
+xpt   $q3    : $h2 $v3                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h0 $v2                                  
+lnT   $l1    : $q0 $q1                                  !1
+arc)  $c0    : $q1 $q0 $q2 $q3 15                       !1
+ln    $l2    : $q4 $q5    @srf L ] 90  @srf R ] 90      !2

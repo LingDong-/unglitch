@@ -1,0 +1,8 @@
+.cst{
+    position : absolute;
+    transform-origin : 0% 50%;
+    width : 10px;
+    height : 3px;
+    border-radius : 1.5px;
+    background-color : black;
+}

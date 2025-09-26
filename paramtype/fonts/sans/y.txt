@@ -1,0 +1,19 @@
+glyph        : y
+  
+pt    $p0    : 0 85
+ln    $v0    : 32 100 32 0                              
+ln    $v1    : 68 100 68 0                              
+ln    $v2    : 50 100 50 0 
+ln    $v3    : 25 100 25 0 
+ln    $h0    : 0 25 100 25                              
+ln    $h1    : 0 75 100 75 
+ln    $h2    : 0 80 100 80 
+ln    $l2    : $p0 55 100
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2  
+xpt   $q3    : $q1 $q2 $h2
+xpt   $q4    : $v3 $l2
+ln    $l0    : $q2 $q0                  @srf R ] 0 @srf L ] 0    !1
+ln    $l1    : $q3 $q1                  @srf R ] 0 @srf L ] 0    !2
+arc   $c0    : $q2 $q3 $q4 $p0 10 @srf R ] 90 @srf L ] 0 !2

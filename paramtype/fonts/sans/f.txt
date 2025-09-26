@@ -1,0 +1,17 @@
+glyph        : f
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 32 100 32 0                              
+ln    $v2    : 60 100 60 0                  
+ln    $v3    : 100 10 0 10                    
+ln    $h0    : 0 30 100 30                         
+ln    $h1    : 0 60 72 0                           
+ln    $h2    : 0 75 100 75                     
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v0                                  
+xpt   $q2    : $h1 $v3                                  
+xpt   $q3    : $h2 $v3                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h0 $v2                                  
+ln    $l1    : $q0 $q1                  @srf R T        !1
+arc   $c0    : $q1 $q0 $q2 $q3 7 @srf R )        !1
+ln    $l2    : $q4 $q5                  @srf L ] {atan $v1}  @srf R ] {atan $v2} !2

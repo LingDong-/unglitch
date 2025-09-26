@@ -1,0 +1,72 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 20px;
+  background-color:darkgray;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+.col-btn{
+  width : 20px;
+  height: 20px;
+  border-radius : 20px;
+  border : 2px solid black;
+  text-align: center;
+  
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.col-btn:hover{
+  border : 4px solid black;
+  margin-left: -2px;
+  margin-top: -2px;
+}
+
+.size-btn{
+  width : 24px;
+  height: 24px;
+  border-radius : 0px;
+}
+
+.size-btn-ind{
+  border : 2px solid black;
+  border-radius: 20px;
+  position: absolute;
+}
+
+.size-btn:hover{
+  background-color:lightgray;
+}
+
+.col-sel{
+  width : 32px;
+  height: 32px;
+  border-radius : 32px;
+  background-color: grey;
+  margin-left:-4px;
+  margin-top:-4px;
+}
+
+#panel{
+  width : 512px;
+  height: 552px;
+  border-radius: 10px;
+  border: 2px solid black;
+  position:absolute;
+  top:5px;
+  left:650px;
+/*   right:0px; */
+  z-index:100;
+  background-color:white;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}

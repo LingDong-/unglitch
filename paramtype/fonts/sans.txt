@@ -1,0 +1,1058 @@
+glyph        : a    
+
+
+pt    $p0    : 35 100                              
+pt    $p1    : 65 100                               
+pt    $p2    : 100 72                               
+pt    $p4    : 50 70                            
+ln    $v0    : 35 0 $p0                        
+ln    $v1    : 65 0 $p1    
+ln    $v2    : 75 0 75 100
+                       
+ln    $h0    : 0 38 100 38                            
+ln    $h1    : 0 65 100 65                    
+ln    $h2    : 0 42 100 42  
+ln    $h3    : 0 72 $p2
+
+
+xpt   $q0    : $h0 $v0                                
+xpt   $q1    : $h0 $v1                                
+xpt   $q2    : $h1 $v0                                
+xpt   $q3    : $h1 $v1         
+xpt   $q4    : $h3 $v2
+                              
+xpt   $q5    : $h2 $v1                                
+                               
+ln    $l4    : $q3 $p4                                !2
+xln   $l5    : $l4 $q5 0                       
+xln   $l6    : $l4 $p4 90                             
+xpt   $q7    : $l5 $l6                                
+arc   $c0    : $p1 $q1 $q0 $p0 16                     !1
+ln    $l1    : $q1 $q3                                !1
+arc   $c1    : $q5 $q3 $q4 $p2 20   @srf R > 1 0.8    !1
+arc   $c2    : $q5 $q7 $p4 $q3 20                     !2
+ln    $l3    : $q5 $q7                                !2
+END
+
+glyph        : b
+
+val   $t0    : 0.6
+pt    $p0    : 32 100
+pt    $p1    : 32 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $v2    : {- $v0 {, {* {- 1 $t0} _wgt} 0}}
+ln    $h0    : 0 50 100 50
+
+ln    $h1    : 0 5 100 5
+ln    $h2    : 0 75 100 75
+
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+
+xpt   $q2    : $v2 $h1
+xpt   $q3    : $v2 $h2
+
+arc   $c0    : $p0 $q0 $q1 $p2 29 @srf L > 0.4 $t0 !1
+arc   $c1    : $p1 $q0 $q1 $p3 29 @srf L > 0.4 $t0 !1
+
+ln    $l0    : $q2 $q3 @srf L ] 0  @srf R ] 0 !2
+END
+
+glyph        : c
+pt    $p0    : 60 0                                   
+pt    $p1    : 60 100                                   
+ln    $v0    : 95 100 $p0                          
+ln    $v2    : $p1 95 0                              
+pt    $p2    : 35 100                                   
+pt    $p3    : 35 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 42 100 42                        
+ln    $h1    : 0 58 100 58                          
+ln    $h2    : 0 50 100 50                     
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 24 @srf R ] 0      !1
+arc   $c1    : $p3 $q2 $q1 $p1 24 @srf R ] 0      !1
+END
+
+glyph        : d
+     
+val   $t0    : 0.6
+pt    $p0    : 32 100
+pt    $p1    : 32 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $v2    : {+ $v1 {, {* {- 1 $t0} _wgt} 0}}
+ln    $h0    : 0 50 100 50
+
+ln    $h1    : 0 5 100 5
+ln    $h2    : 0 75 100 75
+
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+
+xpt   $q2    : $v2 $h1
+xpt   $q3    : $v2 $h2
+
+arc   $c0    : $p0 $q0 $q1 $p2 29 @srf R > 0.4 $t0 !1
+arc   $c1    : $p1 $q0 $q1 $p3 29 @srf R > 0.4 $t0 !1
+
+ln    $l0    : $q2 $q3 @srf L ] 0  @srf R ] 0 !2
+END
+
+
+
+
+
+glyph        : e
+pt    $p0    : 75 0                                     
+pt    $p1    : 47 100                                   
+ln    $v0    : 75 100 $p0                               
+ln    $v2    : $p1 100 26                               
+pt    $p2    : 35 100                                   
+pt    $p3    : 35 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h1    : 0 62 100 62                              
+ln    $h2    : 100 50 0 50                              
+xpt   $q0    : $h2 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+val   $r0    : {/ {+ {atan $v0} {atan $h2}} 2}                 
+arc   $c0    : $p2 $q2 $q0 $p0 28       @srf R ] $r0    !1
+arc   $c1    : $p3 $q2 $q1 $p1 20       @srf R ] 0      !1
+ln    $l0    : $q2 $q0                  @srf R ] $r0    !1
+END
+
+glyph        : f
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 32 100 32 0                              
+ln    $v2    : 60 100 60 0                              
+ln    $v3    : 100 10 0 10                              
+ln    $h0    : 0 30 100 30                              
+ln    $h1    : 0 60 72 0                                
+ln    $h2    : 0 75 100 75                              
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v0                                  
+xpt   $q2    : $h1 $v3                                  
+xpt   $q3    : $h2 $v3                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h0 $v2                                  
+ln    $l1    : $q0 $q1                  @srf R T        !1
+arc   $c0    : $q1 $q0 $q2 $q3 7        @srf R )        !1
+ln    $l2    : $q4 $q5                  @srf L ] {atan $v1}  @srf R ] {atan $v2} !2
+END
+
+
+
+
+
+
+
+glyph        : g
+
+val   $t0    : 0.6
+pt    $p0    : 32 100
+pt    $p1    : 32 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $v2    : {+ $v1 {, {* {- 1 $t0} _wgt} 0}}
+ln    $h0    : 0 50 100 50
+
+ln    $h1    : 0 25 100 25
+ln    $h2    : 0 76 100 76
+
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+
+xpt   $q2    : $v2 $h1
+xpt   $q3    : $v2 $h2
+xpt   $q4    : $v0 $h2
+
+arc   $c0    : $p0 $q0 $q1 $p2 29 @srf R > 0.4 $t0 !1
+arc   $c1    : $p1 $q0 $q1 $p3 27 @srf R > 0.4 $t0 !1
+
+ln    $l0    : $q2 $q3 @srf L ] 0  @srf R ] 0 !2
+
+arc   $c2   : $q1 $q3 $q4 $q0 26 @srf L ] !2
+END
+
+glyph        : h
+                                                                                          
+val   $t0    : 0.6
+ln    $v0    : 35 100 35 0
+ln    $v1    : 65 100 65 0
+ln    $v2    : {+ $v0 {, {* {- 1 $t0} _wgt} 0}}
+ln    $h0    : 0 47 100 37
+ln    $h1    : 0 75 100 75
+ln    $h2    : 0 5 100 5
+xpt   $q0    : $h0 $v2
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+xpt   $q5    : $h1 $v2
+
+ln    $l1    : $q1 $q2             !2
+arc   $c0    : $q3 $q4 $q0 $q5 20 @srf R > 1 $t0 !1
+lnT   $l3    : $q4 $q3             !1
+END
+
+
+glyph        : i                                    
+ln    $v0    : 50 100 50 0                              
+
+ln    $h0    : 0 10 100 10
+ln    $h1    : 0 25 100 25
+ln    $h3    : 0 75 100 75
+
+xpt   $q0    : $v0 $h0     !1
+xpt   $q1    : $v0 $h1
+xpt   $q3    : $v0 $h3
+
+ln    $l0    : $q1 $q3     !2
+END
+
+
+glyph        : j                                     
+ln    $v0    : 53 100 53 0                       
+ln    $v1    : 36 100 0 0                   
+ln    $h0    : 0 10 100 10                              
+ln    $h1    : 0 25 100 25                              
+ln    $h2    : 0 92 100 62                      
+xpt   $q0    : $v0 $h0                                  !1
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+ln1   $l0    : $q2 $q1                                  !2
+arc   $c0    : $q1 $q2 $q4 $q3 15  @srf R ] 0           !2
+
+END
+
+
+glyph        : k                                                                                           
+ln    $v0    : 35 100 35 0
+ln    $v1    : 70 100 65 0
+ln    $h0    : 0 25 100 25
+ln    $h1    : 0 75 100 75
+
+
+ln    $h2    : 0 5 100 5
+
+ln    $h3    : 0 45 100 45
+
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+
+
+pt    $p0    : 45 100
+
+xln   $l5    : $v0 $p0 0
+xpt   $q5    : $h3 $l5
+
+
+
+
+ln    $l1    : $q1 $q2             !2
+
+
+ln    $l3    : $q5 $q4             
+ln    $l4    : $q5 $q3   @srf R ] 0          !3
+
+
+xpt   $q6    : $l3 $l1
+
+ln    $l6    : $q4 $q6   @srf L ] 0 !3
+END
+
+
+
+glyph        : l                                    
+ln    $v0    : 50 100 50 0                              
+
+ln    $h1    : 0 5 100 5
+ln    $h3    : 0 75 100 75
+
+xpt   $q1    : $v0 $h1
+xpt   $q3    : $v0 $h3
+
+ln    $l0    : $q3 $q1  @srf L ] 0 @srf R ] 0  !2
+
+END
+
+
+glyph        : m                                                                                         
+ln    $v0    : 21 100 21 0
+ln    $v1    : 50 100 50 0
+ln    $v2    : 79 100 79 0
+ln    $h0    : 0 40 100 40
+ln    $h1    : 0 75 100 75
+ln    $h2    : 0 27 100 27
+ln    $h3    : 0 47 100 47
+xpt   $q0    : $h3 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+xpt   $q5    : $h3 $v1
+xpt   $q6    : $h0 $v2
+xpt   $q7    : $h1 $v2
+
+
+ln    $l1    : $q0 $q2             !2
+ln    $l2    : $q0 $q1             !2
+arc   $c0    : $q3 $q4 $q0 $q1 20  @srf R > 1 0.5 !1
+ln    $l3    : $q4 $q3             !1
+
+ln    $l4    : $q6 $q7             !3
+arc   $c1    : $q7 $q6 $q5 $q3 20  @srf R > 1 0.5 !3
+
+END
+
+glyph        : n                                                                                            
+ln    $v0    : 35 100 35 0
+ln    $v1    : 65 100 65 0
+ln    $h0    : 0 50 100 37
+ln    $h1    : 0 75 100 75
+ln    $h2    : 0 27 100 27
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+
+ln    $l1    : $q0 $q2             !2
+ln    $l2    : $q0 $q1             !2
+arc   $c0    : $q3 $q4 $q0 $q1 20 @srf R > 1 0.5  !1
+ln    $l3    : $q4 $q3             !1
+
+END
+
+glyph        : o     
+pt    $p0    : 30 100
+pt    $p1    : 30 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $h0    : 0 50 100 50
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+arc   $c0    : $p0 $q0 $q1 $p2 29 !1
+arc   $c1    : $p1 $q0 $q1 $p3 29 !1
+END
+
+
+glyph        : p
+     
+pt    $p0    : 32 100
+pt    $p1    : 32 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $v2    : 30 0 30 100
+ln    $h0    : 0 50 100 50
+
+ln    $h1    : 0 27 100 27
+ln    $h2    : 0 95 100 95
+
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+
+xpt   $q2    : $v2 $h1
+xpt   $q3    : $v2 $h2
+
+arc   $c0    : $p0 $q0 $q1 $p2 29 @srf L > 0.4 0.6 !1
+arc   $c1    : $p1 $q0 $q1 $p3 29 @srf L > 0.4 0.6 !1
+
+ln    $l0    : $q2 $q3 @srf L ] 0  @srf R ] 0 !2
+END
+
+glyph        : q
+     
+pt    $p0    : 32 100
+pt    $p1    : 32 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $v2    : 72 0 72 100
+ln    $h0    : 0 50 100 50
+
+ln    $h1    : 0 27 100 27
+ln    $h2    : 0 95 100 95
+
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+
+xpt   $q2    : $v2 $h1
+xpt   $q3    : $v2 $h2
+
+arc   $c0    : $p0 $q0 $q1 $p2 29 @srf R > 0.4 0.6 !1
+arc   $c1    : $p1 $q0 $q1 $p3 29 @srf R > 0.4 0.6 !1
+
+ln    $l0    : $q2 $q3 @srf L ] 0  @srf R ] 0 !2
+END
+
+
+glyph        : r
+                                      
+pt    $p0    : 100 35
+ln    $v0    : 35 100 35 0
+ln    $v1    : 60 100 60 0
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 27 100 27                 
+ln    $h3    : $p0 0 20
+ln    $h4    : 0 50 100 50
+
+
+xpt   $q0    : $v0 $h1
+xpt   $q1    : $v0 $h2
+xpt   $q2    : $v0 $h4
+xpt   $q3    : $v1 $h3
+
+ln    $l0    : $q0 $q1 !1
+arc   $c0    : $q0 $q2 $q3 $p0 10 @srf R ] 90  !2
+END
+
+glyph        : s
+pt    $p0    : 100 89                                   
+pt    $p1    : 0 34                                     
+pt    $p2    : 100 61                                   
+pt    $p3    : 0 11                                     
+ln    $v0    : 98 2 0 99                                
+ln    $h0    : 40 2 $p0                                 
+ln    $h1    : $p1 $p2                                  
+ln    $h2    : $p3 68 102                               
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+arc   $c0    : $p2 $q1 $q0 $p0 23       @srf R ] 45     !1
+arc   $c1    : $p1 $q1 $q2 $p3 29       @srf R ] 45     !1
+END
+
+glyph        : t
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 32 100 32 0                              
+ln    $v2    : 60 100 60 0                              
+ln    $v3    : 100 70 0 70                              
+ln    $h0    : 0 30 100 30                              
+ln    $h1    : 0 20 95 100                           
+ln    $h2    : 0 10 100 10                              
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v0                                  
+xpt   $q2    : $h1 $v3                                  
+xpt   $q3    : $h2 $v3                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h0 $v2                                  
+ln    $l1    : $q0 $q1                  @srf R T        !1
+arc   $c0    : $q1 $q0 $q2 $q3 7        @srf R )        !1
+ln    $l2    : $q4 $q5                  @srf L ] 90  @srf R ] 90 !2
+
+END
+
+
+glyph        : u                                                                                            
+ln    $v0    : 65 0 65 100
+ln    $v1    : 35 0 35 100
+ln    $h0    : 100 50 0 63
+ln    $h1    : 100 25 0 25
+ln    $h2    : 100 75 0 75
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+
+ln    $l1    : $q0 $q2             !2
+ln    $l2    : $q0 $q1             !2
+arc   $c0    : $q3 $q4 $q0 $q1 20 @srf R > 1 0.5  !1
+ln    $l3    : $q4 $q3             !1
+
+END
+
+glyph        : v
+                                    
+ln    $v0    : 32 100 32 0                              
+ln    $v1    : 68 100 68 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 25 100 25                              
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q2 $q0                  @srf R ] 0 @srf L ] 0    !1
+ln    $l1    : $q2 $q1                  @srf R ] 0 @srf L ] 0    !2
+
+END
+
+
+glyph        : w
+ln    $v0    : 20 100 20 0                              
+ln    $v1    : 50 100 50 0                              
+ln    $v2    : 35 100 35 0                              
+ln    $v3    : 65 100 65 0                              
+ln    $v4    : 80 100 80 0                              
+ln    $h0    : 0 25 100 25                              
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h1 $v3                                  
+xpt   $q4    : $h0 $v4                                  
+ln    $l0    : $q2 $q0                  @srf R ] 0  @srf L ] 0 !1
+ln    $l1    : $q2 $q1                  @srf R ] 0  @srf L ] 0 !2
+ln    $l2    : $q1 $q3                  @srf R ] 0  @srf L ] 0 !3
+ln    $l3    : $q3 $q4                  @srf R ] 0  @srf L ] 0 !4
+END
+
+glyph        : x
+ln    $v0    : 30 100 32 0                              
+ln    $v1    : 70 100 68 0                              
+ln    $h0    : 0 25 100 25                              
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v1 $h1                                  
+ln    $l0    : $q0 $q3                  @srf L T  @srf R T !1
+ln    $l1    : $q2 $q1                  @srf L T 1.8  @srf R T 0 1.8 !2
+END
+
+
+
+glyph        : y
+pt    $p0    : 0 85                                     
+ln    $v0    : 32 100 32 0                              
+ln    $v1    : 68 100 68 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $v3    : 25 100 25 0                              
+ln    $h0    : 0 25 100 25                              
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 80 100 80                              
+ln    $l2    : $p0 55 100                               
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $q1 $q2 $h2                              
+xpt   $q4    : $v3 $l2                                  
+ln    $l0    : $q2 $q0                  @srf R ] 0  @srf L ] 0 !1
+ln    $l1    : $q3 $q1                  @srf R ] 0  @srf L ] 0 !2
+arc   $c0    : $q2 $q3 $q4 $p0 10       @srf R ] 90  @srf L ] 0 !2
+END
+
+glyph        : z
+ln    $v0    : 30 100 32 0                              
+ln    $v1    : 70 100 68 0                              
+ln    $h0    : 0 30 100 30                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 32 100 32                              
+ln    $h3    : 0 68 100 68                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+xpt   $q5    : $v0 $h3                                  
+ln    $l0    : $q2 $q0                  @srf L ] 90     !1
+ln    $l1    : $q4 $q5                  @srf L ] 90  @srf R ] 90 !1
+ln    $l2    : $q1 $q3                  @srf L ] 90     !1
+END
+
+
+glyph        : A
+pt    $p0    : 25 100                                   
+pt    $p1    : 50 100                                   
+pt    $p2    : 75 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 50 0 $p1                                 
+ln    $v2    : 75 0 $p2                                 
+ln    $h0    : 0 55 100 55                              
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 8 100 8                                
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q1 $q0                  @srf L ]  @srf R ] !1
+ln    $l1    : $q1 $q2                  @srf L ]  @srf R ] !1
+xpt   $q3    : $l0 $h0                                  
+xpt   $q4    : $l1 $h0                                  
+ln    $l4    : $q3 $q4                                  !1
+END
+
+glyph        : B
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h0    : 0 40 100 40                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 12 100 12                              
+lln   $h3    : $h2 {- 0 _wgt}                           
+lln   $h4    : $h1 _wgt                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h0                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v1 $h0                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L ]  @srf R ] !1
+arc   $c0    : $q0 $q6 $q7 $q2 28                       !1
+arc   $c1    : $q2 $q7 $q8 $q1 32                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l2    : $q2 $q7                                  !1
+ln    $l3    : $q1 $q8                                  !1
+END
+
+
+glyph        : C
+pt    $p0    : 65 0                                     
+pt    $p1    : 65 80                                    
+ln    $v0    : 100 93 $p0                               
+ln    $v2    : $p1 100 -13                              
+pt    $p2    : 20 100                                   
+pt    $p3    : 20 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 30 100 30                              
+ln    $h1    : 0 50 100 50                              
+ln    $h2    : 0 40 100 40                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 32.5       @srf R ]        !1
+arc   $c1    : $p3 $q2 $q1 $p1 32.5       @srf R ]        !1
+
+END
+
+
+glyph        : D
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 12 100 12                              
+lln   $h3    : $h2 {- 0 _wgt}                           
+lln   $h4    : $h1 _wgt                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4               !1
+arc   $c0    : $q0 $q6 $q8 $q1 45                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l3    : $q1 $q8                                  !1
+END
+
+glyph        : E                                     
+pt    $p0    : 25 100                                   
+pt    $p1    : 65 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 65 0 $p1                                 
+lln   $v2    : $v1 6                                    
+ln    $h0    : 0 40 100 40                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 12 100 12                                
+lln   $h3    : $h2 {- 0 _wgt}                                              
+lln   $h4    : $h1 _wgt                                
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h0                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v2 $h0                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4          !1
+ln    $l1    : $q0 $q6                  !1
+ln    $l2    : $q2 $q7                 !1
+ln    $l3    : $q1 $q8                   !1
+END
+
+glyph        : F
+pt    $p0    : 25 100                                   
+pt    $p1    : 45 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 70 0 $p1                                 
+ln    $h0    : 0 40 100 40                              
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 12 100 12                              
+lln   $h3    : $h2 {- 0 _wgt}                           
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h0                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v1 $h0                                  
+ln    $l0    : $q3 $q1                  @srf L T 0 3 0  @srf R T 0 3 3 !1
+ln    $l1    : $q0 $q6                  @srf R T 90 0 3 !1
+ln    $l2    : $q2 $q7                  @srf R T 90 2.6 !1
+END
+
+glyph        : G
+pt    $p0    : 60 2                                     
+pt    $p1    : 60 82                                    
+ln    $v0    : 100 77 $p0                               
+ln    $v2    : $p1 100 7                                
+pt    $p2    : 18 100                                   
+pt    $p3    : 18 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 57 100 57                              
+ln    $h2    : 0 42 100 42                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 30       @srf R ]        !1
+arc   $c1    : $p3 $q2 $q1 $p1 30       @srf R ] 15     !1
+ln    $v3    : 45 0 45 100                              
+xpt   $q3    : $v3 $h2                                  
+xln   $l2    : $h0 $q1 -90                              
+xpt   $q4    : $l2 $h2                                  
+ln    $l1    : $q4 $q3                  @srf L ] -45    !1
+ln    $l3    : $q1 $q4                  @srf L ] 15  @srf R ] -45 !1
+END
+
+
+
+
+glyph        : H                                        
+ln    $v0    : 30 100 30 0                              
+ln    $v1    : 70 100 70 0                              
+ln    $h0    : 0 40 100 40                              
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 8 100 8                                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h2 $v1                                  
+ln    $l1    : $q1 $q2              !2
+ln    $l3    : $q5 $q3               !1
+ln    $l2    : $q0 $q4                                  !1
+END
+
+
+glyph        : I                                    
+ln    $v0    : 50 100 50 0                              
+ln    $h0    : 0 8 100 8                                
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+ln    $l0    : $q0 $q1     !2
+END
+
+glyph        : J
+ln    $v0    : 53 100 53 0                              
+ln    $v1    : 36 100 0 0                               
+ln    $h1    : 0 8 100 8                                
+ln    $h2    : 0 65 100 45                              
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+ln    $l0    : $q2 $q1                                  !2
+arc   $c0    : $q1 $q2 $q4 $q3 20                       !2
+END
+
+
+glyph        : K                                      
+ln    $v0    : 30 100 30 0                              
+ln    $v1    : 75 100 70 0                              
+ln    $h0    : 0 8 100 8                                
+ln    $h1    : 0 75 100 75                              
+ln    $h3    : 0 35 100 35                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1                                  
+pt    $p0    : 45 100                                   
+xln   $l5    : $v0 $p0 0                                
+xpt   $q5    : $h3 $l5                                  
+ln    $l2    : $q0 $q1                !1
+ln    $l3    : $q6 $q4     @srf R ]        !1
+ln    $l4    : $q5 $q3      @srf R ]    !1
+xpt   $q6    : $q4 $q5 $q1 $q0                          
+END
+
+glyph        : L
+ln    $v0    : 30 100 30 0                              
+ln    $v1    : 70 100 70 0                              
+ln    $h1    : 0 8 100 8                                                             
+ln    $h3    : 0 70 100 70                              
+lln   $h4    : $h3 _wgt                                 
+xpt   $q1    : $v0 $h1                                                                    
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v1 $h3                                  
+xpt   $q5    : $v0 $h4                                  
+ln    $l1    : $q1 $q5                                  !1
+ln    $l2    : $q3 $q4                                  !1
+END
+
+
+glyph        : M
+ln    $v0    : 16 100 19 0                              
+ln    $v1    : 50 100 50 0                              
+ln    $v2    : 84 100 81 0                              
+ln    $h0    : 0 62 100 62                              
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 8 100 8                                
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h2 $v0                                                                   
+xpt   $q5    : $h2 $v2                                  
+pt   $q6    : {+ $q3 {, 2 0}}                               
+pt   $q8    : {- $q5 {, 2 0}}                                                                 
+ln    $l0    : $q3 $q0                  @srf L ]  @srf R ] !1
+ln    $l1    : $q5 $q2                  @srf L ]  @srf R ] !1
+ln    $l2    : $q6 $q1                  @srf L ]  @srf R ] 90 !1
+ln    $l3    : $q8 $q1                  @srf L ]  @srf R ] 89 !1
+END
+
+
+glyph        : N                                    
+ln    $v0    : 25 100 25 0                              
+ln    $v2    : 75 100 75 0                              
+                             
+ln    $h1    : 0 75 100 75                              
+ln    $h2    : 0 8 100 8                                
+                              
+xpt   $q0    : $h1 $v0                                                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h2 $v0                                  
+xpt   $q5    : $h2 $v2                                  
+                     
+ln    $l0    : $q3 $q0             !1
+ln    $l1    : $q5 $q2              !1
+
+pt $p0 : {+ $q3 {, 2 0}}
+pt $p1 : {+ $q2 {, -2 0}}
+
+ln $l3 : $p0 $p1 @srf L ] @srf R ] !1
+END
+
+glyph        : O
+pt    $p0    : 0 12                                     
+pt    $p1    : 100 12                                   
+pt    $p2    : 0 72                                     
+pt    $p3    : 100 72                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 39                       !1
+arc   $c1    : $p0 $q0 $q1 $p2 39                       !1
+END
+
+glyph        : P
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h1    : 0 45 100 45                              
+ln    $h2    : 0 12 100 12                                
+lln   $h3    : $h2 {- 0 _wgt}                                 
+lln   $h4    : $h1 30                                   
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T !1
+arc   $c0    : $q0 $q6 $q8 $q1 32                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l3    : $q1 $q8                                  !1
+
+END
+
+
+glyph        : Q
+pt    $p0    : 0 12                                     
+pt    $p1    : 100 12                                   
+pt    $p2    : 0 72                                     
+pt    $p3    : 100 72                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 39                       !1
+arc   $c1    : $p0 $q0 $q1 $p2 39                       !1
+ln $l0 : 55 50 85 80 !1
+END
+
+glyph        : R                                     
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h1    : 0 44 100 44                              
+ln    $h2    : 0 12 100 12                                
+lln   $h3    : $h2 {- 0 _wgt}                                  
+pt    $p2    : 68 75                                    
+ln    $h4    : 0 75 $p2                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T !1
+arc   $c0    : $q0 $q6 $q8 $q1 33                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l3    : $q1 $q8                                  !1
+ln    $l4    : $q8 $p2                  @srf R T 0 1.5 3 !1
+END
+
+glyph        : S
+pt    $p0    : 100 32                             
+pt    $p1    : 0 17                                  
+pt    $p2    : 100 56                              
+pt    $p3    : 0 36                               
+ln    $v0    : 81 0 10 100                       
+ln    $h0    : 47 0 $p0                              
+ln    $h1    : $p1 $p2                                  
+ln    $h2    : $p3 80 100                          
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+arc   $c0    : $p2 $q1 $q0 $p0 29                    !1
+arc   $c1    : $p1 $q1 $q2 $p3 40                    !1
+END
+
+glyph        : T
+ln    $v0    : 50 100 50 0                              
+ln    $v1    : 22 100 22 0                              
+ln    $v2    : 78 100 78 0                              
+ln    $h0    : 0 12 100 12                              
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v2 $h0                                  
+ln    $l0    : $q0 $q1                                  !2
+ln    $l1    : $q2 $q3                                  !1
+END
+
+glyph        : U                                      
+ln    $v0    : 27 100 27 0                              
+ln    $v1    : 72 100 72 0                              
+ln    $h0    : 0 49 100 49                              
+ln    $h2    : 0 8 100 8                                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h2 $v1                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q4    : $h0 $v1                                  
+ln    $l1    : $q0 $q2                 !1
+ln    $l2    : $q4 $q1                !2
+arc   $c0    : $q2 $q0 $q4 $q1 32          !1
+END
+
+glyph        : V                                     
+ln    $v0    : 23 100 23 0                              
+ln    $v1    : 77 100 77 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 8 100 8                                
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q2 $q0        @srf L ]     @srf R ]        !1
+ln    $l1    : $q2 $q1       @srf L ]  @srf R ] !2
+END
+
+glyph        : W
+ln    $v0    : 12 100 12 0                              
+ln    $v1    : 50 100 50 0                              
+ln    $v2    : 32 100 32 0                              
+ln    $v3    : 68 100 68 0                              
+ln    $v4    : 88 100 88 0                              
+ln    $h0    : 0 8 100 8                              
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h1 $v3                                  
+xpt   $q4    : $h0 $v4                                  
+ln    $l0    : $q2 $q0                  @srf R ] 0  @srf L ] 0 !1
+ln    $l1    : $q2 $q1                  @srf R ] 0  @srf L ] 0 !2
+ln    $l2    : $q1 $q3                  @srf R ] 0  @srf L ] 0 !3
+ln    $l3    : $q3 $q4                  @srf R ] 0  @srf L ] 0 !4
+END
+
+
+glyph        : X                                    
+ln    $v0    : 25 100 27 0                              
+ln    $v1    : 75 100 73 0                              
+ln    $h0    : 0 8 100 8                                
+ln    $h1    : 0 75 100 75                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v1 $h1                                  
+ln    $l0    : $q0 $q3                  @srf L ]  @srf R ] !1
+ln    $l1    : $q2 $q1                  @srf L ]  @srf R ] !2
+END
+
+glyph        : Y                                                                           
+ln    $v0    : 25 100 25 0                              
+ln    $v1    : 75 100 75 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 8 100 8                                
+ln    $h1    : 0 45 100 45                              
+ln    $h2    : 0 75 100 75                              
+                                  
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h2 $v2                                  
+ln    $l0    : $q2 $q0    @srf R ]       !1
+ln    $l1    : $q2 $q1     @srf R ]    !2                                
+ln    $l2    : $q2 $q3                  !1
+END
+
+
+glyph        : Z
+ln    $v0    : 25 100 25 0                              
+ln    $v1    : 75 100 75 0                              
+ln    $h0    : 0 12 100 12                              
+ln    $h1    : 0 70 100 70                              
+lln   $h2    : $h0 2                                    
+lln   $h3    : $h1 -2                                   
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+xpt   $q5    : $v0 $h3                                  
+ln    $l0    : $q2 $q0                  @srf L ] 90     !1
+ln    $l1    : $q4 $q5                  @srf L ] 90  @srf R ] 90 !1
+ln    $l2    : $q1 $q3                  @srf L ] 90     !1
+END
+

@@ -1,0 +1,26 @@
+glyph        : m                                                                                         
+ln    $v0    : 21 100 21 0
+ln    $v1    : 50 100 50 0
+ln    $v2    : 79 100 79 0
+ln    $h0    : 0 40 100 40
+ln    $h1    : 0 75 100 75
+ln    $h2    : 0 27 100 27
+ln    $h3    : 0 47 100 47
+xpt   $q0    : $h3 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+xpt   $q5    : $h3 $v1
+xpt   $q6    : $h0 $v2
+xpt   $q7    : $h1 $v2
+
+
+ln    $l1    : $q0 $q2             !2
+ln    $l2    : $q0 $q1             !2
+arc   $c0    : $q3 $q4 $q0 $q1 20  @srf R > 1 0.5 !1
+ln    $l3    : $q4 $q3             !1
+
+ln    $l4    : $q6 $q7             !3
+arc   $c1    : $q7 $q6 $q5 $q3 20  @srf R > 1 0.5 !3

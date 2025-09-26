@@ -1,0 +1,17 @@
+glyph        : u                                                                                            
+ln    $v0    : 65 0 65 100
+ln    $v1    : 35 0 35 100
+ln    $h0    : 100 50 0 63
+ln    $h1    : 100 25 0 25
+ln    $h2    : 100 75 0 75
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+
+ln    $l1    : $q0 $q2             !2
+ln    $l2    : $q0 $q1             !2
+arc   $c0    : $q3 $q4 $q0 $q1 20 @srf R > 1 0.5  !1
+ln    $l3    : $q4 $q3             !1

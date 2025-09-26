@@ -1,0 +1,37 @@
+glyph        : k                                                                                           
+ln    $v0    : 35 100 35 0
+ln    $v1    : 70 100 65 0
+ln    $h0    : 0 25 100 25
+ln    $h1    : 0 75 100 75
+
+
+ln    $h2    : 0 5 100 5
+
+ln    $h3    : 0 45 100 45
+
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+
+
+pt    $p0    : 45 100
+
+xln   $l5    : $v0 $p0 0
+xpt   $q5    : $h3 $l5
+
+
+
+
+ln    $l1    : $q1 $q2             !2
+
+
+ln    $l3    : $q5 $q4             
+ln    $l4    : $q5 $q3   @srf R ] 0          !3
+
+
+xpt   $q6    : $l3 $l1
+
+ln    $l6    : $q4 $q6   @srf L ] 0 !3

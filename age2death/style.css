@@ -1,0 +1,54 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 2em;
+  background-color: black;
+  color: grey;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+#info{
+  animation: fadein 3s;
+  font-size: 24px;
+}
+.btn svg{
+  fill: grey;
+}
+.btn svg:hover{
+  fill: silver;
+}
+
+.btn svg:active{
+  fill: white;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+a {
+  color: grey;
+  text-decoration: underline;
+}
+a:active{
+  color: white;
+}
+
+a:visited{
+  color: grey;
+}
+
+a:hover{
+  color: silver;
+  
+}

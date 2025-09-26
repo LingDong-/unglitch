@@ -1,0 +1,10 @@
+glyph        : l                                    
+ln    $v0    : 50 100 50 0                              
+
+ln    $h1    : 0 5 100 5
+ln    $h3    : 0 75 100 75
+
+xpt   $q1    : $v0 $h1
+xpt   $q3    : $v0 $h3
+
+ln    $l0    : $q3 $q1  @srf L ] 0 @srf R ] 0  !2

@@ -1,0 +1,22 @@
+glyph        : z
+                                                                                       
+ln    $v0    : 30 100 32 0
+ln    $v1    : 70 100 68 0
+ln    $h0    : 0 30 100 30
+ln    $h1    : 0 70 100 70
+
+
+ln    $h2    : 0 32 100 32
+ln    $h3    : 0 68 100 68
+
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v0 $h1
+xpt   $q2    : $v1 $h0
+xpt   $q3    : $v1 $h1
+
+xpt   $q4    : $v1 $h2
+xpt   $q5    : $v0 $h3
+
+ln    $l0    : $q2 $q0 @srf L ] 90  !1
+ln    $l1    : $q4 $q5 @srf L ] 90 @srf R ] 90                     !1
+ln    $l2    : $q1 $q3 @srf L ] 90  !1

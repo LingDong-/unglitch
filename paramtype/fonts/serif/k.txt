@@ -1,0 +1,28 @@
+glyph        : k
+axis  $a0    : -15                                                                                            
+ln    $v0    : 35 100 35 0
+ln    $v1    : 70 100 60 0
+ln    $h0    : 0 28 100 28
+ln    $h1    : 0 70 100 70
+
+
+ln    $h2    : 0 5 100 5
+
+ln    $h3    : 0 45 100 45
+
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+
+pt    $p0    : 45 100
+
+xln   $l5    : $v0 $p0 0
+xpt   $q5    : $h3 $l5
+
+ln1   $l1    : $q0 $q2             !2
+lnT   $l2    : $q0 $q1             !2
+
+lnT   $l3    : $q5 $q4             !1
+lnT   $l4    : $q5 $q3             !3

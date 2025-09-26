@@ -1,0 +1,91 @@
+<style>
+body{
+  background: whitesmoke;
+  color: grey;
+  font-family: sans-serif;
+  margin: 50px;
+  margin-left: 0px;
+  font-size: 12px;
+  padding-left: 20px;
+  border-left: 1px solid gainsboro;
+}
+code, pre{
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+table{
+  border-collapse: collapse;  
+}
+td, th{
+  border: 1px solid grey;  
+}
+.inline-btn{
+  text-decoration: underline;  
+  cursor: pointer;
+}
+.inline-btn:hover{
+  font-style: italic;
+}
+
+</style>
+
+<!-- <a target="_parent" href="https://github.com/LingDong-"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a> -->
+<a target="_parent" href="https://github.com/LingDong-/rrpl" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:silver; color:whitesmoke; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+
+<div class="inline-btn" onclick="document.body.innerHTML = ''; document.body.style.borderLeft='none'">
+  Hide help
+</div>
+
+<h2>Instructions</h2>
+
+Enter the RRPL code on the right half of the cards, and the rendered character will show up on the left. Create a card by moving your mouse to where you'd like to insert it and clicking on the "+" button.
+
+
+<h2>Syntax</h2>
+<p>
+Each Chinese character is described as a combination of components. These components can be other characters or radicals, as well as *building blocks*, which defines the simplest shapes that make up every component. Combination can be applied recursively to describe ever more complex glyphs.
+
+</p>
+  
+<h3>Building Blocks</h3>
+
+<p>
+A building block is a string of the alphabet {<code>0</code>, <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>, <code>6</code>, <code>7</code>, <code>8</code>}, in which the presence of a number indicates a corresponding stroke to be drawn on a "米" grid:
+</p>
+
+<pre>
+ 1 2 3
+  \|/
+8 -+- 4
+  /|\
+ 7 6 5
+</pre>
+
+<p>
+<code>0</code> indicates that no stroke should be drawn in this block. (e.g. <code>24578</code> gives "大")
+</p>
+
+<h3>Packing</h3>
+<p>
+Building blocks can be packed horizontally or vertically using the <code>-</code> and <code>|</code> symbols respectively to compose more complex glyphs. These symbols can be chained to pack more than two symbols with equal room. (e.g. <code>27-26-26</code> gives "川")
+</p>
+  
+
+<h3>Grouping</h3>
+
+<p>
+<code>(</code> and <code>)</code> symbols can be used to group components together so mixed horizontal and vertical packing can happen in the correct order. (e.g. <code>(48|37)-(25678|27)-(37|15)</code> gives "水")
+</p>
+  
+
+<h3>Referencing</h3>
+
+<p>
+Other characters and radicals can be referenced directly to build a new character. The parser will dump the contents of the reference glyph directly into the string. (e.g. <code>(((木)-(缶)-(木))|(冖))|((鬯)-(彡))</code> gives "鬱")
+</p>
+
+
+For more details and the source code, check out <span class="inline-btn" onclick="window.parent.location.href = 'https://github.com/LingDong-/rrpl'">
+  https://github.com/LingDong-/rrpl
+</span>

@@ -1,0 +1,15 @@
+glyph        : r
+axis  $a0    : -30                                      
+ln    $v0    : 35 100 35 0                              
+ln    $v1    : 62 100 62 0                              
+ln    $h0    : 0 60 100 18                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 27 100 27                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1                                  
+ln    $l1    : $q0 $q2                  @srf R 1               !2
+ln    $l2    : $q0 $q1                  @srf R T               !2
+arc   $c0    : $q1 $q0 $q4 $q3 16       @srf R )  @srf L >     !1

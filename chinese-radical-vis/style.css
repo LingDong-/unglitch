@@ -1,0 +1,59 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 2em;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+.even-row{
+  background-color:lightblue;  
+}
+.odd-row{
+  background-color:white;
+}
+
+.directory-item{
+  
+  padding-left: 10px;
+  cursor:pointer;
+}
+.directory-item:hover{
+  background-color: #373fff;
+  color:white;
+  
+}
+#directory{
+  margin-top: 10px;
+  border: 1px solid black;
+  font-size: 20px;
+  
+}
+
+#toc-title{
+  font-weight: bold;
+  font-size: 22px;
+  margin-top:10px;
+  
+}
+
+#ipreview{
+  transform: scale(0.5, 0.5);
+  height: 620px;
+  width: 620px;
+  margin:-155px;
+  overflow:hidden;
+  
+  
+}
+
+
+span.nobreak {
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+}

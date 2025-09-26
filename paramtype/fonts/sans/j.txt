@@ -1,0 +1,13 @@
+glyph        : j                                     
+ln    $v0    : 53 100 53 0                       
+ln    $v1    : 36 100 0 0                   
+ln    $h0    : 0 10 100 10                              
+ln    $h1    : 0 25 100 25                              
+ln    $h2    : 0 92 100 62                      
+xpt   $q0    : $v0 $h0                                  !1
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+ln1   $l0    : $q2 $q1                                  !2
+arc   $c0    : $q1 $q2 $q4 $q3 15  @srf R ] 0           !2

@@ -1,0 +1,11 @@
+
+.cm-s-foo span.cm-comment { color: gray; }
+.cm-s-foo span.cm-string, .cm-s-foo span.cm-string-2 { color: gray; }
+.cm-s-foo span.cm-number { color: purple; }
+.cm-s-foo span.cm-variable { color: black; font-style:italic}
+.cm-s-foo span.cm-def { color: steelblue }
+.cm-s-foo span.cm-keyword { color: black; font-weight:bold}
+.cm-s-foo span.cm-builtin { color: steelblue;}
+.cm-s-foo span.cm-tag { color: purple; }
+
+.cm-s-foo .CodeMirror-activeline-background { background: floralwhite; }

@@ -1,0 +1,12 @@
+glyph        : o     
+pt    $p0    : 30 100
+pt    $p1    : 30 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $h0    : 0 50 100 50
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+arc   $c0    : $p0 $q0 $q1 $p2 29 !1
+arc   $c1    : $p1 $q0 $q1 $p3 29 !1

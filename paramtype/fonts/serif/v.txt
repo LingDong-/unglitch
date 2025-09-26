@@ -1,0 +1,12 @@
+glyph        : v
+axis  $a0    : -65                                      
+ln    $v0    : 32 100 32 0                              
+ln    $v1    : 68 100 68 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 68 100 68                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q2 $q0                  @srf R T          !1
+ln    $l1    : $q2 $q1                  @srf R T 0 1.8    !2

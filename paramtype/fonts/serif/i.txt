@@ -1,0 +1,16 @@
+glyph        : i
+axis  $a0    : -15                                      
+ln    $v0    : 50 100 50 0                              
+
+ln    $h0    : 0 10 100 10
+ln    $h1    : 0 28 100 28
+ln    $h2    : 0 50 100 50
+ln    $h3    : 0 70 100 70
+
+xpt   $q0    : $v0 $h0     !1
+xpt   $q1    : $v0 $h1
+xpt   $q2    : $v0 $h2
+xpt   $q3    : $v0 $h3
+
+ln1   $l0    : $q2 $q1     !2
+lnT   $l1    : $q2 $q3     !2

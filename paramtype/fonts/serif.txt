@@ -1,0 +1,1227 @@
+glyph        : a
+axis  $a0    : -15       
+pt    $p0    : 35 100                              
+pt    $p1    : 65 100                               
+pt    $p2    : 80 100                                
+pt    $p4    : 50 70                            
+ln    $v0    : 35 0 $p0                        
+ln    $v1    : 65 0 $p1                           
+ln    $v2    : 80 0 $p2                         
+ln    $h0    : 0 35 100 35                            
+ln    $h1    : 0 65 100 65                    
+ln    $h2    : 0 40 100 40                            
+xpt   $q0    : $h0 $v0                                
+xpt   $q1    : $h0 $v1                                
+xpt   $q2    : $h1 $v0                                
+xpt   $q3    : $h1 $v1                                
+xpt   $q4    : $h0 $v2                                
+xpt   $q5    : $h2 $v1                                
+xpt   $q6    : $h1 $v2                                
+ln    $l4    : $q3 $p4                                !2
+xln   $l5    : $l4 $q5 0                              
+xln   $l6    : $l4 $p4 90                             
+xpt   $q7    : $l5 $l6                                
+arc   $c0    : $p1 $q1 $q0 $p0 16   @srf R )          !1
+ln    $l1    : $q1 $q3                                !1
+arc   $c1    : $q1 $q3 $q6 $q4 8    @srf R > 1        !1
+arc   $c2    : $q5 $q7 $p4 $q3 20                     !2
+ln    $l3    : $q5 $q7                                !2
+END
+
+glyph        : b
+axis  $a0    : -15                                      
+ln    $v0    : 35 100 35 0                              
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 67 100 67                              
+ln    $h2    : 0 5 100 5                                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+pt    $p0    : 0 60                                     
+pt    $p1    : 0 50                                     
+arc   $c0    : $p0 $q0 $q1 $p1 50                       !1
+ln    $l0    : $q1 $q0                                  !1
+ln    $l1    : $q1 $q2                  @srf R 1        !2
+END
+
+glyph        : c
+axis  $a0    : -15                                      
+pt    $p0    : 56 0                                     
+pt    $p1    : 60 100                                   
+ln    $v0    : 95 100 $p0                               
+ln    $v2    : $p1 100 0                                
+pt    $p2    : 35 100                                   
+pt    $p3    : 35 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 38 100 38                              
+ln    $h1    : 0 56 100 56                              
+ln    $h2    : 0 51 100 51                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 22       @srf R )        !1
+arc   $c1    : $p3 $q2 $q1 $p1 25       @srf R >        !1
+END
+
+glyph        : d
+axis  $a0    : -15                                      
+ln    $v0    : 65 100 65 0                              
+ln    $v2    : 80 0 80 100                              
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 65 100 65                              
+ln    $h2    : 0 5 100 5                                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+pt    $p0    : 100 55                                   
+pt    $p1    : 100 43                                   
+xpt   $q3    : $h1 $v2                                  
+xpt   $q4    : $h0 $v2                                  
+arc   $c0    : $p1 $q1 $q0 $p0 45       @srf R > 0.6 0.2  !1
+ln    $l1    : $q1 $q2                  @srf R 1          !2
+arc   $c1    : $q0 $q1 $q3 $q4 8        @srf R >          !2
+END
+
+glyph        : e
+axis  $a0    : -15                                      
+pt    $p0    : 56 0                                  
+pt    $p1    : 60 100                                  
+ln    $v0    : 95 100 $p0                           
+ln    $v2    : $p1 100 0                         
+pt    $p2    : 35 100                                
+pt    $p3    : 35 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 41 100 41                              
+ln    $h1    : 0 56 100 56                              
+ln    $h2    : 0 51 100 51                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 25       !1
+arc>  $c1    : $p3 $q2 $q1 $p1 25       !1
+ln    $l0    : $q0 $q2                  !2
+END
+
+glyph        : f
+axis  $a0    : -10                                      
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 32 100 32 0                              
+ln    $v2    : 62 100 62 0                              
+ln    $v3    : 92 100 62 0                 
+ln    $h0    : 0 27 100 27                        
+ln    $h1    : 0 28 100 5                      
+ln    $h2    : 0 70 100 70                              
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v0                                  
+xpt   $q2    : $h1 $v3                                  
+xpt   $q3    : $h2 $v3                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h0 $v2                                  
+lnT   $l1    : $q0 $q1                                  !1
+arc)  $c0    : $q1 $q0 $q2 $q3 15                       !1
+ln    $l2    : $q4 $q5    @srf L ] 90  @srf R ] 90      !2
+END
+
+glyph        : g
+axis  $a0    : -15                                      
+ln    $v0    : 35 100 35 0                              
+ln    $v1    : 50 100 50 0                              
+ln    $v2    : 75 100 78 0                              
+ln    $h0    : 0 26 100 26                              
+ln    $h1    : 0 54 100 54                              
+ln    $h2    : 0 67 100 67                       
+ln    $h3    : 0 94 100 89                             
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v1 $h0                                  
+xpt   $q5    : $v1 $h1                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v1 $h3                                  
+xpt   $q8    : $v2 $h0                                  
+xpt   $q9    : $v2 $h1                                  
+xpt   $qa    : $v2 $h2                                  
+xpt   $qb    : $v2 $h3                                  
+arc   $c0    : $q8 $q4 $q5 $q9 20                       !1
+arc   $c2    : $q0 $q4 $q5 $q1 20                       !1
+arc   $c3    : $q9 $q5 $q6 $qa 20                       !2
+arc   $c4    : $q2 $q6 $q7 $q3 35                       !2
+arc   $c5    : $qb $q7 $q6 $qa 25                       !2
+ln    $l1    : $q4 $q8            @srf R ] 90           !3
+END
+
+glyph        : h
+axis  $a0    : -15                                                                                            
+ln    $v0    : 35 100 35 0
+ln    $v1    : 65 100 65 0
+ln    $h0    : 0 47 100 37
+ln    $h1    : 0 70 100 70
+ln    $h2    : 0 5 100 5
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+ln1   $l1    : $q0 $q2             !2
+lnT   $l2    : $q0 $q1             !2
+arc>  $c0    : $q3 $q4 $q0 $q1 20  !1
+lnT   $l3    : $q4 $q3             !1
+END
+
+glyph        : i
+axis  $a0    : -15                                      
+ln    $v0    : 50 100 50 0                              
+ln    $h0    : 0 10 100 10
+ln    $h1    : 0 28 100 28
+ln    $h2    : 0 50 100 50
+ln    $h3    : 0 70 100 70
+xpt   $q0    : $v0 $h0     !1
+xpt   $q1    : $v0 $h1
+xpt   $q2    : $v0 $h2
+xpt   $q3    : $v0 $h3
+ln1   $l0    : $q2 $q1     !2
+lnT   $l1    : $q2 $q3     !2
+END
+
+glyph        : j
+axis  $a0    : -15                                      
+ln    $v0    : 53 100 53 0                       
+ln    $v1    : 36 100 0 0                   
+ln    $h0    : 0 10 100 10                              
+ln    $h1    : 0 28 100 28                              
+ln    $h2    : 0 92 100 62                      
+xpt   $q0    : $v0 $h0                                  !1
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+ln1   $l0    : $q2 $q1                                  !2
+arc)  $c0    : $q1 $q2 $q4 $q3 15                       !2
+END
+
+glyph        : k
+axis  $a0    : -15                                                                                            
+ln    $v0    : 35 100 35 0
+ln    $v1    : 70 100 60 0
+ln    $h0    : 0 28 100 28
+ln    $h1    : 0 70 100 70
+ln    $h2    : 0 5 100 5
+ln    $h3    : 0 45 100 45
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+pt    $p0    : 45 100
+xln   $l5    : $v0 $p0 0
+xpt   $q5    : $h3 $l5
+ln1   $l1    : $q0 $q2             !2
+lnT   $l2    : $q0 $q1             !2
+lnT   $l3    : $q5 $q4             !1
+lnT   $l4    : $q5 $q3             !3
+END
+
+glyph        : l
+axis  $a0    : -15                                      
+ln    $v0    : 50 100 50 0                              
+ln    $h1    : 0 5 100 5
+ln    $h2    : 0 37 100 37
+ln    $h3    : 0 70 100 70
+xpt   $q1    : $v0 $h1
+xpt   $q2    : $v0 $h2
+xpt   $q3    : $v0 $h3
+ln1   $l0    : $q2 $q1     !2
+lnT   $l1    : $q2 $q3     !2
+END
+
+glyph        : m
+axis  $a0    : -15                                                                                            
+ln    $v0    : 21 100 21 0
+ln    $v1    : 50 100 50 0
+ln    $v2    : 79 100 79 0
+ln    $h0    : 0 40 100 40
+ln    $h1    : 0 70 100 70
+ln    $h2    : 0 27 100 27
+ln    $h3    : 0 47 100 47
+xpt   $q0    : $h3 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+xpt   $q5    : $h3 $v1
+xpt   $q6    : $h0 $v2
+xpt   $q7    : $h1 $v2
+ln1   $l1    : $q0 $q2             !2
+lnT   $l2    : $q0 $q1             !2
+arc>  $c0    : $q3 $q4 $q0 $q1 20  !1
+lnT   $l3    : $q4 $q3             !1
+lnT   $l4    : $q6 $q7             !3
+arc>  $c1    : $q7 $q6 $q5 $q3 20  !3
+END
+
+glyph        : n
+axis  $a0    : -15                                                                                            
+ln    $v0    : 35 100 35 0
+ln    $v1    : 65 100 65 0
+ln    $h0    : 0 47 100 37
+ln    $h1    : 0 70 100 70
+ln    $h2    : 0 27 100 27
+xpt   $q0    : $h0 $v0
+xpt   $q1    : $h1 $v0
+xpt   $q2    : $h2 $v0
+xpt   $q3    : $h1 $v1
+xpt   $q4    : $h0 $v1
+ln1   $l1    : $q0 $q2             !2
+lnT   $l2    : $q0 $q1             !2
+arc>  $c0    : $q3 $q4 $q0 $q1 20  !1
+lnT   $l3    : $q4 $q3             !1
+END
+
+glyph        : o
+axis  $a0    : -15      
+pt    $p0    : 30 100
+pt    $p1    : 30 0
+pt    $p2    : 70 100
+pt    $p3    : 70 0
+ln    $v0    : $p0 $p1
+ln    $v1    : $p2 $p3
+ln    $h0    : 0 50 100 50
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v1 $h0
+arc   $c0    : $p0 $q0 $q1 $p2 31 !1
+arc   $c1    : $p1 $q0 $q1 $p3 30 !1
+END
+
+glyph        : p
+axis  $a0    : -15                                      
+ln    $v0    : 35 100 35 0                              
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 67 100 67                              
+ln    $h2    : 0 27 100 27                              
+ln    $h3    : 0 90 100 90                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h3 $v0                                  
+pt    $p0    : 0 60                                     
+pt    $p1    : 0 50                                     
+arc   $c0    : $p0 $q0 $q1 $p1 50       @srf L > 0.5 0.2  @srf R > 0.5 0.2  !1
+ln    $l0    : $q1 $q3                  @srf R T        !2
+ln    $l1    : $q1 $q2                  @srf R 1        !2
+END
+
+glyph        : q
+axis  $a0    : -15                                      
+ln    $v0    : 65 100 65 0                              
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 65 100 65                              
+ln    $h2    : 0 27 100 27                              
+ln    $h3    : 0 90 100 90                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h3 $v0                                  
+pt    $p0    : 100 60                                   
+pt    $p1    : 100 43                                   
+arc   $c0    : $p0 $q0 $q1 $p1 47      @srf L > 0.5 0.2  @srf R > 0.5 0.2    !1
+ln    $l1    : $q1 $q2                                  !2
+ln    $l0    : $q1 $q3                  @srf R T        !2
+END
+
+glyph        : r
+axis  $a0    : -30                                      
+ln    $v0    : 35 100 35 0                              
+ln    $v1    : 62 100 62 0                              
+ln    $h0    : 0 60 100 18                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 27 100 27                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1                                  
+ln    $l1    : $q0 $q2                  @srf R 1               !2
+ln    $l2    : $q0 $q1                  @srf R T               !2
+arc   $c0    : $q1 $q0 $q4 $q3 16       @srf R )  @srf L >     !1
+END
+
+glyph        : s
+axis  $a0    : -15                                      
+pt    $p0    : 100 58                       
+pt    $p1    : 0 21                                
+pt    $p2    : 100 68                               
+pt    $p3    : 0 34                                  
+ln    $v0    : 90 0 10 100                              
+ln    $h0    : 30 0 $p0                               
+ln    $h1    : $p1 $p2                                  
+ln    $h2    : $p3 77 100                             
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+arc   $c0    : $p2 $q1 $q0 $p0 27  @srf R >T 1.0 0.2 90 2 2.5   !1
+arc   $c1    : $p1 $q1 $q2 $p3 31  @srf R >T 1.0 0.2 90 2.5 2   !1
+END
+
+glyph        : t
+axis  $a0    : -15                                      
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 37 100 37 0                              
+ln    $v2    : 65 100 65 0                              
+ln    $v3    : 54 100 89 0               
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 11 100 11                    
+ln    $h2    : 0 52 100 64                    
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v0                                  
+xpt   $q2    : $h1 $v3                                  
+xpt   $q3    : $h2 $v3                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h0 $v2      
+xpt   $q6    : $h0 $v0
+ln    $l1    : $q1 $q6                                   !1
+ln    $l2    : $q6 $q5              @srf R ] 90          !2
+arc   $c0    : $q0 $q1 $q3 $q2 19   @srf R >             !1
+ln    $l3    : $q6 $q0              @srf R 4 $q4 0.2 0.4 !3
+END
+
+glyph        : u
+axis  $a0    : -15                                      
+ln    $v0    : 35 100 35 0                              
+ln    $v1    : 65 100 65 0                              
+ln    $v2    : 80 100 80 0                              
+ln    $h0    : 0 60 100 51                   
+ln    $h1    : 0 65 100 65                           
+ln    $h2    : 0 27 100 27                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h2 $v1                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1                                  
+xpt   $q5    : $h1 $v2                                  
+xpt   $q6    : $h2 $v2                                  
+ln1   $l1    : $q0 $q2                                  !1
+ln1   $l2    : $q3 $q1                                  !2
+arc>  $c0    : $q2 $q0 $q4 $q1 22                       !1
+arc>  $c1    : $q4 $q3 $q5 $q6 10                       !2
+END
+
+glyph        : v
+axis  $a0    : -65                                      
+ln    $v0    : 32 100 32 0                              
+ln    $v1    : 68 100 68 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 68 100 68                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q2 $q0                  @srf R T          !1
+ln    $l1    : $q2 $q1                  @srf R T 0 1.8    !2
+END
+
+glyph        : w
+axis  $a0    : -65                                      
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 85 100 85 0                              
+ln    $v2    : 65 100 65 0                              
+ln    $v3    : 15 100 15 0                              
+ln    $v4    : 55 100 55 0                              
+ln    $v5    : 35 100 35 0                              
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 68 100 68                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h0 $v3                                  
+xpt   $q4    : $h0 $v4                                  
+xpt   $q5    : $h1 $v5                                  
+ln    $l0    : $q2 $q0                  @srf R T        !1
+ln    $l1    : $q2 $q1                  @srf R T 0 1.8  !2
+xpt   $q6    : $q4 $q5 $l0                              
+ln    $l2    : $q5 $q6                                  !3
+ln    $l3    : $q5 $q3                  @srf R T        !4
+END
+
+glyph        : x
+axis  $a0    : -50                                                                                            
+ln    $v0    : 29 100 37 0
+ln    $v1    : 68 100 65 0
+ln    $h0    : 0 27 100 27
+ln    $h1    : 0 70 100 70
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v0 $h1
+xpt   $q2    : $v1 $h0
+xpt   $q3    : $v1 $h1
+ln    $l0    : $q0 $q3  @srf L T @srf R T !1
+ln    $l1    : $q2 $q1  @srf L T 1.8 @srf R T 0 1.8 !2
+END
+
+glyph        : y
+axis  $a0    : -65                                      
+ln    $v0    : 32 100 32 0                              
+ln    $v1    : 68 100 68 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $v3    : 29 100 0 21                              
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 66 100 66                              
+ln    $h2    : 0 86 100 79                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q2 $q0                  @srf R T        !1
+ln    $l1    : $q3 $q1                  @srf R T 0 1.8  !2
+xpt   $q3    : $q2 $q1 $h2                              
+xpt   $q4    : $v3 $h2                                  
+xpt   $q5    : $v3 $h1                                  
+arc   $c0    : $q2 $q3 $q4 $q5 10       @srf R )        !2
+END
+
+glyph        : z
+axis  $a0    : 0                                                                                            
+ln    $v0    : 32 100 35 0
+ln    $v1    : 70 100 63 0
+ln    $h0    : 0 27 100 27
+ln    $h1    : 0 70 100 70
+xpt   $q0    : $v0 $h0
+xpt   $q1    : $v0 $h1
+xpt   $q2    : $v1 $h0
+xpt   $q3    : $v1 $h1
+ln    $l0    : $q2 $q0 @srf R T 90 0.1 2.5  !1
+ln    $l1    : $q2 $q1                      !1
+ln    $l2    : $q1 $q3 @srf R T 90 2.5 0.1  !1
+END
+
+glyph        : A
+axis  $a0    : -67                                      
+axis  $a1    : 0                                        
+pt    $p0    : 25 100                                   
+pt    $p1    : 50 100                                   
+pt    $p2    : 75 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 50 0 $p1                                 
+ln    $v2    : 75 0 $p2                                 
+ln    $h0    : 0 45 100 45                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 8 100 8                                
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h2 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q1 $q0                  @srf R T 0 1.5  !1
+ln    $l1    : $q1 $q2                  @wgt 1.2 @srf R T 0 2 !1
+lln   $l2    : $l1 4                                    
+lln   $l3    : $l0 -4                                   
+xpt   $q3    : $l2 $h0                                  
+xpt   $q4    : $l3 $h0                                  
+ln    $l4    : $q3 $q4                  @axi $a1         !1
+END
+
+glyph        : B
+axis  $a0    : 0                                        
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 72 100 72                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 1.6                                  
+lln   $h4    : $h1 -1.6                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h0                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v1 $h0                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T 0 3 0 !1
+arc   $c0    : $q0 $q6 $q7 $q2 30                       !1
+arc   $c1    : $q2 $q7 $q8 $q1 36                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l2    : $q2 $q7                                  !1
+ln    $l3    : $q1 $q8                                  !1
+END
+
+glyph        : C
+axis  $a0    : 0                                        
+pt    $p0    : 60 0                                      
+pt    $p1    : 60 100                                   
+ln    $v0    : 100 35 $p0                               
+ln    $v2    : $p1 100 20                               
+pt    $p2    : 20 100                                   
+pt    $p3    : 20 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 15 100 15                              
+ln    $h1    : 0 54 100 54                              
+ln    $h2    : 0 40 100 40                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 30      @srf R T 85 2.5 3 !1
+arc   $c1    : $p3 $q2 $q1 $p1 35       @srf R >        !1
+END
+
+glyph        : D
+axis  $a0    : 0                                        
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                                              
+ln    $h1    : 0 72 100 72                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 1.6                                  
+lln   $h4    : $h1 -1.6                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                                                 
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T 0 3 0 !1
+arc   $c0    : $q0 $q6 $q8 $q1 45                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l3    : $q1 $q8                                  !1
+END
+
+glyph        : E
+axis  $a0    : 0                                 
+pt    $p0    : 25 100                                   
+pt    $p1    : 65 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 65 0 $p1                                 
+lln   $v2    : $v1 6                                    
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 72 100 72                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 1.6                                  
+lln   $h4    : $h1 -1.6                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h0                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v2 $h0                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T 0 3 0 !1
+ln    $l1    : $q0 $q6                  @srf R T 90 0 3 !1
+ln    $l2    : $q2 $q7                  @srf R T 90 2.6 !1
+ln    $l3    : $q1 $q8                  @srf R T 100 3 0 !1
+END
+
+glyph        : F
+axis  $a0    : 0                                 
+pt    $p0    : 25 100                                   
+pt    $p1    : 45 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 70 0 $p1                                                     
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 72 100 72                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 1.6                                                             
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h0                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q7    : $v1 $h0                                                                   
+ln    $l0    : $q3 $q1                  @srf L T 0 3 0  @srf R T 0 3 3 !1
+ln    $l1    : $q0 $q6                  @srf R T 90 0 3 !1
+ln    $l2    : $q2 $q7                  @srf R T 90 2.6 !1
+END
+
+glyph        : G
+axis  $a0    : 0                                        
+pt    $p0    : 60 0                                     
+pt    $p1    : 55 100                                   
+ln    $v0    : 100 35 $p0                               
+ln    $v2    : $p1 100 26                               
+pt    $p2    : 20 100                                   
+pt    $p3    : 20 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 15 100 15                              
+ln    $h1    : 0 60 100 60                              
+ln    $h2    : 0 42 100 42                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 30       @srf R T 85 2.5 3 !1
+arc   $c1    : $p3 $q2 $q1 $p1 30                       !1
+xpt   $q3    : $l0 $h2                                  
+xln   $l0    : $h1 $q1 -90                              
+ln    $l1    : $q1 $q3                  @srf R T 0 3 2.5 !1
+END
+
+glyph        : H
+axis  $a0    : 0                                    
+ln    $v0    : 30 100 30 0                              
+ln    $v1    : 70 100 70 0                              
+ln    $h0    : 0 35 100 35                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 5 100 5                                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1 
+xpt   $q5    : $h2 $v1                                  
+ln    $l1    : $q1 $q2   @srf R T  @srf L T      !2
+ln    $l3    : $q5 $q3   @srf R T  @srf L T      !1
+ln $l2 : $q0 $q4 !1
+END
+
+glyph        : I
+axis  $a0    : 0                                      
+ln    $v0    : 50 100 50 0                              
+ln    $h0    : 0 5 100 5                              
+ln    $h1    : 0 72 100 72                                                      
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                                                 
+ln    $l0    : $q0 $q1        @srf L T @srf R T   !2
+END
+
+glyph        : J
+axis  $a0    : 0                                      
+ln    $v0    : 53 100 53 0                              
+ln    $v1    : 36 100 0 0                               
+ln    $h1    : 0 5 100 5                                
+ln    $h2    : 0 71 100 51                              
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v1 $h1                                  
+xpt   $q4    : $v1 $h2                                  
+ln    $l0    : $q2 $q1                  @srf R T 0 3    !2
+arc   $c0    : $q1 $q2 $q4 $q3 15       @srf R )        !2
+END
+
+glyph        : K
+axis  $a0    : -45                                      
+ln    $v0    : 30 100 30 0                              
+ln    $v1    : 75 100 70 0                      
+ln    $h0    : 0 5 100 5                                
+ln    $h1    : 0 72 100 72                              
+ln    $h3    : 0 29 100 29                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v0                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h0 $v1                                  
+pt    $p0    : 45 100                                   
+xln   $l5    : $v0 $p0 0                                
+xpt   $q5    : $h3 $l5                                  
+ln    $l2    : $q0 $q1      @wgt 1.1     @srf L T  @srf R T !2
+ln    $l3    : $q6 $q4                  @srf R T        !1
+ln    $l4    : $q5 $q3                  @srf R T        !3
+xpt   $q6    : $q4 $q5 $q1 $q0                          
+END
+
+glyph        : L
+axis  $a0    : 0                                        
+ln    $v0    : 30 100 30 0                              
+ln    $v1    : 70 100 70 0                              
+ln    $h1    : 0 5 100 5                                
+ln    $h2    : 0 37 100 37                              
+ln    $h3    : 0 72 100 72                              
+lln   $h4    : $h3 -1.6                                 
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v1 $h3                                  
+xpt   $q5    : $v0 $h4                                  
+ln    $l1    : $q1 $q5                  @srf L T  @srf R T 0 3 0 !1
+ln    $l2    : $q3 $q4                  @srf R T 100 4 0 !1
+END
+
+glyph        : M
+axis  $a0    : -65  
+axis  $a1    : 0 
+axis  $a2    : 95                                        
+ln    $v0    : 19 100 19 0                              
+ln    $v1    : 50 100 50 0                              
+ln    $v2    : 81 100 81 0 
+lln   $v3    : $v2 -3                             
+ln    $h0    : 0 70 100 70                              
+ln    $h1    : 0 72 100 72                              
+ln    $h2    : 0 5 100 5  
+lln $h3 :  $h2 -1.6                           
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h2 $v0                                  
+xpt   $q4    : $h2 $v1                                  
+xpt   $q5    : $h2 $v2
+xpt   $q6    : $h3 $v0
+xpt   $q7    : $h3 $v2
+xpt   $q8    : $h3 $v3            
+ln    $l0    : $q3 $q0   @axi $a2   @srf L T 0 3 0  @srf R T !1
+ln    $l1    : $q5 $q2   @axi $a1     @srf L T 0 0.8 3 @srf R T !1
+ln    $l2 : $q6 $q1 @srf L ] !1
+ln    $l3 : $q8 $q1 @srf L ] !1
+END
+
+glyph        : N
+axis  $a0    : 90                                                                                                                
+ln    $v0    : 25 100 25 0                                                      
+ln    $v2    : 75 100 75 0                                                              
+ln    $h0    : 0 69 100 69                              
+ln    $h1    : 0 72 100 72                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 -1.6                                 
+xpt   $q0    : $h1 $v0                                  
+xpt   $q1    : $h0 $v2                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h2 $v0                                                         
+xpt   $q5    : $h2 $v2                                  
+xpt   $q6    : $h3 $v0                                  
+xpt   $q7    : $h3 $v2                                  
+xpt   $q8    : $h3 $v3                                  
+ln    $l0    : $q3 $q0                   @srf L T 0 3 0  @srf R T !1
+ln    $l1    : $q5 $q2                    @srf L T @srf R ]  !1
+ln    $l2    : $q6 $q1      @wgh 1.3    @srf L ] @srf R ] 90        !1
+END
+
+glyph        : O
+axis  $a0    : 0                                        
+pt    $p0    : 0 5                                      
+pt    $p1    : 100 5                                    
+pt    $p2    : 0 74                                     
+pt    $p3    : 100 74                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 40                       !1
+arc   $c1    : $p0 $q0 $q1 $p2 40                       !1
+END
+
+glyph        : P
+axis  $a0    : 0                                        
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h1    : 0 42 100 42                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 1.6                                  
+lln   $h4    : $h1 30                                 
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T !1
+arc   $c0    : $q0 $q6 $q8 $q1 35                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l3    : $q1 $q8                                  !1
+END
+
+glyph        : Q
+axis  $a0    : 0                                        
+pt    $p0    : 0 5                                      
+pt    $p1    : 100 5                                    
+pt    $p2    : 0 74                                     
+pt    $p3    : 100 74                                   
+ln    $v0    : 40 0 40 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 40                       !1
+arc   $c1    : $p0 $q0 $q1 $p2 40                       !1
+arc   $c2    : 30 0 $q1 100 90 72 95 15 @wgt 1.5  @srf R > !1
+END
+
+glyph        : R
+axis  $a0    : 0                                        
+pt    $p0    : 25 100                                   
+pt    $p1    : 40 100                                   
+ln    $v0    : 25 0 $p0                                 
+ln    $v1    : 40 0 $p1                                 
+ln    $h1    : 0 40 100 40                              
+ln    $h2    : 0 5 100 5                                
+lln   $h3    : $h2 1.6      
+pt $p2 : 70 72                            
+ln   $h4    : 0 72 $p2                                
+xpt   $q0    : $v0 $h2                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q3    : $v0 $h3                                  
+xpt   $q4    : $v0 $h4                                  
+xpt   $q6    : $v1 $h2                                  
+xpt   $q8    : $v1 $h1                                  
+ln    $l0    : $q3 $q4                  @srf L T 0 3 0  @srf R T !1
+arc   $c0    : $q0 $q6 $q8 $q1 35                       !1
+ln    $l1    : $q0 $q6                                  !1
+ln    $l3    : $q1 $q8                                  !1
+ln $l4 : $q8 $p2 @srf R T 0 1.5 3 !1
+END
+
+glyph        : S
+axis  $a0    : -15                                      
+pt    $p0    : 100 29                                   
+pt    $p1    : 0 10                                     
+pt    $p2    : 100 58                                   
+pt    $p3    : 0 37                                     
+ln    $v0    : 80 0 10 100                              
+ln    $h0    : 57 0 $p0                                 
+ln    $h1    : $p1 $p2                                  
+ln    $h2    : $p3 77 100                               
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+arc   $c0    : $p2 $q1 $q0 $p0 34       @srf R >T 1 0.2 90 2 2.5 !1
+arc   $c1    : $p1 $q1 $q2 $p3 42       @srf R >T 1 0.2 90 3 2 !1
+END
+
+glyph        : T
+axis  $a0    : 0                                        
+ln    $v0    : 50 100 50 0 
+ln    $v1    : 22 100 22 0 
+ln    $v2    : 78 100 78 0                              
+ln    $h0    : 0 5 100 5                                
+ln    $h1    : 0 72 100 72                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1 
+xpt   $q2    : $v1 $h0 
+xpt   $q3    : $v2 $h0                                  
+ln    $l0    : $q0 $q1             @srf R T !2
+ln $l1 : $q2 $q3 @srf L T 90 0 3 @srf R T 90 0 3 !1
+END
+
+glyph        : U
+axis  $a0    : 0                                        
+axis  $a1    : 90                                       
+ln    $v0    : 27 100 27 0                              
+ln    $v1    : 72 100 72 0                              
+ln    $h0    : 0 50 100 50                              
+ln    $h2    : 0 5 100 5                                
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h2 $v1                                  
+xpt   $q2    : $h2 $v0                                  
+xpt   $q4    : $h0 $v1                                  
+ln    $l1    : $q0 $q2                  @srf R T        !1
+ln    $l2    : $q4 $q1                  @srf R T  @axi $a1  @srf L ] !2
+arc   $c0    : $q2 $q0 $q4 $q1 32       @srf R >        !1
+END
+
+glyph        : V
+axis  $a0    : -65                                      
+ln    $v0    : 23 100 23 0                              
+ln    $v1    : 77 100 77 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 5 100 5                                
+ln    $h1    : 0 68 100 68                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+ln    $l0    : $q2 $q0                  @srf R T        !1
+ln    $l1    : $q2 $q1                  @srf R T 0 1.8  !2
+END
+
+glyph        : W
+axis  $a0    : -70                                      
+ln    $v0    : 45 100 45 0                              
+ln    $v1    : 88 100 88 0                              
+ln    $v2    : 66 100 66 0                              
+ln    $v3    : 12 100 12 0                              
+ln    $v4    : 55 100 55 0                              
+ln    $v5    : 34 100 34 0                              
+ln    $h0    : 0 5 100 5                              
+ln    $h1    : 0 68 100 68                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h0 $v3                                  
+xpt   $q4    : $h0 $v4                                  
+xpt   $q5    : $h1 $v5                                  
+ln    $l0    : $q2 $q0                  @srf R T        !1
+ln    $l1    : $q2 $q1                  @srf R T 0 1.8  !2
+xpt   $q6    : $q4 $q5 $l0                              
+ln    $l2    : $q5 $q6                                  !3
+ln    $l3    : $q5 $q3                  @srf R T        !4
+END
+
+glyph        : X
+axis  $a0    : -50                                      
+ln    $v0    : 27 100 32 0                               
+ln    $v1    : 75 100 72 0                              
+ln    $h0    : 0 5 100 5                                
+ln    $h1    : 0 70 100 70                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v1 $h1                                  
+ln    $l0    : $q0 $q3                  @srf L T  @srf R T !1
+ln    $l1    : $q2 $q1                  @srf L T 1.8  @srf R T 0 1.8 !2
+END
+
+glyph        : Y
+axis  $a0    : -50
+axis  $a1    : 0                                      
+ln    $v0    : 25 100 25 0                              
+ln    $v1    : 75 100 75 0                              
+ln    $v2    : 50 100 50 0                              
+ln    $h0    : 0 5 100 5                                
+ln    $h1    : 0 43 100 43                              
+ln    $h2    : 0 70 100 70                              
+lln   $v3    : $v2 -2                                    
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v2                                  
+xpt   $q3    : $h2 $v3                                  
+ln    $l0    : $q2 $q0                  @srf R T        !1
+ln    $l1    : $q2 $q1                  @srf R T 0 1.8  !2
+xpt   $q4    : $l0 $v3                                  
+ln    $l2    : $q4 $q3     @axi $a1       @wgt 1.05  @srf R T !1
+END
+
+glyph        : Z
+axis  $a0    : 0                                        
+ln    $v0    : 25 100 28 0                              
+ln    $v1    : 77 100 70 0                              
+ln    $h0    : 0 5 100 5                              
+ln    $h1    : 0 70 100 70                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v1 $h0                                  
+xpt   $q3    : $v1 $h1                                  
+ln    $l0    : $q2 $q0                  @srf R T 90 0.1 2.5 !1
+ln    $l1    : $q2 $q1                                  !1
+ln    $l2    : $q1 $q3                  @srf R T 90 2.5 0.1 !1
+END
+
+
+glyph        : 0
+pt    $p0    : 0 29                                     
+pt    $p1    : 100 29                                   
+pt    $p2    : 0 70                                     
+pt    $p3    : 100 70                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 27                       !1
+arc   $c1    : $p0 $q0 $q1 $p2 27                       !1
+END
+
+glyph        : 1
+axis  $a0    : 0                                        
+ln    $v0    : 50 100 50 0                              
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 70 100 70                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+ln    $l0    : $q0 $q1                  @srf L T  @srf R T !2
+END
+
+glyph        : 2
+axis  $a0    : -45                                      
+ln    $v0    : 0 100 100 0                              
+ln    $v1    : 60 0 60 100                              
+ln    $h0    : 0 56 100 56                              
+ln    $h1    : 0 70 100 70                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+ln    $l0    : $q0 $q1                                  !1
+ln    $l1    : 50 0 0 80                                
+xln   $l2    : $v0 $q0 -90                              
+xpt   $q2    : $l1 $l2                                  
+xpt   $q3    : $l1 $h1                                  
+arc   $c0    : $q1 $q0 $q2 $q3 30       @srf R )        !1
+xpt   $q4    : $v1 $h1                                  
+ln    $l3    : $q1 $q4                  @srf R T -80 1 3 !1
+END
+
+glyph        : 3
+axis  $a0    : -45                                      
+ln    $v0    : 0 93 100 9                               
+ln    $v1    : 53 0 53 100                              
+ln    $h0    : 0 56 100 56                              
+ln    $h1    : 0 63 100 63                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+ln    $l0    : $q1 $q0                                  !1
+ln    $l1    : 65 0 0 71                                
+xln   $l2    : $v0 $q0 -90                              
+xpt   $q2    : $l1 $l2                                  
+xpt   $q3    : $l1 $h1                                  
+arc   $c0    : $q1 $q0 $q2 $q3 33       @srf R )        !1
+pt    $p0    : 100 49                                   
+pt    $p1    : 33 100                                   
+pt    $p2    : 0 68                                     
+pt    $p3    : 30 91                                    
+ln    $l3    : $p0 $p1                                  
+ln    $l4    : $p2 $p3                                  
+xpt   $q4    : $v1 $l3                                  
+arc   $c1    : $q1 $q0 $q4 $p1 20                       !1
+arc   $c2    : $p0 $q4 $p3 $p2 9        @srf R )        !1
+END
+
+glyph        : 4
+axis  $a0    : -45                                      
+ln    $v0    : 50 100 50 0                              
+ln    $v1    : 15 100 15 0                              
+ln    $v2    : 65 100 65 0                              
+ln    $h0    : 0 27 100 27                              
+ln    $h1    : 0 70 100 70                              
+ln    $h2    : 0 92 100 92                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h2                                  
+ln    $l0    : $q0 $q1                  @srf L ] -45  @srf R ] !1
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $h1 $v2                                  
+ln    $l1    : $q0 $q3                                  !1
+ln    $l2    : $q3 $q4                  @srf R ] 90     !1
+END
+
+glyph        : 5
+axis  $a0    : -45                                      
+axis  $a1    : -85                                      
+ln    $v0    : 0 93 100 0                               
+ln    $v1    : 63 0 53 100                              
+ln    $v2    : 65 0 65 100                              
+ln    $h0    : 0 56 100 56                              
+lln   $h1    : $h0 3                                    
+ln    $h2    : 0 28 100 28                              
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+pt    $p0    : 100 53                                   
+pt    $p1    : 34 100                                   
+pt    $p2    : 0 68                                     
+pt    $p3    : 30 91                                    
+ln    $l3    : $p0 $p1                                  
+xln   $l4    : $v1 $q1 180                              
+xpt   $q4    : $v1 $l3                                  
+arc   $c1    : $q1 $q0 $q4 $p1 20                       !1
+arc   $c2    : $p0 $q4 $p3 $p2 9        @srf R )        !1
+xpt   $q5    : $l4 $h2                                  
+xpt   $q6    : $v2 $h2                                  
+ln    $l5    : $q1 $q5                  @axi $a1  @srf L ] !1
+ln    $l6    : $q5 $q6                  @axi $a1  @srf R T -80 1 2 !1
+END
+
+glyph        : 6
+axis  $a0    : 0                                        
+pt    $p0    : 0 30                                     
+pt    $p1    : 100 30                                   
+pt    $p2    : 0 72                                     
+pt    $p3    : 100 72                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 24       @srf R >        !1
+arc   $c1    : $p0 $q0 $q1 $p2 24                       !1
+arc   $c2    : $p3 $q1 73 0 100 -4 35   @srf R > 0.5    !1
+END
+
+glyph        : 7
+axis  $a0    : -50                                      
+ln    $h0    : 0 30 100 30                              
+ln    $h1    : 0 92 100 92                              
+ln    $v0    : 30 0 30 100                              
+ln    $v1    : 85 0 30 100                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v1                                  
+ln    $l0    : $q0 $q1                  @srf L T 100 1 3 !1
+ln    $l1    : $q1 $q2                  @srf R ]  @srf L > !1
+END
+
+glyph        : 8
+axis  $a0    : -45                                      
+pt    $p0    : 0 5                                      
+pt    $p1    : 100 5                                    
+pt    $p2    : 0 70                                     
+pt    $p3    : 100 70                                   
+pt    $p4    : 0 35                                     
+pt    $p5    : 100 35                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+ln    $h2    : $p4 $p5                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+xpt   $q2    : $v0 $h2                                  
+arc   $c0    : $p1 $q0 $q2 $p5 24                       !1
+arc   $c1    : $p0 $q0 $q2 $p2 21                       !1
+arc   $c2    : $p3 $q1 $q2 $p1 23                       !1
+arc   $c3    : $p2 $q1 $q2 $p4 28                       !1
+END
+
+glyph        : 9
+axis  $a0    : 0                                        
+pt    $p0    : 0 30                                     
+pt    $p1    : 100 30                                   
+pt    $p2    : 0 72                                     
+pt    $p3    : 100 72                                   
+ln    $v0    : 50 0 50 100                              
+ln    $h0    : $p0 $p1                                  
+ln    $h1    : $p2 $p3                                  
+xpt   $q0    : $v0 $h0                                  
+xpt   $q1    : $v0 $h1                                  
+arc   $c0    : $p1 $q0 $q1 $p3 24                       !1
+arc   $c1    : $p0 $q0 $q1 $p2 24       @srf L >        !1
+arc   $c2    : $p0 $q0 27 100 0 104 35  @srf R > 0.5    !1
+END
+
+glyph        : ,
+axis  $a0    : 0                                       
+pt    $p0    : 70 0                                     
+pt    $p1    : 0 95                                     
+ln    $v0    : 40 0 40 100                              
+ln    $v1    : $p0 60 100                               
+lln   $v2    : $v1 3                                    
+ln    $h0    : 0 70 100 60                              
+ln    $h1    : $p1 100 80                               
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $v2 $h0                  @wgt 1.5        !1
+arc   $c0    : $p0 $q1 $q2 $p1 5        @srf R > 1 0    !1
+END
+
+glyph        : .
+axis  $a0    : 0                                        
+pt    $p0    : 70 0                                     
+ln    $v1    : $p0 60 100                               
+lln   $v2    : $v1 3                                    
+ln    $h0    : 0 70 100 60                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q4    : $v2 $h0                  @wgt 1.5        !1
+END
+
+glyph        : ;
+axis  $a0    : 0                                        
+pt    $p0    : 70 0                                     
+pt    $p1    : 0 95                                     
+ln    $v0    : 40 0 40 100                              
+ln    $v1    : $p0 60 100                               
+lln   $v2    : $v1 3                                    
+ln    $h0    : 0 70 100 60                              
+ln    $h1    : $p1 100 80                               
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h0 $v1                                  
+xpt   $q2    : $h1 $v0                                  
+xpt   $q3    : $h1 $v1                                  
+xpt   $q4    : $v2 $h0                  @wgt 1.5        !1
+arc   $c0    : $p0 $q1 $q2 $p1 5        @srf R > 1 0    !1
+pt    $p5    : {- $q4 {, 0 35}}         @wgt 1.5        !1
+END
+
+glyph        : :
+axis  $a0    : 0                                        
+pt    $p0    : 70 0                                     
+ln    $v1    : $p0 60 100                               
+lln   $v2    : $v1 3                                    
+ln    $h0    : 0 70 100 60                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q4    : $v2 $h0                  @wgt 1.5        !1
+pt    $p5    : {- $q4 {, 0 35}}         @wgt 1.5        !1
+END

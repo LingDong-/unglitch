@@ -1,0 +1,17 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+  background: grey;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+canvas{
+  border: 1px solid yellow;
+  margin: 2px;
+}

@@ -1,0 +1,17 @@
+glyph        : c
+axis  $a0    : -15                                      
+pt    $p0    : 56 0                                     
+pt    $p1    : 60 100                                   
+ln    $v0    : 95 100 $p0                               
+ln    $v2    : $p1 100 0                                
+pt    $p2    : 35 100                                   
+pt    $p3    : 35 0                                     
+ln    $v1    : $p2 $p3                                  
+ln    $h0    : 0 38 100 38                              
+ln    $h1    : 0 56 100 56                              
+ln    $h2    : 0 51 100 51                              
+xpt   $q0    : $h0 $v0                                  
+xpt   $q1    : $h1 $v2                                  
+xpt   $q2    : $h2 $v1                                  
+arc   $c0    : $p2 $q2 $q0 $p0 22       @srf R )        !1
+arc   $c1    : $p3 $q2 $q1 $p1 25       @srf R >        !1

@@ -1,0 +1,28 @@
+glyph        : a
+axis  $a0    : -15       
+pt    $p0    : 35 100                              
+pt    $p1    : 65 100                               
+pt    $p2    : 80 100                                
+pt    $p4    : 50 70                            
+ln    $v0    : 35 0 $p0                        
+ln    $v1    : 65 0 $p1                           
+ln    $v2    : 80 0 $p2                         
+ln    $h0    : 0 35 100 35                            
+ln    $h1    : 0 65 100 65                    
+ln    $h2    : 0 40 100 40                            
+xpt   $q0    : $h0 $v0                                
+xpt   $q1    : $h0 $v1                                
+xpt   $q2    : $h1 $v0                                
+xpt   $q3    : $h1 $v1                                
+xpt   $q4    : $h0 $v2                                
+xpt   $q5    : $h2 $v1                                
+xpt   $q6    : $h1 $v2                                
+ln    $l4    : $q3 $p4                                !2
+xln   $l5    : $l4 $q5 0                              
+xln   $l6    : $l4 $p4 90                             
+xpt   $q7    : $l5 $l6                                
+arc   $c0    : $p1 $q1 $q0 $p0 16   @srf R )          !1
+ln    $l1    : $q1 $q3                                !1
+arc   $c1    : $q1 $q3 $q6 $q4 8    @srf R > 1        !1
+arc   $c2    : $q5 $q7 $p4 $q3 20                     !2
+ln    $l3    : $q5 $q7                                !2
